@@ -1101,7 +1101,7 @@ SET geom = ST_SnapToGrid(
 
 #### Repérer certaines erreurs de topologies
 
-PostGIS possède de nombreuses fonctions de **relations spatiales* qui permettent de trouver les objets qui se chevauchent, qui se touchent, etc. Ces fonctions peuvent être utilisées pour comparer les objets d'une même table, ou de deux tables différentes. Voir: https://postgis.net/docs/reference.html#Spatial_Relationships_Measurements
+PostGIS possède de nombreuses fonctions de **relations spatiales** qui permettent de trouver les objets qui se chevauchent, qui se touchent, etc. Ces fonctions peuvent être utilisées pour comparer les objets d'une même table, ou de deux tables différentes. Voir: https://postgis.net/docs/reference.html#Spatial_Relationships_Measurements
 
 Par exemple, trouver les parcelles voisines qui se recouvrent: on utilise la fonction **ST_Overlaps**. On peut créer une couche listant les recouvrements:
 
@@ -1184,4 +1184,4 @@ Dans la pratique, il est très souvent fastidieux de corriger les erreurs de top
 
 Au contraire, une modification manuelle est plus précise, mais prend beaucoup de temps. 
 
-La documentation suivante, 
+Le Ministère du Développement Durable a mis en ligne un document intéressant sur les outils disponibles dans QGIS, OpenJump et PostgreSQL pour valider et corriger les géométries: http://www.geoinformations.developpement-durable.gouv.fr/verification-et-corrections-des-geometries-a3522.html
