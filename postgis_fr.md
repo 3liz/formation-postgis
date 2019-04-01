@@ -416,7 +416,7 @@ Cela peut être par exemple utile pour **construire une table de nomenclature** 
 
 On crée la table si besoin.
 
-```
+```sql
 -- Suppression de la table
 DROP TABLE IF EXISTS z_formation.nomenclature;
 -- Création de la table
@@ -429,7 +429,7 @@ CREATE TABLE z_formation.nomenclature (
 
 ```
 
-On ajoute ensuite les données. La clause **WITH** permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause **INSERT INTO** permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier auto-incrémenté.
+On ajoute ensuite les données. La clause **WITH** permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause **INSERT INTO** permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier **auto-incrémenté**.
 
 ```sql
 -- Ajout des données à partir d'une table via commande INSERT
@@ -713,7 +713,7 @@ ORDER BY longueur
 ;
 ```
 
-Comme c'est une table, il est intéressant d'ajouter un indexe spatial.
+Comme c'est une table, il est intéressant d'ajouter un index spatial.
 
 ```sql
 CREATE INDEX ON z_formation.t_voies USING GIST (geom);
@@ -802,8 +802,8 @@ On peut utiliser le **centroide de chaque chemin** pour avoir un seul objet par 
 
 ```sql
 -- Jointure spatiale
--- On ne veut qu'une seule ligne par toponyme
--- Donc on fait l'intersection entre chaque toponyme et les communes
+-- On ne veut qu'une seule ligne par chemin
+-- Donc on fait l'intersection entre le centroïde des chemins (pour avoir un point) et les communes
 SELECT
 v.*,
 c.nom, c.code_insee
