@@ -1,6 +1,6 @@
 ## Sélectionner
 
-Nous allons présenter des **requêtes SQL** de plus en plus complexes pour accéder aux données, et exploiter les capacités de PostgreSQL/PostGIS. Une requête est contruite avec des instructions standardisées, appelées **clauses**
+Nous allons présenter des **requêtes SQL** de plus en plus complexes pour accéder aux données, et exploiter les capacités de PostgreSQL/PostGIS. Une requête est construite avec des instructions standardisées, appelées **clauses**
 
 ```sql
 -- Ordre des clauses SQL
@@ -14,7 +14,7 @@ ORDER BY champs_d_ordre
 LIMIT 10
 
 ```
-Tous les objets d'une couche
+Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 
 ```sql
 -- Sélectionner l'ensemble des données d'une couche: l'étoire veut dire "tous les champs de la table"
@@ -94,3 +94,6 @@ ORDER BY nom
 ```
 
 On choisira ici le champ **identifiant** comme identifiant unique, et le champ **geom** comme géométrie
+
+
+Continuer vers [Réaliser des calculs et créer des géométries: FONCTIONS](./perform_calculation.md)

@@ -2,7 +2,7 @@
 
 ### Valeurs distinctes d'un champ
 
-On souaite récupérer **toutes les valeurs possibles** d'un champ
+On souhaite récupérer **toutes les valeurs possibles** d'un champ
 
 ```sql
 -- Vérifier les valeurs distinctes d'un champ: table commune
@@ -147,3 +147,4 @@ WHERE Geometrytype(geom) = 'POLYGON'
 Attention, on doit donner un alias à la sous-requête (ici source)
 
 
+Continuer vers [Rassembler des données: UNION ALL](./union.md)

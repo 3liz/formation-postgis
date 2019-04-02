@@ -109,3 +109,5 @@ ST_Buffer(geom, 1000) AS geom
 FROM z_formation.commune
 LIMIT 10
 ```
+
+Continuer vers [Filtrer des données: WHERE](./filter_data.md)

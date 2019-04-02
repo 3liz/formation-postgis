@@ -31,3 +31,5 @@ SELECT *
 FROM urbanisme.parcelle
 WHERE NOT ST_isvalid(geom)
 ```
+
+Continuer vers [Vérifier la topologie](./check_topology.md)

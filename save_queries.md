@@ -87,3 +87,5 @@ ALTER TABLE z_formation.t_voies ADD PRIMARY KEY (gid);
 ```
 
 **Attention** Les données de la table n'évoluent plus en fonction des données des tables source. Il faut donc supprimer la table puis la recréer si besoin. Pour répondre à ce besoin, il existe les **vues matérialisées**.
+
+Continuer vers [Réaliser des jointures attributaires et spatiales; JOIN](./join_data.md)

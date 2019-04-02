@@ -1,10 +1,10 @@
 ## Importer des données
 
-Pour la formation, on doit importer des données pour pouvoir travailler. On va faire cela avec différentes méthodes :
+Pour la formation, on doit importer des données pour pouvoir travailler. QGIS possède plusieurs outils pour réaliser cette importation dans PostgreSQL.
 
 ### Import d'une couche depuis QGIS
 
-On  doit charger au préalable la couche dans QGIS, puis on doit vérifier :
+On  doit **charger au préalable la couche source** dans QGIS (SHP, TAB, etc.), puis on doit vérifier :
 
 * la **projection**, idéalement EPSG:2154 ou EPSG:3948
 * l'**encodage** : UTF-8, ISO-8859-15 ? Il faut ouvrir la table attributaire, et vérifier si les accents sont bien affichés. Sinon choisir le bon encodage dans l'onglet **Général** des **propriétés de la couche**
@@ -59,3 +59,14 @@ Ensuite, on importe via l'outil spécifique du menu **Traitement / Boîte à out
 * laisser le reste par défaut.
 
 Lancer l'algorithme, et vérifier une fois les données importées que les nouvelles données ont bien été ajoutées à la table.
+
+### Importer plusieurs couches en batch
+
+Il est possible d'utiliser l'outil **Importer un vecteur vers une base de données PostGIS (connexions disponibles)** par lot. Pour cela, une fois la boîte de dialogue de cet algorithme ouverte, cliquer sur le bouton **Exécuter comme processus de lot**. Cela affiche un tableau, ou chaque ligne représente les variables d'entrée d'un algorithme.
+
+Vous pouvez créer manuellement chaque ligne, ou choisir directement les couches depuis votre projet QGIS. Voir la documentation QGIS pour plus de détail:
+https://docs.qgis.org/2.18/fr/docs/user_manual/processing/batch.html
+
+Un exemple d'enregistrement de la configuration d'import des couches par lot, pour les couches `parcelles, sections, LIEU_DIT_HABITE, COMMUNE, CHEMIN, ROUTE, ZONE_URBA` est disponible dans [le fichier JSON qgis_ogr2ogr_batch_import](./qgis_ogr2ogr_batch_import.json). Vous pouvez utiliser ce fichier pour charger les lignes de variables d'entrées pour ces couches via le bouton *Ouvrir* situé sous l'onglet *Paramètres* de la boîte de dialogue.
+
+Continuer vers [Sélectionner des données: SELECT](./sql_select.md)

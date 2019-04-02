@@ -222,3 +222,6 @@ JOIN urbanisme.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
 ORDER BY id_parcelle, distance
 ```
+
+
+Continuer vers [Fusionner des géométries](./merge_geometries.md)

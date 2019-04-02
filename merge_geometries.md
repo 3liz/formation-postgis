@@ -28,3 +28,5 @@ INNER JOIN urbanisme.parcelle AS p
 GROUP BY t.geom
 ;
 ```
+
+Continuer vers [Correction des géométries invalides](./validate_geometries.md)

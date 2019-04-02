@@ -22,7 +22,7 @@ WHERE nom IN ('Bastia', 'Ajaccio')
 
 On peut aussi filtrer sur des champs de type **entier ou nombres réels**, et faire des conditions comme des inégalités.
 
-```
+```sql
 -- Filtrer les données, par exemple par département et population
 SELECT *
 FROM z_formation.commune
@@ -57,3 +57,5 @@ FROM z_formation.route
 WHERE True
 AND ST_Length(geom) > 10000
 ```
+
+Continuer vers [Regrouper des données: GROUP BY](./group_data.md)

@@ -35,3 +35,5 @@ FROM (
 ORDER BY longueur
 ;
 ```
+
+Continuer vers [Enregistrer les requêtes: VIEW](./save_queries.md)
