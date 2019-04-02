@@ -106,9 +106,15 @@ ALTER SCHEMA monschema RENAME TO unschema;
 
 On peut vérifier si chaque table contient un **index spatial** via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet **Info**. On peut alors créer l'index spatial via le lien bleu **Aucun index spatial défini (en créer un)**
 
+Sinon, il est possible de le faire en SQL:
+
+```sql
+CREATE INDEX ON nom_du_schema.nom_de_la_table USING GIST (geom);
+```
+
 Si on souhaite faire cela d'un seul coup pour toutes les tables qui n'ont pas d'index spatial, il existe une fonction que j'ai développée: https://gist.github.com/mdouchin/cfa0e37058bcf102ed490bc59d762042
 
-On doit copier/coller le script SQL de cette page dans la **fenêtre SQL** du Gestionnaire, puis lancer la requête avec **Exécuter**. On peut ensuite vider le contenu de la fenêtre, puis appeler la fonction:
+On doit copier/coller le script SQL de cette page dans la **fenêtre SQL** du Gestionnaire, puis lancer la requête avec **Exécuter**. On peut ensuite vider le contenu de la fenêtre, puis appeler la fonction `create_missing_spatial_indexes`:
 
 ```sql
 -- On lance avec le paramètre à True si on veut juste voir les tables sans index
