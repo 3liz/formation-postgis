@@ -2,11 +2,11 @@
 
 ## Pré-requis
 
-Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent comprendre l'apport de l'utilisation de PostgreSQL comme outil de centralisation de la données spatiale (et non spatiale=:
+Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent comprendre l'apport de l'utilisation de PostgreSQL comme outil de centralisation de la données spatiale (et non spatiale):
 
 * un lieu unique de stockage
 * une gestion des droits d'accès (lecture, écriture)
-* la reproduction de quasiment tous les besoins traitement SIG : intersection, tampons, extraction, correction
+* la reproduction de quasiment tous les besoins en traitements SIG : intersections, tampons, extraction, correction, etc.
 * une grande souplesse de manipulation des données
 * des performances élevés sur certains traitements spatiaux (et non spatiaux)
 * le stockage de fonctions et de triggers pour assurer la cohérence des données, stocker des outils directement dans la base
