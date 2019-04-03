@@ -12,9 +12,18 @@ ST_IsValid(geom) AS validite_geom,
 st_isvalidreason(geom) AS validite_raison,
 -- sortir un point qui localise le souci de validité
 location(st_isvaliddetail(geom)) AS point_invalide
-FROM urbanisme.parcelle
+FROM z_formation.parcelle_havre
 WHERE ST_IsValid(geom) IS FALSE
 ```
+
+qui renvoit 2 erreurs de polygones croisés.
+
+| id_parcelle | validite_geom | validite_raison                                      | point_invalide                             |
+|-------------|---------------|------------------------------------------------------|--------------------------------------------|
+| 707847      | False         | Self-intersection[492016.260004897 6938870.66384629] | 010100000041B93E0AC1071E4122757CAA3D785A41 |
+| 742330      | False         | Self-intersection[489317.48266784 6939616.89391708]  | 0101000000677A40EE95DD1D41FBEF3539F8785A41 |
+
+et qu'on peut ouvrir comme une nouvelle couche, avec le champ géométrie *point_invalide*, ce qui permet de visualiser dans QGIS les positions des erreurs.
 
 PostGIS fournir l'outil **ST_MakeValid** pour corriger automatiquement les géométries invalides. On peut l'utiliser pour les lignes et polygones.
 
@@ -22,13 +31,13 @@ Attention, pour les polygones, cela peut conduire à des géométries de type di
 
 ```sql
 -- Corriger les géométries
-UPDATE urbanisme.parcelle
+UPDATE z_formation.parcelle_havre
 SET geom = ST_Multi(ST_CollectionExtract(ST_MakeValid(geom), 3))
 WHERE NOT ST_isvalid(geom)
 
 -- Tester
 SELECT *
-FROM urbanisme.parcelle
+FROM z_formation.parcelle_havre
 WHERE NOT ST_isvalid(geom)
 ```
 

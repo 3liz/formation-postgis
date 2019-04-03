@@ -48,11 +48,9 @@ WHERE longueur < 10
 
 ### Enregistrer une requête comme une table
 
-C'est la même chose que pour enregistrer une vue, sauf qu'on crée une table: les données sont donc stockées en base, et n'évoluent plus en fonction des données source.
+C'est la même chose que pour enregistrer une vue, sauf qu'on crée une table: les données sont donc stockées en base, et n'évoluent plus en fonction des données source. Cela permet d'accéder rapidement aux données, car la requête sous-jacente n'est plus exécutée une fois la table créée.
 
-Cela permet d'accéder rapidement aux données, car la requête sous-jacente n'est plus exécutée une fois la table créée.
-
-Créer la table des voies
+#### Exemple 1 - créer la table des voies rassemblant les routes et les chemins
 
 ```sql
 DROP TABLE IF EXISTS "z_formation".t_voies;
@@ -88,4 +86,84 @@ ALTER TABLE z_formation.t_voies ADD PRIMARY KEY (gid);
 
 **Attention** Les données de la table n'évoluent plus en fonction des données des tables source. Il faut donc supprimer la table puis la recréer si besoin. Pour répondre à ce besoin, il existe les **vues matérialisées**.
 
+
+#### Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.
+
+On crée la table si besoin. On ajoutera ensuite les données via **INSERT**
+
+```sql
+-- Suppression de la table
+DROP TABLE IF EXISTS z_formation.nomenclature;
+-- Création de la table
+CREATE TABLE z_formation.nomenclature (
+    id serial primary key,
+    code text,
+    libelle text,
+    ordre smallint
+);
+
+```
+
+On ajoute ensuite les données. La clause **WITH** permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause **INSERT INTO** permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier **auto-incrémenté**.
+
+```sql
+-- Ajout des données à partir d'une table via commande INSERT
+INSERT INTO z_formation.nomenclature
+(code, libelle, ordre)
+-- Clause WITH pour récupérer les valeurs distinctes comme une table virtuelle
+WITH source AS (
+    SELECT DISTINCT
+    nature AS libelle
+    FROM z_formation.lieu_dit_habite
+    WHERE nature IS NOT NULL
+    ORDER BY nature
+)
+-- Sélection des données dans cette table virtuelle "source"
+SELECT
+-- on crée un code à partir de l'ordre d'arrive.
+-- row_number() OVER() permet de récupérer l'identifiant de la ligne dans l'ordre d'arrivée
+-- (un_champ)::text permet de convertir un champ ou un calcul en texte
+-- lpad permet de compléter le chiffre avec des zéro. 1 devient 01
+lpad( (row_number() OVER())::text, 2, '0' ) AS code,
+libelle,
+row_number() OVER() AS ordre
+FROM source
+;
+```
+
+Le résultat est le suivant:
+
+| code | libelle         | ordre |
+|------|-----------------|-------|
+| 01   | Château         | 1     |
+| 02   | Lieu-dit habité | 2     |
+| 03   | Moulin          | 3     |
+| 04   | Quartier        | 4     |
+| 05   | Refuge          | 5     |
+| 06   | Ruines          | 6     |
+
+
+#### Exemple 3 - créer une table avec l'extraction des parcelles sur une commune
+
+On utilise le champ `commune` pour filtrer. On n'oublie pas de créer l'index spatial, qui sera utilisé pour améliorer les performances lors des jointures spatiales.
+
+```sql
+-- supprimer la table si elle existe déjà
+DROP TABLE IF EXISTS z_formation.parcelle_havre ;
+
+-- Créer la table via filtre sur le champ commune
+CREATE TABLE z_formation.parcelle_havre AS
+SELECT p.*
+FROM z_formation.parcelle AS p
+WHERE p.commune = '76351';
+
+-- Ajouter la clé primaire
+ALTER TABLE z_formation.parcelle_havre ADD PRIMARY KEY (id_parcelle);
+
+-- Ajouter l'index spatial
+CREATE INDEX ON z_formation.parcelle_havre USING GIST (geom);
+```
+
 Continuer vers [Réaliser des jointures attributaires et spatiales; JOIN](./join_data.md)
+
+

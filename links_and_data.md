@@ -23,8 +23,8 @@ https://cloud.data-wax.com/index.php/s/myFFjcLzMFk9QB7/download?path=%2FFRANCE&f
 * Données cadastrales (site https://cadastre.data.gouv.fr ), sous licence  Par exemple pour la Seine-Maritime:
 https://cadastre.data.gouv.fr/data/etalab-cadastre/2019-01-01/shp/departements/76/
 
-* PLU (site https://www.geoportail-urbanisme.gouv.fr/map/ ). Par exemple les données de la ville du Havre:
-https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=0.13496041707835396&lat=49.49246433172931&zoom=12&mlon=0.117760&mlat=49.502918
+* PLU (site https://www.geoportail-z_formation.gouv.fr/map/ ). Par exemple les données de la ville du Havre:
+https://www.geoportail-z_formation.gouv.fr/map/#tile=1&lon=0.13496041707835396&lat=49.49246433172931&zoom=12&mlon=0.117760&mlat=49.502918
 Cliquer sur la commune, et utiliser le lien de téléchargement, actuellement:
 
 Ces données seront importées dans la base de formation via les outils de QGIS.

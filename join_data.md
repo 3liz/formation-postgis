@@ -10,9 +10,9 @@ Récupération des informations de la commune pour chaque zonage
 
 ```sql
 -- Jointure attributaire: récupération du nom de la commune pour chacun des zonages
-SELECT z.*, c.libcom
-FROM urbanisme.zonage AS z
-JOIN urbanisme.commune AS c ON z.insee = c.ccocom
+SELECT z.*, c.nom
+FROM z_formation.zone_urba AS z
+JOIN z_formation.commune AS c ON z.insee = c.code_insee
 -- IMPORTANT: ne pas oublier le ON cad le critère de jointure,
 -- sous peine de "produit cartésien" (calcul couteux de tous les possibles)
 ;
@@ -52,6 +52,8 @@ JOIN "z_formation".commune AS c
         ON ST_Intersects(ST_Centroid(v.geom), c.geom)
 ```
 
+*NB:* Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. Il faudrait construire si besoin un index sur ST_Centroid(geom) pour la table des chemins.
+
 A l'inverse, on peut vouloir faire des **statistiques pour chaque commune** via jointure spatiale. Par exemple le nombre de chemin et le total des longueurs par commune.
 
 ```sql
@@ -70,7 +72,8 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 
 La requête précédente ne renvoit pas de lignes pour les communes qui n'ont pas de chemin dont le centroide est dans une commune. C'est une jointure de type **INNER JOIN**
 
-Si on veut quand même récupérer ces communes, on fait une jointure **LEFT JOIN**
+Si on veut quand même récupérer ces communes, on fait une jointure **LEFT JOIN**: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à NULL.
+
 
 ```sql
 SELECT
@@ -84,14 +87,22 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 ;
 ```
 
-Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. On peut le faire (mais c'est plus long: j'ai donc ici simplifié les géométries des communes pour accélérer le calcul):
+C'est *beaucoup plus long*, car la requête n'utilise pas d'abord l'intersection, donc l'index spatial des communes, mais fait un parcours de toutes les lignes des communes, puis un calcul d'intersection. Pour accélérer la requête, on doit créer l'index sur les centroïdes des chemins
+
+```sql
+CREATE INDEX ON z_formation.chemin USING GIST(ST_Centroid(geom))
+```
+
+puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâce à ce nouvel index spatial.
+
+Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction **ST_Intersection**. La requête va être plus couteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
 
 ```sql
 SELECT
 c.id_commune, c.nom, c.code_insee,
 count(v.id_chemin) AS nb_chemin,
 sum(st_length(
-        ST_Intersection(v.geom,ST_MakeValid(st_simplify(c.geom,100)))
+        ST_Intersection(v.geom,c.geom)
 )) AS somme_longueur_chemins_decoupe_par_commune
 FROM z_formation.commune AS c
 LEFT JOIN z_formation.chemin AS v
@@ -103,21 +114,17 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 
 On peut bien sûr réaliser des **jointures spatiales** entre 2 couches de **polygones**, et découper les polygones par intersection.
 
-Trouver l'ensemble des zonages PLU pour les parcelles d'une commune
+Trouver l'ensemble des zonages PLU pour les parcelles du Havre. On va récupérer plusieurs lignes pour chaque parcelle si elle a plusieurs zonages qui la chevauchent.
 
 ```sql
 -- Jointure spatiale
--- Découper les zonages par parcelle
--- pour calculer le pourcentage de chaque type de zonage sur chaque parcelle
--- On peut donc avoir plusieurs résultats par parcelle (si elle a plusieurs zones), ou aucune
--- On peut aussi avoir des erreurs de petits morceaux ou de parcelle couverte à 99,99% pour des soucis de géométries
 SELECT
-p.idpar,
+p.id_parcelle,
 z.libelle, z.libelong, z.typezone
-FROM urbanisme.parcelle AS p
-JOIN urbanisme.zonage AS z ON st_intersects(z.geom, p.geom)
+FROM z_formation.parcelle_havre AS p
+JOIN z_formation.zone_urba AS z
+    ON st_intersects(z.geom, p.geom)
 WHERE True
-ORDER BY p.idpar
 
 ```
 
@@ -125,12 +132,13 @@ Compter pour chaque parcelle le nombre de zonage en intersection: on veut une se
 
 ```sql
 SELECT
-p.idpar,
+p.id_parcelle,
 count(z.libelle) AS nombre_zonage
-FROM urbanisme.parcelle AS p
-JOIN urbanisme.zonage AS z ON st_intersects(z.geom, p.geom)
+FROM z_formation.parcelle_havre AS p
+JOIN z_formation.zone_urba AS z
+    ON st_intersects(z.geom, p.geom)
 WHERE True
-GROUP BY p.idpar
+GROUP BY p.id_parcelle
 ORDER BY nombre_zonage DESC
 ```
 
@@ -139,31 +147,32 @@ Découper les parcelles par les zonages, et pouvoir calculer les surfaces des zo
 
 ```sql
 SELECT
-p.idpar,
+p.id_parcelle,
 z.libelle, z.libelong, z.typezone,
 -- découper les géométries
 st_intersection(z.geom, p.geom) AS geom
-FROM urbanisme.parcelle AS p
-JOIN urbanisme.zonage AS z ON st_intersects(z.geom, p.geom)
+FROM z_formation.parcelle_havre AS p
+JOIN z_formation.zone_urba AS z
+    ON st_intersects(z.geom, p.geom)
 WHERE True
-ORDER BY p.idpar
+ORDER BY p.id_parcelle
 ```
 
 Il renvoit l'erreur
 
 ```
-ERREUR:  Error performing intersection: TopologyException: Input geom 0 is invalid: Self-intersection at or near point 710908.28634840855 7046791.8007033626 at 710908.28634840855 7046791.8007033626
+ERREUR:  Error performing intersection: TopologyException: Input geom 1 is invalid: Self-intersection at or near point 492016.26000489673 6938870.663846286 at 492016.26000489673 6938870.663846286
 ```
 
-On a des soucis de validité de géométrie. Il nous faut donc corriger les géométries avant de poursuivre. Voir chapitre sur la validation des géométries.
+On a ici des soucis de validité de géométrie. Il nous faut donc corriger les géométries avant de poursuivre. Voir chapitre sur la validation des géométries.
 
 Une fois les géométries validées, la requête fonctionne. On l'utilise dans une sous-requête pour créer une table et calculer les surfaces
 
 ```sql
 -- suppression de la table
-DROP TABLE IF EXISTS urbanisme.decoupe_zonage_parcelle;
+DROP TABLE IF EXISTS z_formation.decoupe_zonage_parcelle;
 -- création de la table avec calcul de pourcentage de surface
-CREATE TABLE urbanisme.decoupe_zonage_parcelle AS
+CREATE TABLE z_formation.decoupe_zonage_parcelle AS
 SELECT row_number() OVER() AS id,
 source.*,
 ST_Area(geom) AS aire,
@@ -171,19 +180,19 @@ ST_Area(geom) AS aire,
 FROM (
 SELECT
         p.id_parcelle, p.idpar, ST_Area(p.geom) AS aire_parcelle,
-        z.id_zonage, z.libelle, z.libelong, z.typezone,
+        z.id_zone_urba, z.libelle, z.libelong, z.typezone,
         -- découper les géométries
         (ST_Multi(st_intersection(z.geom, p.geom)))::geometry(MultiPolygon,2154) AS geom
-        FROM urbanisme.parcelle AS p
-        JOIN urbanisme.zonage AS z ON st_intersects(z.geom, p.geom)
+        FROM z_formation.parcelle AS p
+        JOIN z_formation.zone_urba AS z ON st_intersects(z.geom, p.geom)
         WHERE True
 ) AS source;
 
 -- Ajout de la clé primaire
-ALTER TABLE urbanisme.decoupe_zonage_parcelle ADD PRIMARY KEY (id);
+ALTER TABLE z_formation.decoupe_zonage_parcelle ADD PRIMARY KEY (id);
 
 -- Ajout de l'index spatial
-CREATE INDEX ON urbanisme.decoupe_zonage_parcelle USING GIST (geom);
+CREATE INDEX ON z_formation.decoupe_zonage_parcelle USING GIST (geom);
 
 ```
 
@@ -202,8 +211,8 @@ SELECT
 p.id_parcelle, p.idpar, p.geom,
 b.id_borne, b.code,
 ST_Distance(b.geom, p.geom) AS distance
-FROM urbanisme.parcelle AS p
-JOIN urbanisme.borne_incendie AS b
+FROM z_formation.parcelle AS p
+JOIN z_formation.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
 ORDER BY id_parcelle, id_borne
 ```
@@ -217,8 +226,8 @@ SELECT DISTINCT ON (p.id_parcelle)
 p.id_parcelle, p.idpar, p.geom,
 b.id_borne, b.code,
 ST_Distance(b.geom, p.geom) AS distance
-FROM urbanisme.parcelle AS p
-JOIN urbanisme.borne_incendie AS b
+FROM z_formation.parcelle AS p
+JOIN z_formation.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
 ORDER BY id_parcelle, distance
 ```

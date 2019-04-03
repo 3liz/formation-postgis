@@ -67,6 +67,5 @@ Il est possible d'utiliser l'outil **Importer un vecteur vers une base de donné
 Vous pouvez créer manuellement chaque ligne, ou choisir directement les couches depuis votre projet QGIS. Voir la documentation QGIS pour plus de détail:
 https://docs.qgis.org/2.18/fr/docs/user_manual/processing/batch.html
 
-Un exemple d'enregistrement de la configuration d'import des couches par lot, pour les couches `parcelles, sections, LIEU_DIT_HABITE, COMMUNE, CHEMIN, ROUTE, ZONE_URBA` est disponible dans [le fichier JSON qgis_ogr2ogr_batch_import](./qgis_ogr2ogr_batch_import.json). Vous pouvez utiliser ce fichier pour charger les lignes de variables d'entrées pour ces couches via le bouton *Ouvrir* situé sous l'onglet *Paramètres* de la boîte de dialogue.
 
 Continuer vers [Sélectionner des données: SELECT](./sql_select.md)

@@ -7,7 +7,7 @@ Récupérer les données à partir de la **valeur exacte d'un champ**. Ici le no
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
-WHERE nom = 'Bastia'
+WHERE nom = 'Le Havre'
 ```
 
 On peut chercher les lignes dont le champ correspondant à **plusieurs valeurs**
@@ -17,7 +17,7 @@ On peut chercher les lignes dont le champ correspondant à **plusieurs valeurs**
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
-WHERE nom IN ('Bastia', 'Ajaccio')
+WHERE nom IN ('Le Havre', 'Rouen')
 ```
 
 On peut aussi filtrer sur des champs de type **entier ou nombres réels**, et faire des conditions comme des inégalités.
@@ -27,7 +27,7 @@ On peut aussi filtrer sur des champs de type **entier ou nombres réels**, et fa
 SELECT *
 FROM z_formation.commune
 WHERE True
-AND depart = 'HAUTE-CORSE'
+AND depart = 'SEINE-MARITIME'
 AND population > 1000
 ;
 ```
@@ -35,15 +35,15 @@ AND population > 1000
 On peut chercher des lignes dont un champ **commence et/ou se termine** par un texte
 
 ```sql
--- Filtrer les données, par exemple par département et début de nom
+-- Filtrer les données, par exemple par département et début et/ou fin de nom
 SELECT *
 FROM z_formation.commune
 WHERE True
-AND depart = 'CORSE-DU-SUD'
+AND depart = 'SEINE-MARITIME'
 -- commence par C
--- AND nom LIKE 'C%'
--- se termine par na
-AND nom ILIKE '%na'
+AND nom LIKE 'C%'
+-- se termine par ville
+AND nom ILIKE '%ville'
 ;
 ```
 

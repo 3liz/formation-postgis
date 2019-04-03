@@ -16,61 +16,6 @@ FROM z_formation.lieu_dit_habite
 ORDER BY nature
 ```
 
-Cela peut être par exemple utile pour **construire une table de nomenclature** à partir de données existantes. Dans l'exemple ci-dessous, on souhaite stocker la nomenclature de toutes les données dans une seule table.
-
-On crée la table si besoin.
-
-```sql
--- Suppression de la table
-DROP TABLE IF EXISTS z_formation.nomenclature;
--- Création de la table
-CREATE TABLE z_formation.nomenclature (
-    id serial primary key,
-    code text,
-    libelle text,
-    ordre smallint
-);
-
-```
-
-On ajoute ensuite les données. La clause **WITH** permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause **INSERT INTO** permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier **auto-incrémenté**.
-
-```sql
--- Ajout des données à partir d'une table via commande INSERT
-INSERT INTO z_formation.nomenclature
-(code, libelle, ordre)
--- Clause WITH pour récupérer les valeurs distinctes comme une table virtuelle
-WITH source AS (
-    SELECT DISTINCT
-    nature AS libelle
-    FROM z_formation.lieu_dit_habite
-    WHERE nature IS NOT NULL
-    ORDER BY nature
-)
--- Sélection des données dans cette table virtuelle "source"
-SELECT
--- on crée un code à partir de l'ordre d'arrive.
--- row_number() OVER() permet de récupérer l'identifiant de la ligne dans l'ordre d'arrivée
--- (un_champ)::text permet de convertir un champ ou un calcul en texte
--- lpad permet de compléter le chiffre avec des zéro. 1 devient 01
-lpad( (row_number() OVER())::text, 2, '0' ) AS code,
-libelle,
-row_number() OVER() AS ordre
-FROM source
-;
-```
-
-Le résultat est le suivant:
-
-| code | libelle         | ordre |
-|------|-----------------|-------|
-| 01   | Château         | 1     |
-| 02   | Lieu-dit habité | 2     |
-| 03   | Moulin          | 3     |
-| 04   | Quartier        | 4     |
-| 05   | Refuge          | 5     |
-| 06   | Ruines          | 6     |
-
 
 ### Regrouper des données en spécifiant les champs de regroupement
 
@@ -127,7 +72,7 @@ ORDER BY nature, sens DESC
 
 Les caculs sur des ensembles groupés peuvent aussi être réalisé **sur les géométries.**. Le plus utilisé est **ST_Collect** qui regroupe les géométries dans une multi-géométrie.
 
-Par exemple, on peut souhaiter trouver l'**enveloppe convexe** autour de points (élastique tendu autour d'un groupe de points). Ici, nous regroupons les lieux-dits par nature. Dans ce cas, il faut faire une sous-requête pour filtrer seulement les résultats de type polygone (car s'il y a seulement 1 ou 2 objets par nature, alors on ne peut créer de polygone)
+Par exemple, on peut souhaiter trouver l'**enveloppe convexe** autour de points (élastique tendu autour d'un groupe de points). Ici, nous regroupons les lieux-dits par nature (ce qui n'a pas beaucoup de sens, mais c'est pour l'exemple). Dans ce cas, il faut faire une sous-requête pour filtrer seulement les résultats de type polygone (car s'il y a seulement 1 ou 2 objets par nature, alors on ne peut créer de polygone)
 
 
 ```sql

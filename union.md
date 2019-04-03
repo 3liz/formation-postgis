@@ -32,7 +32,7 @@ FROM (
         SELECT id, geom
         FROM z_formation.route
 ) AS source
-ORDER BY longueur
+ORDER BY longueur DESC
 ;
 ```
 

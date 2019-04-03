@@ -7,7 +7,7 @@ Par exemple un polygone fusionnant les zonages qui partagent le même type
 ```sql
 SELECT count(id_zonage) AS nb_objets, typezone,
 ST_Union(geom) AS geom
-FROM urbanisme.zonage
+FROM z_formation.zonage
 GROUP BY typezone
 ```
 
@@ -19,11 +19,11 @@ SELECT row_number() OVER() AS id, string_agg(idpar::text, ',') AS ids, t.geom
 FROM (
         SELECT
         (St_Dump(St_Union(a.geom))).geom AS geom
-        FROM urbanisme.parcelle AS a
+        FROM z_formation.parcelle AS a
         WHERE TRUE
         AND ST_IsValid(a.geom)
 ) t
-INNER JOIN urbanisme.parcelle AS p
+INNER JOIN z_formation.parcelle AS p
         ON ST_Intersects(p.geom, t.geom)
 GROUP BY t.geom
 ;
