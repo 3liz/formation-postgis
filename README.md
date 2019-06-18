@@ -27,4 +27,5 @@ Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent
 * [Fusionner des géométries](./merge_geometries.md)
 * [Correction des géométries invalides](./validate_geometries.md)
 * [Vérifier la topologie](./check_topology.md)
+* [Fonctions utiles](./utils.md)
 
