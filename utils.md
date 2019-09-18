@@ -4,7 +4,9 @@ Nous regroupons ici quelques fonctions réalisées au cours de formations ou d'a
 
 ### Création automatique d'indexes spatiaux
 
-Pour des données spatiales volumineuses, les performances d'affichage sont bien meilleures à grande échelle si on a ajouté un **index spatial**. On peut le faire table par table, mais parfois on souhaite aussi automatiser cette création, c'est-à-dire créer les indexes spatiaux **pour toutes les tables qui n'en ont pas**.
+Pour des données spatiales volumineuses, les performances d'affichage sont bien meilleures à grande échelle si on a ajouté un **index spatial**. L'index est aussi beaucoup utilisé pour améliorer les performances d'analyses spatiales.
+
+On peut créer l'index spatial table par table, ou bien automatiser cette création, c'est-à-dire créer les indexes spatiaux **pour toutes les tables qui n'en ont pas**.
 
 Pour cela, nous avons conçu une fonction, téléchargeable ici: https://gist.github.com/mdouchin/cfa0e37058bcf102ed490bc59d762042
 
@@ -58,4 +60,111 @@ AND "type" LIKE '%POINT'
 AND f_table_schema IN ('test')
 ORDER BY f_table_schema, f_table_name
 ;
+```
+
+### Vérifier la taille des bases, tables et schémas
+
+#### Connaître la taille des bases de données
+
+On peut lancer la requête suivante, qui renvoit les bases de données ordonnées par taille descendante.
+
+```sql
+SELECT
+pg_database.datname AS db_name,
+pg_database_size(pg_database.datname) AS db_size,
+pg_size_pretty(pg_database_size(pg_database.datname)) AS db_pretty_size
+FROM pg_database
+WHERE datname NOT IN ('postgres', 'template0', 'template1')
+ORDER BY db_size DESC;
+```
+
+#### Calculer la taille des tables
+
+On crée une fonction `get_table_info` qui utilise les tables système pour lister les tables, récupérer leur schéma et les informations de taille.
+
+```sql
+CREATE OR REPLACE FUNCTION get_table_info()
+RETURNS TABLE (
+    oid oid,
+    schema_name text,
+    table_name text,
+    row_count integer,
+    total_size integer,
+    pretty_total_size text
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        b.oid, b.schema_name::text, b.table_name::text,
+        b.row_count::integer,
+        b.total_size::integer,
+        pg_size_pretty(b.total_size) AS pretty_total_size
+    FROM (
+        SELECT *,
+        a.total_size - index_bytes - COALESCE(toast_bytes,0) AS table_bytes
+        FROM (
+            SELECT
+            c.oid,
+            nspname AS schema_name,
+            relname AS TABLE_NAME,
+            c.reltuples AS row_count,
+            pg_total_relation_size(c.oid) AS total_size,
+            pg_indexes_size(c.oid) AS index_bytes,
+            pg_total_relation_size(reltoastrelid) AS toast_bytes
+            FROM pg_class c
+            LEFT JOIN pg_namespace n
+                ON n.oid = c.relnamespace
+            WHERE relkind = 'r'
+            AND nspname NOT IN ('pg_catalog', 'information_schema')
+        ) AS a
+    ) AS b
+    ;
+END; $$
+LANGUAGE 'plpgsql';
+```
+
+On peut l'utiliser simplement de la manière suivante
+
+```sql
+-- Liste les tables
+SELECT * FROM get_table_info() ORDER BY schema_name, table_name DESC;
+
+-- Lister les tables dans l'ordre inverse de taille
+SELECT * FROM get_table_info() ORDER BY total_size DESC;
+
+```
+
+#### Calculer la taille des schémas
+
+On crée une simple fonction qui renvoit la somme des tailles des tables d'un schéma
+
+```psql
+-- Fonction pour calculer la taille d'un schéma
+CREATE OR REPLACE FUNCTION pg_schema_size(schema_name text)
+RETURNS BIGINT AS
+$$
+    SELECT
+        SUM(pg_total_relation_size(quote_ident(schemaname) || '.' || quote_ident(tablename)))::BIGINT
+    FROM pg_tables
+    WHERE schemaname = schema_name
+$$
+LANGUAGE SQL;
+```
+
+On peut alors l'utiliser pour connaître la taille d'un schéma
+
+```sql
+-- utilisation pour un schéma
+SELECT pg_size_pretty(pg_schema_size('public')) AS ;
+```
+
+Ou lister l'ensemble des schémas
+
+```sql
+-- lister les schémas et récupérer leur taille
+SELECT schema_name, pg_size_pretty(pg_schema_size(schema_name))
+FROM information_schema.schemata
+WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
+ORDER BY pg_schema_size(schema_name) DESC;
 ```
