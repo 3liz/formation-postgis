@@ -139,7 +139,7 @@ SELECT * FROM get_table_info() ORDER BY total_size DESC;
 
 On crée une simple fonction qui renvoit la somme des tailles des tables d'un schéma
 
-```psql
+```sql
 -- Fonction pour calculer la taille d'un schéma
 CREATE OR REPLACE FUNCTION pg_schema_size(schema_name text)
 RETURNS BIGINT AS

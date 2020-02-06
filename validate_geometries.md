@@ -11,7 +11,7 @@ ST_IsValid(geom) AS validite_geom,
 -- connaitre la raison d'invalidité
 st_isvalidreason(geom) AS validite_raison,
 -- sortir un point qui localise le souci de validité
-location(st_isvaliddetail(geom)) AS point_invalide
+ST_SetSRID(location(st_isvaliddetail(geom)), 2154) AS geom
 FROM z_formation.parcelle_havre
 WHERE ST_IsValid(geom) IS FALSE
 ```
@@ -36,9 +36,10 @@ SET geom = ST_Multi(ST_CollectionExtract(ST_MakeValid(geom), 3))
 WHERE NOT ST_isvalid(geom)
 
 -- Tester
-SELECT *
+SELECT count(*)
 FROM z_formation.parcelle_havre
 WHERE NOT ST_isvalid(geom)
 ```
 
 Continuer vers [Vérifier la topologie](./check_topology.md)
+^^^^^^
