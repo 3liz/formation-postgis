@@ -10,17 +10,19 @@ Pour ajouter le support de l'auto-incrémentation sur un champ entier à une tab
 
 ```sql
 -- Création de la séquence
-CREATE SEQUENCE test_id_seq;
+CREATE SEQUENCE monschema.test_id_seq;
 
 -- Modification du champ pour ajouter la valeur par défaut
-ALTER TABLE test ALTER COLUMN id SET DEFAULT nextval('test_id_seq');
+ALTER TABLE test ALTER COLUMN id SET DEFAULT nextval('"monschema"."test_id_seq"');
 
 -- Modification de la valeur actuelle de la séquence au maximum du champ id
-SELECT setval('test_id_seq', (SELECT max(id) FROM test));
+SELECT setval('"monschema"."test_id_seq"', (SELECT max(id) FROM monschema.test));
 
 -- Déclarer à PostgreSQL que la séquence et le champ sont liés
-ALTER SEQUENCE test_id_seq OWNED BY test.id;
+ALTER SEQUENCE monschema.test_id_seq OWNED BY monschema.test.id;
 ```
+
+Dans l'exemple ci-dessus, le schéma est précisé.
 
 ### Création automatique d'indexes spatiaux
 
