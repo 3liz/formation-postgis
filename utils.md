@@ -2,6 +2,26 @@
 
 Nous regroupons ici quelques fonctions réalisées au cours de formations ou d'accompagnements d'utilisateurs de PostgreSQL.
 
+### Ajout de l'auto-incrémentation sur un champ entier
+
+Lorsqu'on importe une couche dans une table via les outils de QGIS, le champ d'identifiant choisi n'a pas le support de l'auto-incrémentation, ce qui peut poser des problèmes de l'ajout de nouvelles données.
+
+Pour ajouter le support de l'auto-incrémentation sur un champ entier à une table existante, on peut utiliser les commandes suivantes:
+
+```sql
+-- Création de la séquence
+CREATE SEQUENCE test_id_seq;
+
+-- Modification du champ pour ajouter la valeur par défaut
+ALTER TABLE test ALTER COLUMN id SET DEFAULT nextval('test_id_seq');
+
+-- Modification de la valeur actuelle de la séquence au maximum du champ id
+SELECT setval('test_id_seq', (SELECT max(id from test));
+
+-- Déclarer à PostgreSQL que la séquence et le champ sont liés
+ALTER SEQUENCE test_id_seq OWNED BY test.id;
+```
+
 ### Création automatique d'indexes spatiaux
 
 Pour des données spatiales volumineuses, les performances d'affichage sont bien meilleures à grande échelle si on a ajouté un **index spatial**. L'index est aussi beaucoup utilisé pour améliorer les performances d'analyses spatiales.
