@@ -13,7 +13,7 @@ Pour ajouter le support de l'auto-incrémentation sur un champ entier à une tab
 CREATE SEQUENCE monschema.test_id_seq;
 
 -- Modification du champ pour ajouter la valeur par défaut
-ALTER TABLE test ALTER COLUMN id SET DEFAULT nextval('"monschema"."test_id_seq"');
+ALTER TABLE monschema.test ALTER COLUMN id SET DEFAULT nextval('"monschema"."test_id_seq"');
 
 -- Modification de la valeur actuelle de la séquence au maximum du champ id
 SELECT setval('"monschema"."test_id_seq"', (SELECT max(id) FROM monschema.test));
