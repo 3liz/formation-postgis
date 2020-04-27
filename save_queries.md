@@ -9,8 +9,8 @@ Créer une vue via **CREATE VIEW**
 ```sql
 -- Créer une vue pour stocker la requête et pouvoir l'utiliser comme une table
 -- (mais avec des données dynamiques)
-DROP VIEW IF EXISTS "z_formation".v_voies;
-CREATE VIEW "z_formation".v_voies AS
+DROP VIEW IF EXISTS z_formation.v_voies;
+CREATE VIEW z_formation.v_voies AS
 SELECT
 -- on récupère tous les champs
 source.*,
@@ -34,7 +34,7 @@ Utiliser cette vue dans une autre requête
 ```sql
 -- On peut ensuite utiliser cette vue pour faire des stats
 SELECT source, count(*) AS nb, sum(longueur) AS longueur_totale
-FROM "z_formation".v_voies
+FROM z_formation.v_voies
 GROUP BY source
 ```
 
@@ -53,8 +53,8 @@ C'est la même chose que pour enregistrer une vue, sauf qu'on crée une table: l
 #### Exemple 1 - créer la table des voies rassemblant les routes et les chemins
 
 ```sql
-DROP TABLE IF EXISTS "z_formation".t_voies;
-CREATE TABLE "z_formation".t_voies AS
+DROP TABLE IF EXISTS z_formation.t_voies;
+CREATE TABLE z_formation.t_voies AS
 SELECT
 -- on récupère tous les champs
 source.*,

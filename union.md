@@ -8,11 +8,11 @@ La clause **UNION** peut être utilisée pour regrouper les données de sources 
 -- Rassembler des données de tables différentes
 -- On utilise une UNION ALL
 SELECT 'chemin' AS nature, geom, round(st_length(geom))::integer AS longueur
-FROM "z_formation".chemin
+FROM z_formation.chemin
 -- UNION ALL est placé entre 2 SELECT
 UNION ALL
 SELECT 'route' AS nature, geom, round(st_length(geom))::integer AS longueur
-FROM "z_formation".route
+FROM z_formation.route
 -- Le ORDER BY doit être réalisé à la fin, et non sur chaque SELECT
 ORDER BY longueur
 ```
