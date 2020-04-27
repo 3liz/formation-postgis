@@ -16,7 +16,7 @@ CREATE SEQUENCE test_id_seq;
 ALTER TABLE test ALTER COLUMN id SET DEFAULT nextval('test_id_seq');
 
 -- Modification de la valeur actuelle de la séquence au maximum du champ id
-SELECT setval('test_id_seq', (SELECT max(id from test));
+SELECT setval('test_id_seq', (SELECT max(id) FROM test));
 
 -- Déclarer à PostgreSQL que la séquence et le champ sont liés
 ALTER SEQUENCE test_id_seq OWNED BY test.id;
