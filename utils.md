@@ -6,6 +6,12 @@ Nous regroupons ici quelques fonctions réalisées au cours de formations ou d'a
 
 Lorsqu'on importe une couche dans une table via les outils de QGIS, le champ d'identifiant choisi n'a pas le support de l'auto-incrémentation, ce qui peut poser des problèmes de l'ajout de nouvelles données.
 
+Par exemple, pour une séquence `monschema.ma_sequence`, si la requête suivante échoue, c'est que la séquence n'est en effet pas correctement configurée :
+
+```sql
+SELECT currval('"monschema"."test_id_seq"');
+```
+
 Pour ajouter le support de l'auto-incrémentation sur un champ entier à une table existante, on peut utiliser les commandes suivantes:
 
 ```sql
