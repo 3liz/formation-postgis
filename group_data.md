@@ -92,4 +92,14 @@ WHERE Geometrytype(geom) = 'POLYGON'
 Attention, on doit donner un alias à la sous-requête (ici source)
 
 
+Un autre exemple sur les bornes. Ici, on groupe les bornes par identifiant pair ou impair, et on calcule l'enveloppe convexe
+
+```sql
+SELECT count(id_borne), ((id_borne % 2) = 0) AS pair,
+(st_convexhull(ST_Collect(geom))) AS geom
+FROM z_formation.borne_incendie
+GROUP BY pair
+```
+
+
 Continuer vers [Rassembler des données: UNION ALL](./union.md)
