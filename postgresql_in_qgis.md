@@ -90,7 +90,7 @@ On peut bien sûr charger la table dans QGIS, puis utiliser les outils d'éditio
 En SQL, il est aussi possible d'insérer des données ( https://sql.sh/cours/insert-into ). Par exemple pour les bornes à incendie:
 
 
-```
+```sql
 INSERT INTO z_formation.borne_incendie (code, debit, geom)
  VALUES
  ('ABC',  1.5, ST_SetSRID(ST_MakePoint(490846.0,6936902.7), 2154)),

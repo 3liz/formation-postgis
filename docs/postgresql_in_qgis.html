@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>QGIS</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -72,7 +72,7 @@
 </ul>
 <p><strong>NB</strong>: on a créé une table dans cet exemple <code>z_formation.borne_incendie</code> avec les champs <strong>id_borne</strong> (text), <strong>code</strong> (text), <strong>debit</strong> (real) et <strong>geom</strong> (géométrie de type Point, code SRID 2154)</p>
 <p><strong>Créer une table en SQL</strong></p>
-<pre class="codehilite"><code class="language-sql linenums">-- création d'un schéma
+<pre><code class="sql">-- création d'un schéma
 CREATE SCHEMA IF NOT EXISTS z_formation;
 
 -- création de la table
@@ -84,62 +84,63 @@ CREATE TABLE z_formation.borne_incendie (
     geom geometry(Point, 2154)
 );
 -- Création de l'index spatial
-CREATE INDEX ON z_formation.borne_incendie USING GIST (geom);</code></pre>
+CREATE INDEX ON z_formation.borne_incendie USING GIST (geom);
 
+</code></pre>
 
 <h3 id="ajouter-des-donnees-dans-une-table">Ajouter des données dans une table</h3>
 <p>On peut bien sûr charger la table dans QGIS, puis utiliser les outils d'édition classique pour créer des nouveaux objets.</p>
 <p>En SQL, il est aussi possible d'insérer des données ( <a href="https://sql.sh/cours/insert-into">https://sql.sh/cours/insert-into</a> ). Par exemple pour les bornes à incendie:</p>
-<pre class="codehilite"><code class="linenums">INSERT INTO z_formation.borne_incendie (code, debit, geom)
+<pre><code class="sql">INSERT INTO z_formation.borne_incendie (code, debit, geom)
  VALUES
  ('ABC',  1.5, ST_SetSRID(ST_MakePoint(490846.0,6936902.7), 2154)),
  ('XYZ',  4.1, ST_SetSRID(ST_MakePoint(491284.9,6936551.6), 2154)),
  ('FGH',  2.9, ST_SetSRID(ST_MakePoint(490839.8,6937794.8), 2154)),
  ('IOP',  3.6, ST_SetSRID(ST_MakePoint(491203.3,6937488.1), 2154))
-;</code></pre>
-
+;
+</code></pre>
 
 <p><strong>NB</strong>: Nous verrons plus loin l'utlisation de fonctions de création de géométrie, comme <strong>ST_MakePoint</strong></p>
 <h3 id="creation-dun-schema-z_formation-dans-la-base">Création d’un schéma z_formation dans la base</h3>
 <ul>
 <li>ajout du schéma via le gestionnaire de bdd, ou via une requête:</li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">CREATE SCHEMA IF NOT EXISTS z_formation;</code></pre>
-
+<pre><code class="sql">CREATE SCHEMA IF NOT EXISTS z_formation;
+</code></pre>
 
 <ul>
 <li>modification des droits d’accès à ce schéma, si besoin:</li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">-- On donne ici tous les droits à &quot;utilisateur&quot;
-GRANT ALL PRIVILEGES ON SCHEMA z_formation TO &quot;utilisateur&quot;;</code></pre>
-
+<pre><code class="sql">-- On donne ici tous les droits à &quot;utilisateur&quot;
+GRANT ALL PRIVILEGES ON SCHEMA z_formation TO &quot;utilisateur&quot;;
+</code></pre>
 
 <ul>
 <li>suppression d'un schéma</li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">-- Suppression du schéma si il est vide
+<pre><code class="sql">-- Suppression du schéma si il est vide
 DROP SCHEMA monschema;
 
 -- suppression du schéma et de toutes les tables de ce schéma (via CASCADE) !!! ATTENTION !!!
-DROP SCHEMA monschema CASCADE;</code></pre>
-
+DROP SCHEMA monschema CASCADE;
+</code></pre>
 
 <ul>
 <li>renommer un schéma</li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">ALTER SCHEMA monschema RENAME TO unschema;</code></pre>
-
+<pre><code class="sql">ALTER SCHEMA monschema RENAME TO unschema;
+</code></pre>
 
 <h3 id="verifier-et-creer-les-indexes-spatiaux">Vérifier et créer les indexes spatiaux</h3>
 <p>On peut vérifier si chaque table contient un <strong>index spatial</strong> via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet <strong>Info</strong>. On peut alors créer l'index spatial via le lien bleu <strong>Aucun index spatial défini (en créer un)</strong>.</p>
 <p>Sinon, il est possible de le faire en SQL via la requête suivante:</p>
-<pre class="codehilite"><code class="language-sql linenums">CREATE INDEX ON nom_du_schema.nom_de_la_table USING GIST (geom);</code></pre>
-
+<pre><code class="sql">CREATE INDEX ON nom_du_schema.nom_de_la_table USING GIST (geom);
+</code></pre>
 
 <p>Si on souhaite automatiser la création des indexes pour toutes les tables qui n'en ont pas, on peut utiliser une fonction, décrite dans la partie <a href="./utils.html">Fonctions utiles</a></p>
 <p>Continuer vers l'<a href="./import_data.html">Import des données dans PostgreSQL</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

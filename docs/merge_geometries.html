@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Fusionner</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -21,15 +21,15 @@
 <h2 id="fusionner-des-geometries">Fusionner des géométries</h2>
 <p>On souhaite créer une seule géométrie qui est issue de la <strong>fusion de toutes les géométries</strong> regroupées par un critère (nature, code, etc.)</p>
 <p>Par exemple un polygone fusionnant les zonages qui partagent le même type</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT count(id_zone_urba) AS nb_objets, typezone,
+<pre><code class="sql">SELECT count(id_zone_urba) AS nb_objets, typezone,
 ST_Union(geom) AS geom
 FROM z_formation.zone_urba
-GROUP BY typezone</code></pre>
-
+GROUP BY typezone
+</code></pre>
 
 <p>On souhaite parfois <strong>fusionner toutes les géométries qui sont jointives</strong>.
 Par exemple, on veut fusionner <strong>toutes les parcelles jointives</strong> pour créer des blocs.</p>
-<pre class="codehilite"><code class="language-sql linenums">DROP TABLE IF EXISTS z_formation.bloc_parcelle_havre;
+<pre><code class="sql">DROP TABLE IF EXISTS z_formation.bloc_parcelle_havre;
 CREATE TABLE z_formation.bloc_parcelle_havre AS
 SELECT
 row_number() OVER() AS id,
@@ -45,12 +45,12 @@ JOIN z_formation.parcelle_havre AS p
 GROUP BY t.geom
 ;
 ALTER TABLE z_formation.bloc_parcelle_havre ADD PRIMARY KEY (id);
-CREATE INDEX ON z_formation.bloc_parcelle_havre USING GIST (geom);</code></pre>
-
+CREATE INDEX ON z_formation.bloc_parcelle_havre USING GIST (geom);
+</code></pre>
 
 <p>Continuer vers <a href="./validate_geometries.html">Correction des géométries invalides</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

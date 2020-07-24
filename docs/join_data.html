@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Jointure</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -44,21 +44,21 @@
 <p>La condition de jointure est faite sur des champs non géométriques. Par exemple une égalité (code, identifiant).</p>
 <h4 id="exemple-1-zonages-et-communes">Exemple 1: zonages et communes</h4>
 <p>Récupération des informations de la commune pour chaque zonage</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Jointure attributaire: récupération du nom de la commune pour chacun des zonages
+<pre><code class="sql">-- Jointure attributaire: récupération du nom de la commune pour chacun des zonages
 SELECT z.*, c.nom
 FROM z_formation.zone_urba AS z
 JOIN z_formation.commune AS c ON z.insee = c.code_insee
 -- IMPORTANT: ne pas oublier le ON cad le critère de jointure,
 -- sous peine de &quot;produit cartésien&quot; (calcul couteux de tous les possibles)
-;</code></pre>
-
+;
+</code></pre>
 
 <p>Il est souvent intéressant, pour des données volumineuses, de <strong>créer un index sur le champ de jointure</strong> (par exemple ici sur les champs insee et ccocom.</p>
 <h4 id="exemple-2-observations-et-communes">Exemple 2: observations et communes</h4>
 <ul>
 <li>On crée une table de points qui contiendra des observations</li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">-- création
+<pre><code class="sql">-- création
 CREATE TABLE z_formation.observation (
     id serial NOT NULL PRIMARY KEY,
     date date DEFAULT (now())::date NOT NULL,
@@ -72,11 +72,12 @@ CREATE INDEX sidx_observation_geom ON z_formation.observation USING gist (geom);
 -- on y met des données
 INSERT INTO z_formation.observation VALUES (1, '2020-07-08', 'un', '01010000206A080000D636D95AFB832141279BD2C8FEA65A41', '76618');
 INSERT INTO z_formation.observation VALUES (2, '2020-07-08', 'deux', '01010000206A08000010248E173E37224156920AEA21525A41', '27213');
-INSERT INTO z_formation.observation VALUES (3, '2020-07-08', 'trois', '01010000206A08000018BF3048EA112341183933F6CC885A41', NULL);</code></pre>
+INSERT INTO z_formation.observation VALUES (3, '2020-07-08', 'trois', '01010000206A08000018BF3048EA112341183933F6CC885A41', NULL);
 
+</code></pre>
 
 <p>On fait une jointure attributaire entre les points des observations et les communes</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
     -- tous les champs de la table observation
     o.*,
     -- le nom de la commune
@@ -85,8 +86,8 @@ INSERT INTO z_formation.observation VALUES (3, '2020-07-08', 'trois', '010100002
     ST_area(c.geom)::integer/10000 AS surface_commune
 FROM z_formation.observation AS o
 JOIN z_formation.commune AS c ON o.code_insee = c.code_insee
-WHERE True</code></pre>
-
+WHERE True
+</code></pre>
 
 <p>Résultat:</p>
 <p>| id | date       | description | geom | code_insee | nom            | surface_commune |
@@ -95,7 +96,7 @@ WHERE True</code></pre>
 | 1  | 2020-07-08 | un          | .... | 76618      | Petit-Caux     | 9243            |</p>
 <p>On ne récupère ici que 2 lignes alors qu'il y a bien 3 observations dans la table.</p>
 <p>Pour récupérer les 3 lignes, on doit faire une jointure LEFT. On peut utiliser un <code>CASE WHEN</code> pour tester si la commune est trouvée sous chaque point</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
     o.*, c.nom, ST_area(c.geom)::integer/10000 AS surface_commune,
     CASE
         WHEN c.code_insee IS NULL THEN 'pas de commune'
@@ -103,8 +104,8 @@ WHERE True</code></pre>
     END AS test_commune
 FROM z_formation.observation AS o
 LEFT JOIN z_formation.commune AS c ON o.code_insee = c.code_insee
-WHERE True</code></pre>
-
+WHERE True
+</code></pre>
 
 <p>Résultat</p>
 <p>| id | date       | description | geom | code_insee | nom            | surface_commune | test_commune   |
@@ -116,7 +117,7 @@ WHERE True</code></pre>
 <p>Le critère de jointure peut être une <strong>condition spatiale</strong>. On réalise souvent une jointure par <strong>intersection</strong> ou par <strong>proximité</strong>.</p>
 <h4 id="joindre-des-points-avec-des-polygones">Joindre des points avec des polygones</h4>
 <p>Un exemple classique de récupération des données de la table commune (nom, etc.) depuis une table de points.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Pour chaque lieu-dit, on veut le nom de la commune
+<pre><code class="sql">-- Pour chaque lieu-dit, on veut le nom de la commune
 SELECT
 l.id_lieu_dit_habite, l.nom,
 c.nom AS nom_commune, c.code_insee,
@@ -124,8 +125,8 @@ l.geom
 FROM &quot;z_formation&quot;.lieu_dit_habite AS l
 JOIN &quot;z_formation&quot;.commune AS c
         ON st_intersects(c.geom, l.geom)
-ORDER BY l.nom</code></pre>
-
+ORDER BY l.nom
+</code></pre>
 
 <p>| id_lieu_dit_habite | nom                   | nom_commune              | code_insee | geom | 
 |--------------------|-----------------------|--------------------------|------------|------|
@@ -139,14 +140,14 @@ ORDER BY l.nom</code></pre>
 | 555                | Alvinbuc              | Veauville-lès-Baons      | 76729      | .... |
 | 69                 | Ancien hôtel de ville | Rouen                    | 76540      | .... |</p>
 <p>On peut facilement inverser la table principale pour afficher les lignes ordonnées par commune.</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 c.nom, c.code_insee,
 l.id_lieu_dit_habite, l.nom
 FROM &quot;z_formation&quot;.commune AS c
 JOIN &quot;z_formation&quot;.lieu_dit_habite AS l
         ON st_intersects(c.geom, l.geom)
-ORDER BY c.nom</code></pre>
-
+ORDER BY c.nom
+</code></pre>
 
 <p>| nom      | code_insee | id_lieu_dit_habite | nom                |
 |----------|------------|--------------------|--------------------|
@@ -161,7 +162,7 @@ ORDER BY c.nom</code></pre>
 | Ambenay  | 27009      | 202                | Le Culoron         |</p>
 <p>On a plusieurs lignes par commune, autant que de lieux-dits pour cette commune. Par contre, comme ce n'est pas une jointure LEFT, on ne trouve que des résultats pour les communes qui ont des lieux-dits.</p>
 <p>On pourrait aussi faire des statistiques, en regroupant par les champs de la table principale, ici les communes.</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 c.nom, c.code_insee,
 count(l.id_lieu_dit_habite) AS nb_lieu_dit,
 c.geom
@@ -170,8 +171,8 @@ JOIN &quot;z_formation&quot;.lieu_dit_habite AS l
         ON st_intersects(c.geom, l.geom)
 GROUP BY c.nom, c.code_insee, c.geom
 ORDER BY nb_lieu_dit DESC
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>| nom                | code_insee | nb_lieu_dit | geom |
 |--------------------|------------|-------------|------|
@@ -185,7 +186,7 @@ LIMIT 10</code></pre>
 <h4 id="joindre-des-lignes-avec-des-polygones">Joindre des lignes avec des polygones</h4>
 <p>Récupérer le code commune de chaque chemin, par <strong>intersection entre le chemin et la commune</strong>.</p>
 <h5 id="jointure-spatiale-simple-entre-les-geometries-brutes">jointure spatiale simple entre les géométries brutes</h5>
-<pre class="codehilite"><code class="language-sql linenums">-- Ici, on peut récupérer plusieurs fois le même chemin
+<pre><code class="sql">-- Ici, on peut récupérer plusieurs fois le même chemin
 -- s'il passe par plusieurs communes
 SELECT
 v.*,
@@ -193,13 +194,13 @@ c.nom, c.code_insee
 FROM &quot;z_formation&quot;.chemin AS v
 JOIN &quot;z_formation&quot;.commune AS c
         ON ST_Intersects(v.geom, c.geom)
-ORDER BY id_chemin, nom</code></pre>
-
+ORDER BY id_chemin, nom
+</code></pre>
 
 <p>Cela peut renvoyer plusieurs lignes par chemin, car chaque chemin peut passer par plusieurs communes.</p>
 <h5 id="jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes">jointure spatiale entre le centroide des chemins et la géométrie des communes</h5>
 <p>On peut utiliser le <strong>centroide de chaque chemin</strong> pour avoir un seul objet par chemin comme résultat.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- création de l'index
+<pre><code class="sql">-- création de l'index
 CREATE INDEX ON z_formation.chemin USING gist (ST_Centroid(geom));
 -- Jointure spatiale
 -- On ne veut qu'une seule ligne par chemin
@@ -209,12 +210,12 @@ v.*,
 c.nom, c.code_insee
 FROM &quot;z_formation&quot;.chemin AS v
 JOIN &quot;z_formation&quot;.commune AS c
-        ON ST_Intersects(ST_Centroid(v.geom), c.geom)</code></pre>
-
+        ON ST_Intersects(ST_Centroid(v.geom), c.geom)
+</code></pre>
 
 <p><strong>NB:</strong> Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. C'est pour cela que nous avons créé un index spatial sur ST_Centroid(geom) pour la table des chemins.</p>
 <p>A l'inverse, on peut vouloir faire des <strong>statistiques pour chaque commune</strong> via jointure spatiale. Par exemple le nombre de chemins et le total des longueurs par commune.</p>
-<pre class="codehilite"><code class="language-sql linenums"> -- A l'inverse, on veut récupérer des statistiques par commune
+<pre><code class="sql"> -- A l'inverse, on veut récupérer des statistiques par commune
  -- On veut une ligne par commune, avec des données sur les voies
 SELECT
 c.id_commune, c.nom, c.code_insee,
@@ -224,13 +225,13 @@ FROM z_formation.commune AS c
 JOIN z_formation.chemin AS v
         ON st_intersects(c.geom, st_centroid(v.geom))
 GROUP BY c.id_commune, c.nom, c.code_insee
-;</code></pre>
-
+;
+</code></pre>
 
 <h5 id="utilisation-dune-jointure-left-pour-garder-les-communes-sans-chemins">Utilisation d'une jointure LEFT pour garder les communes sans chemins</h5>
 <p>La requête précédente ne renvoit pas de lignes pour les communes qui n'ont pas de chemin dont le centroide est dans une commune. C'est une jointure de type <strong>INNER JOIN</strong></p>
 <p>Si on veut quand même récupérer ces communes, on fait une jointure <strong>LEFT JOIN</strong>: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à NULL.</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 c.id_commune, c.nom, c.code_insee,
 count(v.id_chemin) AS nb_chemin,
 sum(st_length(v.geom)) AS somme_longueur_chemins_entiers
@@ -238,18 +239,18 @@ FROM z_formation.commune AS c
 LEFT JOIN z_formation.chemin AS v
         ON st_intersects(c.geom, st_centroid(v.geom))
 GROUP BY c.id_commune, c.nom, c.code_insee
-;</code></pre>
-
+;
+</code></pre>
 
 <p>C'est <strong>beaucoup plus long</strong>, car la requête n'utilise pas d'abord l'intersection, donc l'index spatial des communes, mais fait un parcours de toutes les lignes des communes, puis un calcul d'intersection. Pour accélérer la requête, on doit créer l'index sur les centroïdes des chemins</p>
-<pre class="codehilite"><code class="language-sql linenums">CREATE INDEX ON z_formation.chemin USING GIST(ST_Centroid(geom))</code></pre>
-
+<pre><code class="sql">CREATE INDEX ON z_formation.chemin USING GIST(ST_Centroid(geom))
+</code></pre>
 
 <p>puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâce à ce nouvel index spatial.</p>
 <h5 id="affiner-le-resultat-en-decoupant-les-chemins">Affiner le résultat en découpant les chemins</h5>
 <p>Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le <strong>morceau exacte qui est sur chaque commune</strong>. Pour cela, on va utiliser la fonction <strong>ST_Intersection</strong>. La requête va être plus couteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.</p>
 <p>On va découper exactement les chemins par commune et récupérer les informations</p>
-<pre class="codehilite"><code class="language-sql linenums">CREATE TABLE z_formation.decoupe_chemin_par_commune AS
+<pre><code class="sql">CREATE TABLE z_formation.decoupe_chemin_par_commune AS
 -- Découper les chemins par commune
 SELECT
 -- id unique
@@ -262,26 +263,26 @@ FROM &quot;z_formation&quot;.commune AS c
 JOIN &quot;z_formation&quot;.chemin AS l
         ON st_intersects(c.geom, l.geom)
 ;
-CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);</code></pre>
-
+CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);
+</code></pre>
 
 <p><strong>NB</strong>: Attention à ne pas confondre <strong>ST_Intersects</strong> qui renvoit vrai ou faux, et <strong>ST_Intersection</strong> qui renvoit la géométrie issue du découpage d'une géométrie par une autre.</p>
 <h4 id="joindre-des-polygones-avec-des-polygones">Joindre des polygones avec des polygones</h4>
 <p>On peut bien sûr réaliser des <strong>jointures spatiales</strong> entre 2 couches de <strong>polygones</strong>, et découper les polygones par intersection. Attention, les performances sont forcément moins bonnes qu'avec des points.</p>
 <p>Trouver l'ensemble des zonages PLU pour les parcelles du Havre. </p>
 <p>On va récupérer <strong>plusieurs résultats pour chaque parcelle</strong> si plusieurs zonages chevauchent une parcelle.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Jointure spatiale
+<pre><code class="sql">-- Jointure spatiale
 SELECT
 p.id_parcelle,
 z.libelle, z.libelong, z.typezone
 FROM z_formation.parcelle_havre AS p
 JOIN z_formation.zone_urba AS z
     ON st_intersects(z.geom, p.geom)
-WHERE True</code></pre>
-
+WHERE True
+</code></pre>
 
 <p>Compter pour chaque parcelle le nombre de zonages en intersection: on veut <strong>une seule ligne par parcelle</strong>.</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 p.id_parcelle,
 count(z.libelle) AS nombre_zonage
 FROM z_formation.parcelle_havre AS p
@@ -289,11 +290,11 @@ JOIN z_formation.zone_urba AS z
     ON st_intersects(z.geom, p.geom)
 WHERE True
 GROUP BY p.id_parcelle
-ORDER BY nombre_zonage DESC</code></pre>
-
+ORDER BY nombre_zonage DESC
+</code></pre>
 
 <p>Découper les parcelles par les zonages, et pouvoir calculer les surfaces des zonages, et le pourcentage par rapport à la surface de chaque parcelle. On essaye le SQL suivant:</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 p.id_parcelle,
 z.libelle, z.libelong, z.typezone,
 -- découper les géométries
@@ -302,16 +303,16 @@ FROM z_formation.parcelle_havre AS p
 JOIN z_formation.zone_urba AS z
     ON st_intersects(z.geom, p.geom)
 WHERE True
-ORDER BY p.id_parcelle</code></pre>
-
+ORDER BY p.id_parcelle
+</code></pre>
 
 <p>Il renvoit l'erreur</p>
-<pre class="codehilite"><code class="linenums">ERREUR:  Error performing intersection: TopologyException: Input geom 1 is invalid: Self-intersection at or near point 492016.26000489673 6938870.663846286 at 492016.26000489673 6938870.663846286</code></pre>
-
+<pre><code>ERREUR:  Error performing intersection: TopologyException: Input geom 1 is invalid: Self-intersection at or near point 492016.26000489673 6938870.663846286 at 492016.26000489673 6938870.663846286
+</code></pre>
 
 <p>On a ici des soucis de <strong>validité de géométrie</strong>. Il nous faut donc corriger les géométries avant de poursuivre. Voir chapitre sur la validation des géométries.</p>
 <p>Une fois les géométries validées, la requête fonctionne. On l'utilise dans une sous-requête pour créer une table et calculer les surfaces</p>
-<pre class="codehilite"><code class="language-sql linenums">-- suppression de la table
+<pre><code class="sql">-- suppression de la table
 DROP TABLE IF EXISTS z_formation.decoupe_zonage_parcelle;
 -- création de la table avec calcul de pourcentage de surface
 CREATE TABLE z_formation.decoupe_zonage_parcelle AS
@@ -334,38 +335,39 @@ SELECT
 ALTER TABLE z_formation.decoupe_zonage_parcelle ADD PRIMARY KEY (id);
 
 -- Ajout de l'index spatial
-CREATE INDEX ON z_formation.decoupe_zonage_parcelle USING GIST (geom);</code></pre>
+CREATE INDEX ON z_formation.decoupe_zonage_parcelle USING GIST (geom);
 
+</code></pre>
 
 <h4 id="distances-et-tampons-entre-couches">Distances et tampons entre couches</h4>
 <p>Pour chaque objets d'une table, on souhaite récupéerer des informations sur les<strong> objets proches d'une autre table</strong>. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction <strong>ST_DWithin</strong></p>
 <p>On prend comme exemple la table des bornes à incendie créée précédememnt (remplie avec quelques données de test).</p>
 <p>Trouver toutes les parcelles <strong>à moins de 200m</strong> d'une borne à incendie</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 p.id_parcelle, p.geom,
 b.id_borne, b.code,
 ST_Distance(b.geom, p.geom) AS distance
 FROM z_formation.parcelle_havre AS p
 JOIN z_formation.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
-ORDER BY id_parcelle, id_borne</code></pre>
-
+ORDER BY id_parcelle, id_borne
+</code></pre>
 
 <p>Attention, elle peut renvoyer <strong>plusieurs fois la même parcelle</strong> si 2 bornes sont assez proches. Pour ne récupérer que la borne la plus proche, on peut faire la requête suivante. La clause <strong>DISTINCT ON</strong> permet de dire quel champ doit être <strong>unique</strong> (ici id_parcelle).</p>
 <p>On <strong>ordonne</strong> ensuite <strong>par ce champ et par la distance</strong> pour prendre seulement la ligne correspondant à la parcelle <strong>la plus proche</strong></p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT DISTINCT ON (p.id_parcelle)
+<pre><code class="sql">SELECT DISTINCT ON (p.id_parcelle)
 p.id_parcelle, p.geom,
 b.id_borne, b.code,
 ST_Distance(b.geom, p.geom) AS distance
 FROM z_formation.parcelle_havre AS p
 JOIN z_formation.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
-ORDER BY id_parcelle, distance</code></pre>
-
+ORDER BY id_parcelle, distance
+</code></pre>
 
 <p>Continuer vers <a href="./merge_geometries.html">Fusionner des géométries</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

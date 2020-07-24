@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Utilitaires</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -34,11 +34,11 @@
 <h3 id="ajout-de-lauto-incrementation-sur-un-champ-entier">Ajout de l'auto-incrémentation sur un champ entier</h3>
 <p>Lorsqu'on importe une couche dans une table via les outils de QGIS, le champ d'identifiant choisi n'a pas le support de l'auto-incrémentation, ce qui peut poser des problèmes de l'ajout de nouvelles données.</p>
 <p>Par exemple, pour une séquence <code>monschema.ma_sequence</code>, si la requête suivante échoue, c'est que la séquence n'est en effet pas correctement configurée :</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT currval('&quot;monschema&quot;.&quot;test_id_seq&quot;');</code></pre>
-
+<pre><code class="sql">SELECT currval('&quot;monschema&quot;.&quot;test_id_seq&quot;');
+</code></pre>
 
 <p>Pour ajouter le support de l'auto-incrémentation sur un champ entier à une table existante, on peut utiliser les commandes suivantes:</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Création de la séquence
+<pre><code class="sql">-- Création de la séquence
 CREATE SEQUENCE monschema.test_id_seq;
 
 -- Modification du champ pour ajouter la valeur par défaut
@@ -48,8 +48,8 @@ ALTER TABLE monschema.test ALTER COLUMN id SET DEFAULT nextval('&quot;monschema&
 SELECT setval('&quot;monschema&quot;.&quot;test_id_seq&quot;', (SELECT max(id) FROM monschema.test));
 
 -- Déclarer à PostgreSQL que la séquence et le champ sont liés
-ALTER SEQUENCE monschema.test_id_seq OWNED BY monschema.test.id;</code></pre>
-
+ALTER SEQUENCE monschema.test_id_seq OWNED BY monschema.test.id;
+</code></pre>
 
 <p>Dans l'exemple ci-dessus, le schéma est précisé.</p>
 <h3 id="creation-automatique-dindexes-spatiaux">Création automatique d'indexes spatiaux</h3>
@@ -57,15 +57,15 @@ ALTER SEQUENCE monschema.test_id_seq OWNED BY monschema.test.id;</code></pre>
 <p>On peut créer l'index spatial table par table, ou bien automatiser cette création, c'est-à-dire créer les indexes spatiaux <strong>pour toutes les tables qui n'en ont pas</strong>.</p>
 <p>Pour cela, nous avons conçu une fonction, téléchargeable ici: <a href="https://gist.github.com/mdouchin/cfa0e37058bcf102ed490bc59d762042">https://gist.github.com/mdouchin/cfa0e37058bcf102ed490bc59d762042</a></p>
 <p>On doit copier/coller le script SQL de cette page "gist" dans la <strong>fenêtre SQL</strong> du Gestionnaire de bases de données de QGIS, puis lancer la requête avec <strong>Exécuter</strong>. On peut ensuite vider le contenu de la fenêtre, puis appeler la fonction <code>create_missing_spatial_indexes</code> via le code SQL suivant:</p>
-<pre class="codehilite"><code class="language-sql linenums">-- On lance avec le paramètre à True si on veut juste voir les tables qui n'ont pas d'index spatial
+<pre><code class="sql">-- On lance avec le paramètre à True si on veut juste voir les tables qui n'ont pas d'index spatial
 -- On lance avec False si on veut créer les indexes automatiquement
 
 -- Vérification
 SELECT * FROM create_missing_spatial_indexes(  True );
 
 -- Création
-SELECT * FROM create_missing_spatial_indexes(  False );</code></pre>
-
+SELECT * FROM create_missing_spatial_indexes(  False );
+</code></pre>
 
 <h3 id="ajouter-automatiquement-plusieurs-champs-a-plusieurs-tables">Ajouter automatiquement plusieurs champs à plusieurs tables</h3>
 <p>Il est parfois nécessaire d'<strong>ajouter des champs à une ou plusieurs tables</strong>, par exemple pour y stocker ensuite des métadonnées (date de modification, date d'ajout, utilisateur, lien, etc).</p>
@@ -74,15 +74,15 @@ SELECT * FROM create_missing_spatial_indexes(  False );</code></pre>
 <ul>
 <li>Exemple d'utilisation <strong>pour une table</strong> <code>commune</code> du schéma <code>test</code>: on ajoute les champs <code>date_creation</code>, <code>date_modification</code> et <code>utilisateur</code></li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 ajout_champs_dynamiques('test', 'commune', 'date_creation timestamp DEFAULT now(), date_modification timestamp DEFAULT now(), utilisateur text')
-;</code></pre>
-
+;
+</code></pre>
 
 <ul>
 <li>Exemple d'utilisation pour <strong>toutes les tables d'un schéma</strong>, ici le schéma <code>test</code>. On utilise dans cette exemple la vue <code>geometry_columns</code> qui liste les tables spatiales, car on souhaite aussi ne faire cet ajout que pour les données de type <strong>POINT</strong></li>
 </ul>
-<pre class="codehilite"><code class="language-sql linenums">-- Lancer la création de champs sur toutes les tables
+<pre><code class="sql">-- Lancer la création de champs sur toutes les tables
 -- du schéma test
 -- contenant des géométries de type Point
 SELECT f_table_schema, f_table_name,
@@ -99,24 +99,24 @@ WHERE True
 AND &quot;type&quot; LIKE '%POINT'
 AND f_table_schema IN ('test')
 ORDER BY f_table_schema, f_table_name
-;</code></pre>
-
+;
+</code></pre>
 
 <h3 id="verifier-la-taille-des-bases-tables-et-schemas">Vérifier la taille des bases, tables et schémas</h3>
 <h4 id="connaitre-la-taille-des-bases-de-donnees">Connaître la taille des bases de données</h4>
 <p>On peut lancer la requête suivante, qui renvoit les bases de données ordonnées par taille descendante.</p>
-<pre class="codehilite"><code class="language-sql linenums">SELECT
+<pre><code class="sql">SELECT
 pg_database.datname AS db_name,
 pg_database_size(pg_database.datname) AS db_size,
 pg_size_pretty(pg_database_size(pg_database.datname)) AS db_pretty_size
 FROM pg_database
 WHERE datname NOT IN ('postgres', 'template0', 'template1')
-ORDER BY db_size DESC;</code></pre>
-
+ORDER BY db_size DESC;
+</code></pre>
 
 <h4 id="calculer-la-taille-des-tables">Calculer la taille des tables</h4>
 <p>On crée une fonction <code>get_table_info</code> qui utilise les tables système pour lister les tables, récupérer leur schéma et les informations de taille.</p>
-<pre class="codehilite"><code class="language-sql linenums">CREATE OR REPLACE FUNCTION get_table_info()
+<pre><code class="sql">CREATE OR REPLACE FUNCTION get_table_info()
 RETURNS TABLE (
     oid oid,
     schema_name text,
@@ -154,20 +154,21 @@ BEGIN
     ) AS b
     ;
 END; $$
-LANGUAGE 'plpgsql';</code></pre>
-
+LANGUAGE 'plpgsql';
+</code></pre>
 
 <p>On peut l'utiliser simplement de la manière suivante</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Liste les tables
+<pre><code class="sql">-- Liste les tables
 SELECT * FROM get_table_info() ORDER BY schema_name, table_name DESC;
 
 -- Lister les tables dans l'ordre inverse de taille
-SELECT * FROM get_table_info() ORDER BY total_size DESC;</code></pre>
+SELECT * FROM get_table_info() ORDER BY total_size DESC;
 
+</code></pre>
 
 <h4 id="calculer-la-taille-des-schemas">Calculer la taille des schémas</h4>
 <p>On crée une simple fonction qui renvoit la somme des tailles des tables d'un schéma</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Fonction pour calculer la taille d'un schéma
+<pre><code class="sql">-- Fonction pour calculer la taille d'un schéma
 CREATE OR REPLACE FUNCTION pg_schema_size(schema_name text)
 RETURNS BIGINT AS
 $$
@@ -176,22 +177,23 @@ $$
     FROM pg_tables
     WHERE schemaname = schema_name
 $$
-LANGUAGE SQL;</code></pre>
-
+LANGUAGE SQL;
+</code></pre>
 
 <p>On peut alors l'utiliser pour connaître la taille d'un schéma</p>
-<pre class="codehilite"><code class="language-sql linenums">-- utilisation pour un schéma
-SELECT pg_size_pretty(pg_schema_size('public')) AS ;</code></pre>
-
+<pre><code class="sql">-- utilisation pour un schéma
+SELECT pg_size_pretty(pg_schema_size('public')) AS ;
+</code></pre>
 
 <p>Ou lister l'ensemble des schémas</p>
-<pre class="codehilite"><code class="language-sql linenums">-- lister les schémas et récupérer leur taille
+<pre><code class="sql">-- lister les schémas et récupérer leur taille
 SELECT schema_name, pg_size_pretty(pg_schema_size(schema_name))
 FROM information_schema.schemata
 WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
-ORDER BY pg_schema_size(schema_name) DESC;</code></pre>
+ORDER BY pg_schema_size(schema_name) DESC;
+</code></pre>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

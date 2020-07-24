@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Importer</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -50,18 +50,18 @@
 <p>Attention, cela supprime la table avant de la recréer et de la remplir, ce qui peut entraîner des effets de bord (par exemple, on perd les droits définis)</p>
 <h4 id="avec-vidage-puis-ajout-des-nouvelles-donnees">Avec vidage puis ajout des nouvelles données</h4>
 <p>Imaginons qu'on ait donné tous les droits sur les tables du schéma, par exemple via cette requête</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Ajout des droits un schéma et sur toutes les tables d'un schéma
+<pre><code class="sql">-- Ajout des droits un schéma et sur toutes les tables d'un schéma
 GRANT ALL ON SCHEMA z_formation TO &quot;unutilisateur&quot;;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO &quot;unutilisateur&quot;;
 GRANT ALL ON SCHEMA z_formation TO &quot;unepersonne&quot;;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO &quot;unepersonne&quot;;</code></pre>
-
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO &quot;unepersonne&quot;;
+</code></pre>
 
 <p>Ensuite, on souhaite réimporter le SHP, <strong>sans perdre les droits</strong>: on doit d'abord <strong>vider la table</strong> puis <strong>reimporter les données</strong>, sans cocher la case <em>Remplacer la table de destination si existante</em></p>
-<pre class="codehilite"><code class="language-sql linenums">-- Vider une table en remettant à zéro la séquence
+<pre><code class="sql">-- Vider une table en remettant à zéro la séquence
 -- qui permet d'autoincrémenter le champ id (la clé primaire)
-TRUNCATE TABLE z_formation.commune RESTART IDENTITY;</code></pre>
-
+TRUNCATE TABLE z_formation.commune RESTART IDENTITY;
+</code></pre>
 
 <p>Ensuite, on importe via l'outil spécifique du menu <strong>Traitement / Boîte à outil</strong>. Chercher "import" dans le champ du haut, et lancer l'algorithme <strong>Importer un vecteur vers une base de données PostGIS (connexions disponibles)</strong>. Il faut choisir les options suivantes:</p>
 <ul>
@@ -80,7 +80,7 @@ TRUNCATE TABLE z_formation.commune RESTART IDENTITY;</code></pre>
 <a href="https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html">https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html</a></p>
 <p>Continuer vers <a href="./sql_select.html">Sélectionner des données: SELECT</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Calculer</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -27,88 +27,88 @@
 <h3 id="calcul-sur-des-attributs">Calcul sur des attributs</h3>
 <p>Le SQL permet de réaliser des calculs ou des modifications à partir de champs. On peut donc faire des calculs sur des nombres, ou des modifications (remplacement de texte, mise en majuscule, etc.)</p>
 <p>Faire un calcul très simple, ave des opérateurs + - / et *, ainsi que des parenthèses</p>
-<pre class="codehilite"><code class="language-sql linenums">-- On multiplie 10 par 2
+<pre><code class="sql">-- On multiplie 10 par 2
 SELECT
 10 * 2 AS vingt,
-(2.5 -1) * 10 AS quinze</code></pre>
-
+(2.5 -1) * 10 AS quinze
+</code></pre>
 
 <p>Il est aussi possible de faire des calculs à partir d'un ou plusieurs champs.</p>
 <p>Nous souhaitons par exemple créer un champ qui contiendra la <strong>population</strong> des communes. Dans la donnée source, le champ <strong>popul</strong> est de type chaîne de caractère, car il contient parfois la valeur 'NC' lorsque la population n'est pas connue.</p>
 <p>Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite donc <strong>créer un nouveau champ</strong> population pour y stoker les valeurs entières.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Ajout d'un champ de type entier dans la table
-ALTER TABLE z_formation.commune ADD COLUMN population integer;</code></pre>
-
+<pre><code class="sql">-- Ajout d'un champ de type entier dans la table
+ALTER TABLE z_formation.commune ADD COLUMN population integer;
+</code></pre>
 
 <p><strong>Modifier</strong> le nouveau champ population pour y mettre la valeur entière lorsqu'elle est connue. La modification d'une table se fait avec la requête <strong>UPDATE</strong>, en passant les champs à modifier et leur nouvelle valeur via <strong>SET</strong></p>
-<pre class="codehilite"><code class="language-sql linenums">-- Mise à jour d'un champ à partir d'un calcul
+<pre><code class="sql">-- Mise à jour d'un champ à partir d'un calcul
 UPDATE z_formation.commune SET population =
 CASE
         WHEN popul != 'NC' THEN popul::integer
         ELSE NULL
 END
-;</code></pre>
-
+;
+</code></pre>
 
 <p>Dans cette requête, le <strong>CASE WHEN condition THEN valeur ELSE autre_valeur END</strong> permet de faire un test sur la valeur d'origine, et de proposer une valeur si la condition est remplie ( <a href="https://sql.sh/cours/case">https://sql.sh/cours/case</a> )</p>
 <p>Une fois ce champ <strong>population</strong> renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple <strong>doubler la population</strong>:</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Calcul simple : on peut utiliser les opérateurs mathématiques
+<pre><code class="sql">-- Calcul simple : on peut utiliser les opérateurs mathématiques
 SELECT id_commune, code_insee, nom, geom,
 population,
 population * 2 AS double_population
 FROM z_formation.commune
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>Il est possible de <strong>combiner plusieurs champs</strong> pour réaliser un calcul. Nous verrons plus loin comment calculer la <strong>densité de population</strong> à partir de la population et de la surface des communes.</p>
 <h3 id="calculer-des-caracteristiques-spatiales">Calculer des caractéristiques spatiales</h3>
 <p>Par exemple la <strong>longueur</strong> ou la <strong>surface</strong></p>
 <p>Calculer la longueur d'objets linéaires</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Calcul des longueurs de route
+<pre><code class="sql">-- Calcul des longueurs de route
 SELECT id_route, id, nature,
 ST_Length(geom) AS longueur_m
 FROM z_formation.route
-LIMIT 100</code></pre>
-
+LIMIT 100
+</code></pre>
 
 <p>Calculer la <strong>surface</strong> de polygones, et utiliser ce résultat dans un calcul. Par exemple ici la <strong>densité de population</strong>:</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Calculer des données à partir de champs et de fonctions spatiales
+<pre><code class="sql">-- Calculer des données à partir de champs et de fonctions spatiales
 SELECT id_commune, code_insee, nom, geom,
 population,
 ST_Area(geom) AS surface,
 population / ( ST_Area(geom) / 1000000 ) AS densite_hab_km
 FROM z_formation.commune
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <h3 id="creer-des-geometries-a-partir-de-geometries">Créer des géométries à partir de géométries</h3>
 <p>On peut modifier les géométries avec des fonctions spatiales, ce qui revient à effectuer un calcul sur les géométries. Deux exemples classiques : <strong>centroides</strong> et <strong>tampons</strong></p>
 <p>Calculer le <strong>centroïde</strong> de polygones</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Centroides des communes
+<pre><code class="sql">-- Centroides des communes
 SELECT id_commune, code_insee, nom,
 ST_Centroid(geom) AS geom
-FROM z_formation.commune</code></pre>
-
+FROM z_formation.commune
+</code></pre>
 
 <p>Forcer le <strong>centroïde à l'intérieur du polygone</strong>. Attention, ce calcul est plus long.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Centroides à l'intérieur des communes
+<pre><code class="sql">-- Centroides à l'intérieur des communes
 -- Attention, c'est plus long à calculer
 SELECT id_commune, code_insee, nom,
 ST_PointOnSurface(geom) AS geom
-FROM z_formation.commune</code></pre>
-
+FROM z_formation.commune
+</code></pre>
 
 <p>Calculer le <strong>tampon</strong> autour d'objets</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Tampons de 10km autour des commues
+<pre><code class="sql">-- Tampons de 10km autour des commues
 SELECT id_commune, nom, population,
 ST_Buffer(geom, 1000) AS geom
 FROM z_formation.commune
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>Continuer vers <a href="./filter_data.html">Filtrer des données: WHERE</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

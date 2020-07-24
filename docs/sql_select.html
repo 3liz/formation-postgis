@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Sélectionner</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -21,7 +21,7 @@
 </div>
 <h2 id="selectionner">Sélectionner</h2>
 <p>Nous allons présenter des <strong>requêtes SQL</strong> de plus en plus complexes pour accéder aux données, et exploiter les capacités de PostgreSQL/PostGIS. Une requête est construite avec des instructions standardisées, appelées <strong>clauses</strong></p>
-<pre class="codehilite"><code class="language-sql linenums">-- Ordre des clauses SQL
+<pre><code class="sql">-- Ordre des clauses SQL
 SELECT une_colonne, une_autre_colonne
 FROM nom_du_schema.nom_de_la_table
 (LEFT) JOIN autre_schema.autre_table
@@ -29,73 +29,74 @@ FROM nom_du_schema.nom_de_la_table
 WHERE condition
 GROUP BY champs_de_regroupement
 ORDER BY champs_d_ordre
-LIMIT 10</code></pre>
+LIMIT 10
 
+</code></pre>
 
 <p>Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Sélectionner l'ensemble des données d'une couche: l'étoire veut dire &quot;tous les champs de la table&quot;
+<pre><code class="sql">-- Sélectionner l'ensemble des données d'une couche: l'étoire veut dire &quot;tous les champs de la table&quot;
 SELECT *
 FROM z_formation.commune
-;</code></pre>
-
+;
+</code></pre>
 
 <p>Les 10 premiers objets</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Sélectionner les 10 premières communes par ordre alphabétique
+<pre><code class="sql">-- Sélectionner les 10 premières communes par ordre alphabétique
 SELECT *
 FROM z_formation.commune
 ORDER BY nom
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>Les 10 premiers objets par ordre alphabétique</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Sélectionner les 10 premières communes par ordre alphabétique descendant
+<pre><code class="sql">-- Sélectionner les 10 premières communes par ordre alphabétique descendant
 SELECT *
 FROM z_formation.commune
 ORDER BY nom DESC
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>Les 10 premiers objets avec un ordre sur plusieurs champs</p>
-<pre class="codehilite"><code class="language-sql linenums">-- On peut utiliser plusieurs champs pour l'ordre
+<pre><code class="sql">-- On peut utiliser plusieurs champs pour l'ordre
 SELECT *
 FROM z_formation.commune
 ORDER BY depart, nom
-LIMIT 10</code></pre>
-
+LIMIT 10
+</code></pre>
 
 <p>Sélectionner seulement certains champs</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Sélectionner seulement certains champs, et avec un ordre
+<pre><code class="sql">-- Sélectionner seulement certains champs, et avec un ordre
 SELECT id_commune, code_insee, nom
 FROM z_formation.commune
-ORDER BY nom</code></pre>
-
+ORDER BY nom
+</code></pre>
 
 <p>Donner un alias (un autre nom) aux champs</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Donner des alias aux noms des colonnes
+<pre><code class="sql">-- Donner des alias aux noms des colonnes
 SELECT id_commune AS identifiant,
 code_insee AS &quot;code_commune&quot;,
 nom
 FROM z_formation.commune
-ORDER BY nom</code></pre>
-
+ORDER BY nom
+</code></pre>
 
 <p>On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre qu'on veut, et renommer le champ en sortie.</p>
 <h2 id="visualiser-une-requete-dans-qgis">Visualiser une requête dans QGIS</h2>
 <p>Si on veut charger le résultat de la requête dans QGIS, il suffit de cocher la case <strong>Charger en tant que nouvelle couche</strong> puis de choisir le champ d'<strong>identifiant unique</strong>, et si et seulement si c'est une couche spatiale, choisir le <strong>champ de géométrie</strong> .</p>
 <p>Attention, si la table est non spatiale, il faut bien penser à décocher <strong>Colonne de géométrie</strong> !</p>
 <p>Par exemple, pour afficher les communes avec leur information sommaire:</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Ajouter la géométrie pour visualiser les données dans QGIS
+<pre><code class="sql">-- Ajouter la géométrie pour visualiser les données dans QGIS
 SELECT id_commune AS identifiant,
 code_insee AS &quot;code_commune&quot;,
 nom, geom
 FROM z_formation.commune
-ORDER BY nom</code></pre>
-
+ORDER BY nom
+</code></pre>
 
 <p>On choisira ici le champ <strong>identifiant</strong> comme identifiant unique, et le champ <strong>geom</strong> comme géométrie</p>
 <p>Continuer vers <a href="./perform_calculation.html">Réaliser des calculs et créer des géométries: FONCTIONS</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();

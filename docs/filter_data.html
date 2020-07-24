@@ -4,7 +4,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Filtrer</title>
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
   <link href="logo.svg" rel="icon" type="image/png" >
  </head>
@@ -20,33 +20,33 @@
 </div>
 <h2 id="filtrer-les-donnees-la-clause-where">Filtrer les données: la clause WHERE</h2>
 <p>Récupérer les données à partir de la <strong>valeur exacte d'un champ</strong>. Ici le nom de la commune</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Récupérer seulement la commune de Bastia
+<pre><code class="sql">-- Récupérer seulement la commune de Bastia
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
-WHERE nom = 'Le Havre'</code></pre>
-
+WHERE nom = 'Le Havre'
+</code></pre>
 
 <p>On peut chercher les lignes dont le champ correspondant à <strong>plusieurs valeurs</strong></p>
-<pre class="codehilite"><code class="language-sql linenums">-- Récupérer la commune de Bastia et d'Ajaccio
+<pre><code class="sql">-- Récupérer la commune de Bastia et d'Ajaccio
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
-WHERE nom IN ('Le Havre', 'Rouen')</code></pre>
-
+WHERE nom IN ('Le Havre', 'Rouen')
+</code></pre>
 
 <p>On peut aussi filtrer sur des champs de type <strong>entier ou nombres réels</strong>, et faire des conditions comme des inégalités.</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Filtrer les données, par exemple par département et population
+<pre><code class="sql">-- Filtrer les données, par exemple par département et population
 SELECT *
 FROM z_formation.commune
 WHERE True
 AND depart = 'SEINE-MARITIME'
 AND population &gt; 1000
-;</code></pre>
-
+;
+</code></pre>
 
 <p>On peut chercher des lignes dont un champ <strong>commence et/ou se termine</strong> par un texte</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Filtrer les données, par exemple par département et début et/ou fin de nom
+<pre><code class="sql">-- Filtrer les données, par exemple par département et début et/ou fin de nom
 SELECT *
 FROM z_formation.commune
 WHERE True
@@ -55,21 +55,21 @@ AND depart = 'SEINE-MARITIME'
 AND nom LIKE 'C%'
 -- se termine par ville
 AND nom ILIKE '%ville'
-;</code></pre>
-
+;
+</code></pre>
 
 <p>On peut utiliser les <strong>calculs sur les géométries</strong> pour filtrer les données. Par exemple filtrer par longueur de lignes</p>
-<pre class="codehilite"><code class="language-sql linenums">-- Les routes qui font plus que 10km
+<pre><code class="sql">-- Les routes qui font plus que 10km
 -- on peut utiliser des fonctions dans la clause WHERE
 SELECT id_route, id, geom
 FROM z_formation.route
 WHERE True
-AND ST_Length(geom) &gt; 10000</code></pre>
-
+AND ST_Length(geom) &gt; 10000
+</code></pre>
 
 <p>Continuer vers <a href="./group_data.html">Regrouper des données: GROUP BY</a></p>
   </article>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
    hljs.initHighlightingOnLoad();
