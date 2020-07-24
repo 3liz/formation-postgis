@@ -1,0 +1,153 @@
+
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>QGIS</title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
+  <link href="logo.svg" rel="icon" type="image/png" >
+ </head>
+ <body>
+ <header class="header-container" style="">
+    <h1>QGIS</h1>
+ </header>
+ <article>
+ <p><a href="../">Up</a></p>
+<p><a href="./index.html">Back</a></p><div class="toc"><span class="toctitle">Table of content</span><ul>
+<li><a href="#gestion-des-donnees-postgresql-dans-qgis">Gestion des données PostgreSQL dans QGIS</a><ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#creer-une-connexion-qgis-a-la-base-de-donnees">Créer une connexion QGIS à la base de données</a></li>
+<li><a href="#ouvrir-une-couche-postgresql-dans-qgis">Ouvrir une couche PostgreSQL dans QGIS</a></li>
+<li><a href="#le-gestionnaire-de-base-de-donnees">Le Gestionnaire de base de données</a></li>
+<li><a href="#creation-de-tables">Création de tables</a></li>
+<li><a href="#ajouter-des-donnees-dans-une-table">Ajouter des données dans une table</a></li>
+<li><a href="#creation-dun-schema-z_formation-dans-la-base">Création d’un schéma z_formation dans la base</a></li>
+<li><a href="#verifier-et-creer-les-indexes-spatiaux">Vérifier et créer les indexes spatiaux</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="gestion-des-donnees-postgresql-dans-qgis">Gestion des données PostgreSQL dans QGIS</h2>
+<h3 id="introduction">Introduction</h3>
+<p>Lorsqu'on travaille avec des données <strong>PostgreSQL</strong>, QGIS n'accède pas à la donnée en lisant un ou plusieurs fichiers, mais fait des <strong>requêtes</strong> à la base, à chaque fois qu'il en a besoin: déplacement de carte, zoom, ouverture de la table attributaire, sélection par expression, etc.</p>
+<ul>
+<li>QGIS se connecte à la base de données, et récupère des données qui sont stockées dans des tables. Il doit donc <strong>télécharger la donnée</strong> à chaque action (pas de cache car la donnée peut changer entre temps).</li>
+<li>une table équivaut à une couche SIG, définie par un nom, une liste de champs typés, et une ou plusieurs champs de géométrie.</li>
+<li>une géométrie est caractérisée par un type (polygone, point, ligne, etc.), une dimension (2D ou 3D) et une projection (Ex: EPSG:2154) codifiée via un SRID ( Ex: 2154)</li>
+<li>certaines tables n'ont pas de géométrie: on les appelle alors non spatiales. QGIS sait les exploiter, ce qui permet de stocker des informations de contexte (nomenclature, événements).</li>
+</ul>
+<p>La base de données fournit donc un lieu de stockage des données centralisé. On peut gérer les droits d'accès ou d'écriture sur les schémas et les tables.</p>
+<h3 id="creer-une-connexion-qgis-a-la-base-de-donnees">Créer une connexion QGIS à la base de données</h3>
+<p>Dans QGIS, il faut <strong>créer une nouvelle connexion</strong> à PostgreSQL, via l'outil "Eléphant" : menu <strong>Couches / Ajouter une couche / Ajouter une couche PostgreSQL</strong> . Configurer les options suivantes:</p>
+<ul>
+<li>laisser le champ <strong>Service</strong> vide</li>
+<li>cocher les cases <strong>Enregistrer</strong> à côté de l'utilisateur et du mot de passe, après avoir <strong>Tester la connexion</strong> (via le bouton dédié)</li>
+<li>cocher la dernière case tout en base <strong>Utiliser la table de métadonnées estimées</strong></li>
+<li>Valider</li>
+</ul>
+<p><strong>Attention</strong> Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL: 
+<a href="https://docs.qgis.org/3.10/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file">https://docs.qgis.org/3.10/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file</a></p>
+<p>Il est aussi intéressant pour les <strong>performances</strong> d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet <strong>Rendu</strong>: il faut cocher la case <strong>Réaliser la simplification par le fournisseur de données lorsque c'est possible</strong>. Cela permet de télécharger des versions allégées des données aux petites échelles.</p>
+<p><strong>NB</strong> Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet <strong>Rendu</strong> de la boîte de dialogue des propriétés de chaque couche PostGIS.</p>
+<h3 id="ouvrir-une-couche-postgresql-dans-qgis">Ouvrir une couche PostgreSQL dans QGIS</h3>
+<p>Trois solutions sont possibles:</p>
+<ul>
+<li><strong>utiliser l'explorateur</strong> : seulement pour les tables spatiales, sauf si on a coché <strong>Lister les tables sans géométries</strong> dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables.</li>
+<li>utiliser le menu <strong>Couches / Ajouter une couche</strong>. La boite de dialogue propose de se connecter, puis liste les schémas et les tables</li>
+<li>utiliser le <strong>Gestionnaire de base de données</strong>, qui présente une fenêtre QGIS séparée dédiée aux manipulations sur les données.</li>
+</ul>
+<h3 id="le-gestionnaire-de-base-de-donnees">Le Gestionnaire de base de données</h3>
+<p>On travaille via QGIS, avec le gestionnaire de bases de données : menu <strong>Base de données &gt; gestionnaire de base de données</strong> (sinon via l'icône de la barre d’outil base de données).</p>
+<p>Dans l'arbre qui se présente à gauche du gestionnaire de bdd, on peut <strong>choisir sa connexion</strong>, puis double-cliquer, ce qui montre l'ensemble des <strong>schémas</strong>, et l'ouverture d'un schéma montre la liste des tables et vues. Les menus du gestionnaire permettent de créer ou d'éditer des objets (schémas, tables).</p>
+<p>Une <strong>fenêtre SQL</strong> permet de lancer manuellement des requêtes SQL. Nous allons principalement utiliser cet outil : menu <strong>Base de données / fenêtre SQL</strong> (on peut aussi le lancer via F2). :</p>
+<h3 id="creation-de-tables">Création de tables</h3>
+<p>Depuis <strong>QGIS</strong>: dans le gestionnaire de base de données, menu table, créer une table:</p>
+<ul>
+<li>choisir le <strong>schéma</strong> et le <strong>nom</strong> de la table, en minuscule, sans accents ni caractères complexes</li>
+<li>Via le bouton <strong>Ajouter un champ</strong>, on commence par ajouter un champ <strong>id</strong> de type <strong>serial</strong> (entier auto-incrémenté), puis d'autres champs en choisissant le nom et le type. Choisir des noms de champ simples !</li>
+<li>Choisir dans la liste déroulante le <strong>champ de clé primaire</strong> (ici id)</li>
+<li>Cocher <strong>Créer une colonne géométrique</strong> et choisir le type et le SRID (par exemple 2154 pour le Lambert 93)</li>
+<li>Cocher <strong>Créer un index spatial</strong></li>
+</ul>
+<p><strong>NB</strong>: on a créé une table dans cet exemple <code>z_formation.borne_incendie</code> avec les champs <strong>id_borne</strong> (text), <strong>code</strong> (text), <strong>debit</strong> (real) et <strong>geom</strong> (géométrie de type Point, code SRID 2154)</p>
+<p><strong>Créer une table en SQL</strong></p>
+<pre class="codehilite"><code class="language-sql linenums">-- création d'un schéma
+CREATE SCHEMA IF NOT EXISTS z_formation;
+
+-- création de la table
+CREATE TABLE z_formation.borne_incendie (
+    -- un serial est un entier auto-incrémenté
+    id_borne serial NOT NULL PRIMARY KEY,
+    code text NOT NULL,
+    debit real,
+    geom geometry(Point, 2154)
+);
+-- Création de l'index spatial
+CREATE INDEX ON z_formation.borne_incendie USING GIST (geom);</code></pre>
+
+
+<h3 id="ajouter-des-donnees-dans-une-table">Ajouter des données dans une table</h3>
+<p>On peut bien sûr charger la table dans QGIS, puis utiliser les outils d'édition classique pour créer des nouveaux objets.</p>
+<p>En SQL, il est aussi possible d'insérer des données ( <a href="https://sql.sh/cours/insert-into">https://sql.sh/cours/insert-into</a> ). Par exemple pour les bornes à incendie:</p>
+<pre class="codehilite"><code class="linenums">INSERT INTO z_formation.borne_incendie (code, debit, geom)
+ VALUES
+ ('ABC',  1.5, ST_SetSRID(ST_MakePoint(490846.0,6936902.7), 2154)),
+ ('XYZ',  4.1, ST_SetSRID(ST_MakePoint(491284.9,6936551.6), 2154)),
+ ('FGH',  2.9, ST_SetSRID(ST_MakePoint(490839.8,6937794.8), 2154)),
+ ('IOP',  3.6, ST_SetSRID(ST_MakePoint(491203.3,6937488.1), 2154))
+;</code></pre>
+
+
+<p><strong>NB</strong>: Nous verrons plus loin l'utlisation de fonctions de création de géométrie, comme <strong>ST_MakePoint</strong></p>
+<h3 id="creation-dun-schema-z_formation-dans-la-base">Création d’un schéma z_formation dans la base</h3>
+<ul>
+<li>ajout du schéma via le gestionnaire de bdd, ou via une requête:</li>
+</ul>
+<pre class="codehilite"><code class="language-sql linenums">CREATE SCHEMA IF NOT EXISTS z_formation;</code></pre>
+
+
+<ul>
+<li>modification des droits d’accès à ce schéma, si besoin:</li>
+</ul>
+<pre class="codehilite"><code class="language-sql linenums">-- On donne ici tous les droits à &quot;utilisateur&quot;
+GRANT ALL PRIVILEGES ON SCHEMA z_formation TO &quot;utilisateur&quot;;</code></pre>
+
+
+<ul>
+<li>suppression d'un schéma</li>
+</ul>
+<pre class="codehilite"><code class="language-sql linenums">-- Suppression du schéma si il est vide
+DROP SCHEMA monschema;
+
+-- suppression du schéma et de toutes les tables de ce schéma (via CASCADE) !!! ATTENTION !!!
+DROP SCHEMA monschema CASCADE;</code></pre>
+
+
+<ul>
+<li>renommer un schéma</li>
+</ul>
+<pre class="codehilite"><code class="language-sql linenums">ALTER SCHEMA monschema RENAME TO unschema;</code></pre>
+
+
+<h3 id="verifier-et-creer-les-indexes-spatiaux">Vérifier et créer les indexes spatiaux</h3>
+<p>On peut vérifier si chaque table contient un <strong>index spatial</strong> via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet <strong>Info</strong>. On peut alors créer l'index spatial via le lien bleu <strong>Aucun index spatial défini (en créer un)</strong>.</p>
+<p>Sinon, il est possible de le faire en SQL via la requête suivante:</p>
+<pre class="codehilite"><code class="language-sql linenums">CREATE INDEX ON nom_du_schema.nom_de_la_table USING GIST (geom);</code></pre>
+
+
+<p>Si on souhaite automatiser la création des indexes pour toutes les tables qui n'en ont pas, on peut utiliser une fonction, décrite dans la partie <a href="./utils.html">Fonctions utiles</a></p>
+<p>Continuer vers l'<a href="./import_data.html">Import des données dans PostgreSQL</a></p>
+  </article>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>

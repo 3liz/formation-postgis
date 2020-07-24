@@ -1,3 +1,11 @@
+---
+Title: Vues
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Enregistrer une requête
 
 ### Les vues

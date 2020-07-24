@@ -1,3 +1,11 @@
+---
+Title: Jointure
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Les jointures
 
 Les jointures permettent de récupérer des données en relation les unes par rapport aux autres.

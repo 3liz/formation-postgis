@@ -1,3 +1,11 @@
+---
+Title: Topologie
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Vérifier la topologie
 
 #### Déplacer les noeuds sur une grille

@@ -1,3 +1,11 @@
+---
+Title: Grouper
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Grouper des données et calculer des statistiques
 
 ### Valeurs distinctes d'un champ

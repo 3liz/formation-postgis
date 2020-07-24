@@ -1,3 +1,11 @@
+---
+Title: Fusionner
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Fusionner des géométries
 
 On souhaite créer une seule géométrie qui est issue de la **fusion de toutes les géométries** regroupées par un critère (nature, code, etc.)

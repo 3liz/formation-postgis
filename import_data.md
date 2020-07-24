@@ -1,3 +1,11 @@
+---
+Title: Importer
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Importer des données
 
 Pour la formation, on doit importer des données pour pouvoir travailler. QGIS possède plusieurs outils pour réaliser cette importation dans PostgreSQL.
@@ -65,7 +73,7 @@ Lancer l'algorithme, et vérifier une fois les données importées que les nouve
 Il est possible d'utiliser l'outil **Importer un vecteur vers une base de données PostGIS (connexions disponibles)** par lot. Pour cela, une fois la boîte de dialogue de cet algorithme ouverte, cliquer sur le bouton **Exécuter comme processus de lot**. Cela affiche un tableau, ou chaque ligne représente les variables d'entrée d'un algorithme.
 
 Vous pouvez créer manuellement chaque ligne, ou choisir directement les couches depuis votre projet QGIS. Voir la documentation QGIS pour plus de détail:
-https://docs.qgis.org/2.18/fr/docs/user_manual/processing/batch.html
+https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html
 
 
 Continuer vers [Sélectionner des données: SELECT](./sql_select.md)

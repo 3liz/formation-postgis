@@ -1,3 +1,11 @@
+---
+Title: Filtrer
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Filtrer les données: la clause WHERE
 
 Récupérer les données à partir de la **valeur exacte d'un champ**. Ici le nom de la commune

@@ -1,3 +1,11 @@
+---
+Title: Utilitaires
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Fonctions utiles
 
 Nous regroupons ici quelques fonctions réalisées au cours de formations ou d'accompagnements d'utilisateurs de PostgreSQL.

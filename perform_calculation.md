@@ -1,3 +1,11 @@
+---
+Title: Calculer
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Faire des calculs
 
 ### Calcul sur des attributs

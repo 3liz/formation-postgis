@@ -1,3 +1,11 @@
+---
+Title: Rassembler
+Favicon: logo.svg
+Sibling: yes
+...
+
+[TOC]
+
 ## Rassembler des données de plusieurs tables
 
 La clause **UNION** peut être utilisée pour regrouper les données de sources différentes dans une même table. Le **UNION ALL** fait la même choses, mais sans réaliser de dédoublonnement, ce qui est plus rapide.

@@ -1,0 +1,117 @@
+
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>Grouper</title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
+  <link href="logo.svg" rel="icon" type="image/png" >
+ </head>
+ <body>
+ <header class="header-container" style="">
+    <h1>Grouper</h1>
+ </header>
+ <article>
+ <p><a href="../">Up</a></p>
+<p><a href="./index.html">Back</a></p><div class="toc"><span class="toctitle">Table of content</span><ul>
+<li><a href="#grouper-des-donnees-et-calculer-des-statistiques">Grouper des données et calculer des statistiques</a><ul>
+<li><a href="#valeurs-distinctes-dun-champ">Valeurs distinctes d'un champ</a></li>
+<li><a href="#regrouper-des-donnees-en-specifiant-les-champs-de-regroupement">Regrouper des données en spécifiant les champs de regroupement</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="grouper-des-donnees-et-calculer-des-statistiques">Grouper des données et calculer des statistiques</h2>
+<h3 id="valeurs-distinctes-dun-champ">Valeurs distinctes d'un champ</h3>
+<p>On souhaite récupérer <strong>toutes les valeurs possibles</strong> d'un champ</p>
+<pre class="codehilite"><code class="language-sql linenums">-- Vérifier les valeurs distinctes d'un champ: table commune
+SELECT DISTINCT depart
+FROM z_formation.commune
+ORDER BY depart
+
+-- idem sur la table lieu_dit_habite
+SELECT DISTINCT nature
+FROM z_formation.lieu_dit_habite
+ORDER BY nature</code></pre>
+
+
+<h3 id="regrouper-des-donnees-en-specifiant-les-champs-de-regroupement">Regrouper des données en spécifiant les champs de regroupement</h3>
+<p>Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un <strong>regroupement</strong> via la clause <strong>GROUP BY</strong></p>
+<p><strong>Compter</strong> les communes par département et calculer la <strong>population totale</strong></p>
+<pre class="codehilite"><code class="language-sql linenums">-- Regrouper des données
+-- Compter le nombre de communes par département
+SELECT depart,
+count(code_insee) AS nb_commune,
+sum(population) AS total_population
+FROM z_formation.commune
+WHERE True
+GROUP BY depart
+ORDER BY nb_commune DESC</code></pre>
+
+
+<p>Calculer des <strong>statistiques sur l'aire</strong> des communes pour chaque département</p>
+<pre class="codehilite"><code class="language-sql linenums">SELECT depart,
+count(id_commune) AS nb,
+min(ST_Area(geom)/1000)::int AS min_aire_ha,
+max(ST_Area(geom)/1000)::int AS max_aire_ha,
+avg(ST_Area(geom)/1000)::int AS moy_aire_ha,
+sum(ST_Area(geom)/1000)::int AS total_aire_ha
+FROM z_formation.commune
+GROUP BY depart</code></pre>
+
+
+<p><strong>Compter</strong> le nombre de routes par nature</p>
+<pre class="codehilite"><code class="language-sql linenums">-- Compter le nombre de routes par nature
+SELECT count(id_route) AS nb_route, nature
+FROM z_formation.route
+WHERE True
+GROUP BY nature
+ORDER BY nb_route DESC</code></pre>
+
+
+<p>Compter le nombre de routes par nature et par sens</p>
+<pre class="codehilite"><code class="language-sql linenums">SELECT count(id_route) AS nb_route, nature, sens
+FROM z_formation.route
+WHERE True
+GROUP BY nature, sens
+ORDER BY nature, sens DESC</code></pre>
+
+
+<p>Les caculs sur des ensembles groupés peuvent aussi être réalisé <strong>sur les géométries.</strong>. Le plus utilisé est <strong>ST_Collect</strong> qui regroupe les géométries dans une multi-géométrie.</p>
+<p>Par exemple, on peut souhaiter trouver l'<strong>enveloppe convexe</strong> autour de points (élastique tendu autour d'un groupe de points). Ici, nous regroupons les lieux-dits par nature (ce qui n'a pas beaucoup de sens, mais c'est pour l'exemple). Dans ce cas, il faut faire une sous-requête pour filtrer seulement les résultats de type polygone (car s'il y a seulement 1 ou 2 objets par nature, alors on ne peut créer de polygone)</p>
+<pre class="codehilite"><code class="language-sql linenums">SELECT *
+FROM (
+        SELECT
+        nature,
+        -- ST_Convexhull renvoit l'enveloppe convexe
+        ST_Convexhull(ST_Collect(geom)) AS geom
+        FROM z_formation.lieu_dit_habite
+        GROUP BY nature
+) AS source
+-- GeometryType renvoit le type de géométrie
+WHERE Geometrytype(geom) = 'POLYGON'</code></pre>
+
+
+<p>Attention, on doit donner un alias à la sous-requête (ici source)</p>
+<p>Un autre exemple sur les bornes. Ici, on groupe les bornes par identifiant pair ou impair, et on calcule l'enveloppe convexe</p>
+<pre class="codehilite"><code class="language-sql linenums">SELECT count(id_borne), ((id_borne % 2) = 0) AS pair,
+(st_convexhull(ST_Collect(geom))) AS geom
+FROM z_formation.borne_incendie
+GROUP BY pair</code></pre>
+
+
+<p>Continuer vers <a href="./union.html">Rassembler des données: UNION ALL</a></p>
+  </article>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>

@@ -1,0 +1,94 @@
+
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>Importer</title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
+  <link href="logo.svg" rel="icon" type="image/png" >
+ </head>
+ <body>
+ <header class="header-container" style="">
+    <h1>Importer</h1>
+ </header>
+ <article>
+ <p><a href="../">Up</a></p>
+<p><a href="./index.html">Back</a></p><div class="toc"><span class="toctitle">Table of content</span><ul>
+<li><a href="#importer-des-donnees">Importer des données</a><ul>
+<li><a href="#import-dune-couche-depuis-qgis">Import d'une couche depuis QGIS</a></li>
+<li><a href="#reimporter-une-donnee-dans-une-table-existante">Réimporter une donnée dans une table existante.</a><ul>
+<li><a href="#avec-suppression-de-la-table-puis-recreation">Avec suppression de la table puis recréation.</a></li>
+<li><a href="#avec-vidage-puis-ajout-des-nouvelles-donnees">Avec vidage puis ajout des nouvelles données</a></li>
+</ul>
+</li>
+<li><a href="#importer-plusieurs-couches-en-batch">Importer plusieurs couches en batch</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="importer-des-donnees">Importer des données</h2>
+<p>Pour la formation, on doit importer des données pour pouvoir travailler. QGIS possède plusieurs outils pour réaliser cette importation dans PostgreSQL.</p>
+<h3 id="import-dune-couche-depuis-qgis">Import d'une couche depuis QGIS</h3>
+<p>On  doit <strong>charger au préalable la couche source</strong> dans QGIS (SHP, TAB, etc.), puis on doit vérifier :</p>
+<ul>
+<li>la <strong>projection</strong>, idéalement EPSG:2154 ou EPSG:3948</li>
+<li>l'<strong>encodage</strong> : UTF-8, ISO-8859-15 ? Il faut ouvrir la table attributaire, et vérifier si les accents sont bien affichés. Sinon choisir le bon encodage dans l'onglet <strong>Général</strong> des <strong>propriétés de la couche</strong></li>
+<li>les <strong>champs</strong>: noms, type, contenu</li>
+</ul>
+<p>Pour importer, on utilise le bouton d’import du gestionnaire de bdd. On choisit par exemple le fichier des communes:</p>
+<ul>
+<li>on clique sur <strong>Mettre à jour les options</strong></li>
+<li>on choisit le <strong>nom</strong> de la couche et le schéma <strong>z_formation</strong></li>
+<li>on coche bien les 2 cases du bas pour <strong>convertir les champs en minuscule</strong> (Convert fieldnames to lowercase) et pour <strong>créer l'index spatial</strong></li>
+</ul>
+<p>Après l'import, on peut cliquer, dans le panneau de gauche, sur le nom de la couche créée et parcourir les données avec l'onglet <strong>Table</strong>. Si on souhaite comparer avec la couche d'origine, il suffit de charger la table, en double-cliquant dessus dans l'arbre (ou via les autres outils de QGIS)</p>
+<p><strong>NB</strong>: si un champ s'appelle déjà id dans la donnée source, et qui contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case <strong>Clé primaire</strong> dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier autoincrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune</p>
+<h3 id="reimporter-une-donnee-dans-une-table-existante">Réimporter une donnée dans une table existante.</h3>
+<h4 id="avec-suppression-de-la-table-puis-recreation">Avec suppression de la table puis recréation.</h4>
+<p>Il suffit d'utiliser le même <strong>outil d'import</strong> via le gestionnaire de bdd, et cocher la case <strong>Remplacer la table de destination si existante</strong>.</p>
+<p>Attention, cela supprime la table avant de la recréer et de la remplir, ce qui peut entraîner des effets de bord (par exemple, on perd les droits définis)</p>
+<h4 id="avec-vidage-puis-ajout-des-nouvelles-donnees">Avec vidage puis ajout des nouvelles données</h4>
+<p>Imaginons qu'on ait donné tous les droits sur les tables du schéma, par exemple via cette requête</p>
+<pre class="codehilite"><code class="language-sql linenums">-- Ajout des droits un schéma et sur toutes les tables d'un schéma
+GRANT ALL ON SCHEMA z_formation TO &quot;unutilisateur&quot;;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO &quot;unutilisateur&quot;;
+GRANT ALL ON SCHEMA z_formation TO &quot;unepersonne&quot;;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO &quot;unepersonne&quot;;</code></pre>
+
+
+<p>Ensuite, on souhaite réimporter le SHP, <strong>sans perdre les droits</strong>: on doit d'abord <strong>vider la table</strong> puis <strong>reimporter les données</strong>, sans cocher la case <em>Remplacer la table de destination si existante</em></p>
+<pre class="codehilite"><code class="language-sql linenums">-- Vider une table en remettant à zéro la séquence
+-- qui permet d'autoincrémenter le champ id (la clé primaire)
+TRUNCATE TABLE z_formation.commune RESTART IDENTITY;</code></pre>
+
+
+<p>Ensuite, on importe via l'outil spécifique du menu <strong>Traitement / Boîte à outil</strong>. Chercher "import" dans le champ du haut, et lancer l'algorithme <strong>Importer un vecteur vers une base de données PostGIS (connexions disponibles)</strong>. Il faut choisir les options suivantes:</p>
+<ul>
+<li>Choisir la bonne <strong>connexion</strong>, la couche en entrée, etc.</li>
+<li>choisir le <strong>schéma</strong>, par exemple z_formation</li>
+<li>choisir le <strong>nom de la table</strong>, par exemple commune</li>
+<li>laisser id dans le champ <strong>Clef primaire</strong> ou choisir le champ approprié</li>
+<li>décocher <strong>Écraser la table existante</strong></li>
+<li>cocher <strong>Ajouter à la table existante</strong></li>
+<li>laisser le reste par défaut.</li>
+</ul>
+<p>Lancer l'algorithme, et vérifier une fois les données importées que les nouvelles données ont bien été ajoutées à la table.</p>
+<h3 id="importer-plusieurs-couches-en-batch">Importer plusieurs couches en batch</h3>
+<p>Il est possible d'utiliser l'outil <strong>Importer un vecteur vers une base de données PostGIS (connexions disponibles)</strong> par lot. Pour cela, une fois la boîte de dialogue de cet algorithme ouverte, cliquer sur le bouton <strong>Exécuter comme processus de lot</strong>. Cela affiche un tableau, ou chaque ligne représente les variables d'entrée d'un algorithme.</p>
+<p>Vous pouvez créer manuellement chaque ligne, ou choisir directement les couches depuis votre projet QGIS. Voir la documentation QGIS pour plus de détail:
+<a href="https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html">https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html</a></p>
+<p>Continuer vers <a href="./sql_select.html">Sélectionner des données: SELECT</a></p>
+  </article>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>
