@@ -204,3 +204,50 @@ FROM information_schema.schemata
 WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_schema_size(schema_name) DESC;
 ```
+
+
+### Gestion des commentaires
+
+Fonction de création d'un commentaire
+
+```sql
+CREATE OR REPLACE FUNCTION public.comment_table_from_query(schemaname text, tablename text, table_comment text)
+RETURNS INTEGER AS
+$limite$
+DECLARE
+    sql_text text;
+BEGIN
+
+	BEGIN
+		RAISE NOTICE 'Table %s', quote_ident(schemaname) || '.' || quote_ident(tablename) ;
+		sql_text = 'COMMENT ON TABLE ' || quote_ident(schemaname) || '.' || quote_ident(tablename) || ' IS ' || quote_literal(table_comment) ;
+		EXECUTE sql_text;
+		RETURN 1;
+	EXCEPTION WHEN OTHERS THEN
+		RAISE NOTICE 'ERROR - Failed %s', quote_ident(schemaname) || '.' || quote_ident(tablename);
+		RAISE NOTICE '%', sql_text;
+		RETURN 0;
+	END;	
+END;
+$limite$
+LANGUAGE plpgsql
+;
+
+-- Test
+SELECT comment_table_from_query('admin', 'mairie', 'Commentaire des mairies')
+
+-- Appplication sur toutes les tables listées dans le catalogue
+SELECT "ma_colonne_de_schema", "ma_colonne_de_table",
+comment_table_from_query("ma_colonne_de_schema", "ma_colonne_de_table", "commentaire")
+FROM metadonnees.catalogue
+WHERE "ma_colonne_de_table" IS NOT NULL AND "commentaire" IS NOT NULL
+ORDER BY "ma_colonne_de_schema", "ma_colonne_de_table"
+;
+
+-- Vérification
+SELECT table_schema, table_name, obj_description((quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass) AS commentaire
+FROM information_schema.tables 
+WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
+ORDER BY table_schema, table_name;
+
+```
