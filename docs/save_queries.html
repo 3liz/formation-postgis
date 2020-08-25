@@ -140,14 +140,47 @@ FROM source
 </code></pre>
 
 <p>Le résultat est le suivant:</p>
-<p>| code | libelle         | ordre |
-|------|-----------------|-------|
-| 01   | Château         | 1     |
-| 02   | Lieu-dit habité | 2     |
-| 03   | Moulin          | 3     |
-| 04   | Quartier        | 4     |
-| 05   | Refuge          | 5     |
-| 06   | Ruines          | 6     |</p>
+<table>
+<thead>
+<tr>
+<th>code</th>
+<th>libelle</th>
+<th>ordre</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Château</td>
+<td>1</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Lieu-dit habité</td>
+<td>2</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Moulin</td>
+<td>3</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Quartier</td>
+<td>4</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Refuge</td>
+<td>5</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Ruines</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
 <h4 id="exemple-3-creer-une-table-avec-lextraction-des-parcelles-sur-une-commune">Exemple 3 - créer une table avec l'extraction des parcelles sur une commune</h4>
 <p>On utilise le champ <code>commune</code> pour filtrer. On n'oublie pas de créer l'index spatial, qui sera utilisé pour améliorer les performances lors des jointures spatiales.</p>
 <pre><code class="sql">-- supprimer la table si elle existe déjà

@@ -90,10 +90,39 @@ WHERE True
 </code></pre>
 
 <p>Résultat:</p>
-<p>| id | date       | description | geom | code_insee | nom            | surface_commune |
-|----|------------|-------------|------|------------|----------------|-----------------|
-| 2  | 2020-07-08 | deux        | .... | 27213      | Vexin-sur-Epte | 11434           |
-| 1  | 2020-07-08 | un          | .... | 76618      | Petit-Caux     | 9243            |</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>date</th>
+<th>description</th>
+<th>geom</th>
+<th>code_insee</th>
+<th>nom</th>
+<th>surface_commune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>2020-07-08</td>
+<td>deux</td>
+<td>....</td>
+<td>27213</td>
+<td>Vexin-sur-Epte</td>
+<td>11434</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2020-07-08</td>
+<td>un</td>
+<td>....</td>
+<td>76618</td>
+<td>Petit-Caux</td>
+<td>9243</td>
+</tr>
+</tbody>
+</table>
 <p>On ne récupère ici que 2 lignes alors qu'il y a bien 3 observations dans la table.</p>
 <p>Pour récupérer les 3 lignes, on doit faire une jointure LEFT. On peut utiliser un <code>CASE WHEN</code> pour tester si la commune est trouvée sous chaque point</p>
 <pre><code class="sql">SELECT
@@ -108,11 +137,52 @@ WHERE True
 </code></pre>
 
 <p>Résultat</p>
-<p>| id | date       | description | geom | code_insee | nom            | surface_commune | test_commune   |
-|----|------------|-------------|------|------------|----------------|-----------------|----------------|
-| 2  | 2020-07-08 | deux        | .... | 27213      | Vexin-sur-Epte | 11434           | ok             |
-| 1  | 2020-07-08 | un          | .... | 76618      | Petit-Caux     | 9243            | ok             |
-| 3  | 2020-07-08 | trois       | .... | Null       | Null           | Null            | pas de commune |</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>date</th>
+<th>description</th>
+<th>geom</th>
+<th>code_insee</th>
+<th>nom</th>
+<th>surface_commune</th>
+<th>test_commune</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>2020-07-08</td>
+<td>deux</td>
+<td>....</td>
+<td>27213</td>
+<td>Vexin-sur-Epte</td>
+<td>11434</td>
+<td>ok</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2020-07-08</td>
+<td>un</td>
+<td>....</td>
+<td>76618</td>
+<td>Petit-Caux</td>
+<td>9243</td>
+<td>ok</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2020-07-08</td>
+<td>trois</td>
+<td>....</td>
+<td>Null</td>
+<td>Null</td>
+<td>Null</td>
+<td>pas de commune</td>
+</tr>
+</tbody>
+</table>
 <h3 id="les-jointures-spatiales">Les jointures spatiales</h3>
 <p>Le critère de jointure peut être une <strong>condition spatiale</strong>. On réalise souvent une jointure par <strong>intersection</strong> ou par <strong>proximité</strong>.</p>
 <h4 id="joindre-des-points-avec-des-polygones">Joindre des points avec des polygones</h4>
@@ -128,17 +198,82 @@ JOIN &quot;z_formation&quot;.commune AS c
 ORDER BY l.nom
 </code></pre>
 
-<p>| id_lieu_dit_habite | nom                   | nom_commune              | code_insee | geom | 
-|--------------------|-----------------------|--------------------------|------------|------|
-| 58                 | Abbaye du Valasse     | Gruchet-le-Valasse       | 76329      | .... |
-| 1024               | Ablemont              | Bacqueville-en-Caux      | 76051      | .... |
-| 1043               | Agranville            | Douvrend                 | 76220      | .... |
-| 1377               | All des Artisans      | Mesnils-sur-Iton         | 27198      | .... |
-| 1801               | Allée des Maronniers  | Heudebouville            | 27332      | .... |
-| 1293               | Alliquerville         | Trouville                | 76715      | .... |
-| 507                | Alventot              | Sainte-Hélène-Bondeville | 76587      | .... |
-| 555                | Alvinbuc              | Veauville-lès-Baons      | 76729      | .... |
-| 69                 | Ancien hôtel de ville | Rouen                    | 76540      | .... |</p>
+<table>
+<thead>
+<tr>
+<th>id_lieu_dit_habite</th>
+<th>nom</th>
+<th>nom_commune</th>
+<th>code_insee</th>
+<th>geom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>58</td>
+<td>Abbaye du Valasse</td>
+<td>Gruchet-le-Valasse</td>
+<td>76329</td>
+<td>....</td>
+</tr>
+<tr>
+<td>1024</td>
+<td>Ablemont</td>
+<td>Bacqueville-en-Caux</td>
+<td>76051</td>
+<td>....</td>
+</tr>
+<tr>
+<td>1043</td>
+<td>Agranville</td>
+<td>Douvrend</td>
+<td>76220</td>
+<td>....</td>
+</tr>
+<tr>
+<td>1377</td>
+<td>All des Artisans</td>
+<td>Mesnils-sur-Iton</td>
+<td>27198</td>
+<td>....</td>
+</tr>
+<tr>
+<td>1801</td>
+<td>Allée des Maronniers</td>
+<td>Heudebouville</td>
+<td>27332</td>
+<td>....</td>
+</tr>
+<tr>
+<td>1293</td>
+<td>Alliquerville</td>
+<td>Trouville</td>
+<td>76715</td>
+<td>....</td>
+</tr>
+<tr>
+<td>507</td>
+<td>Alventot</td>
+<td>Sainte-Hélène-Bondeville</td>
+<td>76587</td>
+<td>....</td>
+</tr>
+<tr>
+<td>555</td>
+<td>Alvinbuc</td>
+<td>Veauville-lès-Baons</td>
+<td>76729</td>
+<td>....</td>
+</tr>
+<tr>
+<td>69</td>
+<td>Ancien hôtel de ville</td>
+<td>Rouen</td>
+<td>76540</td>
+<td>....</td>
+</tr>
+</tbody>
+</table>
 <p>On peut facilement inverser la table principale pour afficher les lignes ordonnées par commune.</p>
 <pre><code class="sql">SELECT
 c.nom, c.code_insee,
@@ -149,17 +284,72 @@ JOIN &quot;z_formation&quot;.lieu_dit_habite AS l
 ORDER BY c.nom
 </code></pre>
 
-<p>| nom      | code_insee | id_lieu_dit_habite | nom                |
-|----------|------------|--------------------|--------------------|
-| Aclou    | 27001      | 107                | Manoir de la Haule |
-| Acquigny | 27003      | 106                | Manoir de Becdal   |
-| Ailly    | 27005      | 596                | Quaizes            |
-| Ailly    | 27005      | 595                | Ingremare          |
-| Ailly    | 27005      | 594                | Gruchet            |
-| Alizay   | 27008      | 667                | Le Solitaire       |
-| Ambenay  | 27009      | 204                | Les Siaules        |
-| Ambenay  | 27009      | 201                | Les Renardieres    |
-| Ambenay  | 27009      | 202                | Le Culoron         |</p>
+<table>
+<thead>
+<tr>
+<th>nom</th>
+<th>code_insee</th>
+<th>id_lieu_dit_habite</th>
+<th>nom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aclou</td>
+<td>27001</td>
+<td>107</td>
+<td>Manoir de la Haule</td>
+</tr>
+<tr>
+<td>Acquigny</td>
+<td>27003</td>
+<td>106</td>
+<td>Manoir de Becdal</td>
+</tr>
+<tr>
+<td>Ailly</td>
+<td>27005</td>
+<td>596</td>
+<td>Quaizes</td>
+</tr>
+<tr>
+<td>Ailly</td>
+<td>27005</td>
+<td>595</td>
+<td>Ingremare</td>
+</tr>
+<tr>
+<td>Ailly</td>
+<td>27005</td>
+<td>594</td>
+<td>Gruchet</td>
+</tr>
+<tr>
+<td>Alizay</td>
+<td>27008</td>
+<td>667</td>
+<td>Le Solitaire</td>
+</tr>
+<tr>
+<td>Ambenay</td>
+<td>27009</td>
+<td>204</td>
+<td>Les Siaules</td>
+</tr>
+<tr>
+<td>Ambenay</td>
+<td>27009</td>
+<td>201</td>
+<td>Les Renardieres</td>
+</tr>
+<tr>
+<td>Ambenay</td>
+<td>27009</td>
+<td>202</td>
+<td>Le Culoron</td>
+</tr>
+</tbody>
+</table>
 <p>On a plusieurs lignes par commune, autant que de lieux-dits pour cette commune. Par contre, comme ce n'est pas une jointure LEFT, on ne trouve que des résultats pour les communes qui ont des lieux-dits.</p>
 <p>On pourrait aussi faire des statistiques, en regroupant par les champs de la table principale, ici les communes.</p>
 <pre><code class="sql">SELECT
@@ -174,15 +364,60 @@ ORDER BY nb_lieu_dit DESC
 LIMIT 10
 </code></pre>
 
-<p>| nom                | code_insee | nb_lieu_dit | geom |
-|--------------------|------------|-------------|------|
-| Heudebouville      | 27332      | 61          | .... |
-| Mesnils-sur-Iton   | 27198      | 52          | .... |
-| Rouen              | 76540      | 20          | .... |
-| Saint-Saëns        | 76648      | 19          | .... |
-| Les Grandes-Ventes | 76321      | 19          | .... |
-| Mesnil-en-Ouche    | 27049      | 18          | .... |
-| Quincampoix        | 76517      | 18          | .... |</p>
+<table>
+<thead>
+<tr>
+<th>nom</th>
+<th>code_insee</th>
+<th>nb_lieu_dit</th>
+<th>geom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heudebouville</td>
+<td>27332</td>
+<td>61</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Mesnils-sur-Iton</td>
+<td>27198</td>
+<td>52</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Rouen</td>
+<td>76540</td>
+<td>20</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Saint-Saëns</td>
+<td>76648</td>
+<td>19</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Les Grandes-Ventes</td>
+<td>76321</td>
+<td>19</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Mesnil-en-Ouche</td>
+<td>27049</td>
+<td>18</td>
+<td>....</td>
+</tr>
+<tr>
+<td>Quincampoix</td>
+<td>76517</td>
+<td>18</td>
+<td>....</td>
+</tr>
+</tbody>
+</table>
 <h4 id="joindre-des-lignes-avec-des-polygones">Joindre des lignes avec des polygones</h4>
 <p>Récupérer le code commune de chaque chemin, par <strong>intersection entre le chemin et la commune</strong>.</p>
 <h5 id="jointure-spatiale-simple-entre-les-geometries-brutes">jointure spatiale simple entre les géométries brutes</h5>
