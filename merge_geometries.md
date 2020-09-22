@@ -42,4 +42,4 @@ ALTER TABLE z_formation.bloc_parcelle_havre ADD PRIMARY KEY (id);
 CREATE INDEX ON z_formation.bloc_parcelle_havre USING GIST (geom);
 ```
 
-Continuer vers [Correction des géométries invalides](./validate_geometries.md)
+Continuer vers [Les triggers](./triggers.md)

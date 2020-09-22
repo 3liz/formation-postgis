@@ -212,7 +212,7 @@ BEGIN
         RAISE NOTICE 'ERROR - Failed %s', quote_ident(schemaname) || '.' || quote_ident(tablename);
         RAISE NOTICE '%', sql_text;
         RETURN 0;
-    END;    
+    END;
 END;
 $limite$
 LANGUAGE plpgsql
@@ -231,11 +231,13 @@ ORDER BY &quot;ma_colonne_de_schema&quot;, &quot;ma_colonne_de_table&quot;
 
 -- Vérification
 SELECT table_schema, table_name, obj_description((quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass) AS commentaire
-FROM information_schema.tables 
+FROM information_schema.tables
 WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
 ORDER BY table_schema, table_name;
 
 </code></pre>
+
+<p>Continuer vers <a href="./grant.html">Gestion des droits</a></p>
   </article>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>

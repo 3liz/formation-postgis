@@ -1,27 +1,39 @@
----
-Title: Les triggers
-Favicon: logo.svg
-Sibling: yes
-...
 
-[TOC]
-
-## Les triggers
-
-Les **triggers**, aussi appelés en français **déclencheurs**, permettent de lancer des actions avant ou après ajout, modification ou suppression de données sur des tables (ou des vues).
-
-Les triggers peuvent par exemple être utilisés
-
-* pour lancer le calcul de certains champs de manière automatique: date de dernière modification, utilisateur à l'origine d'un ajout
-* pour contrôler certaines données avant enregistrement
-* pour lancer des requêtes après certaines actions (historiques de modifications)
-
-### Calcul automatique de certains champs
-
-On crée une table `borne_incendie` pour pouvoir tester cette fonctionnalité:
-
-```sql
-
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>Les triggers</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <link href="https://3liz.github.io/remarkable.css" rel="stylesheet"/>
+  <link href="logo.svg" rel="icon" type="image/png" >
+ </head>
+ <body>
+ <header class="header-container" style="">
+    <h1>Les triggers</h1>
+ </header>
+ <article>
+ <p><a href="../">Up</a></p>
+<p><a href="./index.html">Back</a></p><div class="toc"><span class="toctitle">Table of content</span><ul>
+<li><a href="#les-triggers">Les triggers</a><ul>
+<li><a href="#calcul-automatique-de-certains-champs">Calcul automatique de certains champs</a></li>
+</ul>
+</li>
+<li><a href="#controles-de-conformite">Contrôles de conformité</a></li>
+<li><a href="#ecrire-les-actions-produites-sur-une-table">Écrire les actions produites sur une table</a></li>
+</ul>
+</div>
+<h2 id="les-triggers">Les triggers</h2>
+<p>Les <strong>triggers</strong>, aussi appelés en français <strong>déclencheurs</strong>, permettent de lancer des actions avant ou après ajout, modification ou suppression de données sur des tables (ou des vues).</p>
+<p>Les triggers peuvent par exemple être utilisés</p>
+<ul>
+<li>pour lancer le calcul de certains champs de manière automatique: date de dernière modification, utilisateur à l'origine d'un ajout</li>
+<li>pour contrôler certaines données avant enregistrement</li>
+<li>pour lancer des requêtes après certaines actions (historiques de modifications)</li>
+</ul>
+<h3 id="calcul-automatique-de-certains-champs">Calcul automatique de certains champs</h3>
+<p>On crée une table <code>borne_incendie</code> pour pouvoir tester cette fonctionnalité:</p>
+<pre><code class="sql">
 CREATE TABLE z_formation.borne_incendie (
     id_borne serial primary key,
     code text NOT NULL,
@@ -29,12 +41,10 @@ CREATE TABLE z_formation.borne_incendie (
     geom geometry(point, 2154)
 );
 CREATE INDEX ON z_formation.borne_incendie USING GIST (geom);
-```
+</code></pre>
 
-On y ajoute des champs à renseigner de manière automatique
-
-```sql
--- TRIGGERS
+<p>On y ajoute des champs à renseigner de manière automatique</p>
+<pre><code class="sql">-- TRIGGERS
 -- Modification de certains champs après ajout ou modification
 -- Créer les champs dans la table
 ALTER TABLE z_formation.borne_incendie ADD COLUMN modif_date date;
@@ -44,12 +54,10 @@ ALTER TABLE z_formation.borne_incendie ADD COLUMN latitude real;
 ALTER TABLE z_formation.borne_incendie ADD COLUMN donnee_validee boolean;
 ALTER TABLE z_formation.borne_incendie ADD COLUMN last_action text;
 
-```
+</code></pre>
 
-On crée la fonction trigger qui ajoutera les métadonnées dans la table
-
-```sql
--- Créer la fonction qui sera lancée sur modif ou ajout de données
+<p>On crée la fonction trigger qui ajoutera les métadonnées dans la table</p>
+<pre><code class="sql">-- Créer la fonction qui sera lancée sur modif ou ajout de données
 CREATE OR REPLACE FUNCTION z_formation.ajout_metadonnees_modification()
 RETURNS TRIGGER
 AS $limite$
@@ -104,23 +112,18 @@ END;
 $limite$
 LANGUAGE plpgsql
 ;
-```
+</code></pre>
 
-On crée enfin le déclencheur pour la ou les tables souhaitées, ce qui active le lancement de la fonction trigger précédente sur certaines actions:
-
-```sql
--- Dire à PostgreSQL d'écouter les modifications et ajouts sur la table
+<p>On crée enfin le déclencheur pour la ou les tables souhaitées, ce qui active le lancement de la fonction trigger précédente sur certaines actions:</p>
+<pre><code class="sql">-- Dire à PostgreSQL d'écouter les modifications et ajouts sur la table
 CREATE TRIGGER trg_ajout_metadonnees_modification
 BEFORE INSERT OR UPDATE ON z_formation.borne_incendie
 FOR EACH ROW EXECUTE PROCEDURE z_formation.ajout_metadonnees_modification();
-```
+</code></pre>
 
-## Contrôles de conformité
-
-Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les valeurs de certains champs. Par exemple, on peut ajouter un contrôle sur la géométrie lors de l'ajout ou de la modification de données: on vérifie si la géométrie est bien en intersection avec les objets de la table des communes
-
-```sql
--- Contrôle de la géométrie
+<h2 id="controles-de-conformite">Contrôles de conformité</h2>
+<p>Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les valeurs de certains champs. Par exemple, on peut ajouter un contrôle sur la géométrie lors de l'ajout ou de la modification de données: on vérifie si la géométrie est bien en intersection avec les objets de la table des communes</p>
+<pre><code class="sql">-- Contrôle de la géométrie
 -- qui doit être dans la zone d'intérêt
 -- On crée une fonction générique qui pourra s'appliquer pour toutes les couches
 CREATE OR REPLACE FUNCTION z_formation.validation_geometrie_dans_zone_interet()
@@ -145,17 +148,12 @@ DROP TRIGGER IF EXISTS trg_validation_geometrie_dans_zone_interet ON z_formation
 CREATE TRIGGER trg_validation_geometrie_dans_zone_interet
 BEFORE INSERT OR UPDATE ON z_formation.borne_incendie
 FOR EACH ROW EXECUTE PROCEDURE z_formation.validation_geometrie_dans_zone_interet();
-```
+</code></pre>
 
-Si on essaye de créer un point dans la table `z_formation.borne_incendie` en dehors des communes, la base renverra une erreur.
-
-
-## Écrire les actions produites sur une table
-
-On crée d'abord une table qui permettra de stocker les actions
-
-```sql
-
+<p>Si on essaye de créer un point dans la table <code>z_formation.borne_incendie</code> en dehors des communes, la base renverra une erreur.</p>
+<h2 id="ecrire-les-actions-produites-sur-une-table">Écrire les actions produites sur une table</h2>
+<p>On crée d'abord une table qui permettra de stocker les actions</p>
+<pre><code class="sql">
 CREATE TABLE IF NOT EXISTS z_formation.log (
     id serial primary key,
     log_date timestamp,
@@ -163,12 +161,10 @@ CREATE TABLE IF NOT EXISTS z_formation.log (
     log_action text,
     log_data jsonb
 );
-```
+</code></pre>
 
-On peut maintenant créer un trigger qui stocke dans cette table les actions effectuées. Dans cet exemple, toutes les données sont stockées, mais on pourrait bien sûr choisir de simplifier cela.
-
-```sql
-CREATE OR REPLACE FUNCTION z_formation.log_actions()
+<p>On peut maintenant créer un trigger qui stocke dans cette table les actions effectuées. Dans cet exemple, toutes les données sont stockées, mais on pourrait bien sûr choisir de simplifier cela.</p>
+<pre><code class="sql">CREATE OR REPLACE FUNCTION z_formation.log_actions()
 RETURNS TRIGGER  AS $limite$
 DECLARE
     row_data jsonb;
@@ -212,12 +208,24 @@ CREATE TRIGGER trg_log_actions
 AFTER INSERT OR UPDATE OR DELETE ON z_formation.borne_incendie
 FOR EACH ROW EXECUTE PROCEDURE z_formation.log_actions();
 
-```
+</code></pre>
 
-NB:
-
-* Attention, ce type de tables de log peut vite devenir très grosse !
-* pour un log d'audit plus évolué réalisé à partir de triggers, vous pouvez consulter [le dépôt audit_trigger](https://github.com/Oslandia/audit_trigger/blob/master/audit.sql)
-
-
-Continuer vers [Correction des géométries invalides](./validate_geometries.md)
+<p>NB:</p>
+<ul>
+<li>Attention, ce type de tables de log peut vite devenir très grosse !</li>
+<li>pour un log d'audit plus évolué réalisé à partir de triggers, vous pouvez consulter <a href="https://github.com/Oslandia/audit_trigger/blob/master/audit.sql">le dépôt audit_trigger</a></li>
+</ul>
+<p>Continuer vers <a href="./validate_geometries.html">Correction des géométries invalides</a></p>
+  </article>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>

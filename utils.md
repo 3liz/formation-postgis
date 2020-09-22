@@ -218,16 +218,16 @@ DECLARE
     sql_text text;
 BEGIN
 
-	BEGIN
-		RAISE NOTICE 'Table %s', quote_ident(schemaname) || '.' || quote_ident(tablename) ;
-		sql_text = 'COMMENT ON TABLE ' || quote_ident(schemaname) || '.' || quote_ident(tablename) || ' IS ' || quote_literal(table_comment) ;
-		EXECUTE sql_text;
-		RETURN 1;
-	EXCEPTION WHEN OTHERS THEN
-		RAISE NOTICE 'ERROR - Failed %s', quote_ident(schemaname) || '.' || quote_ident(tablename);
-		RAISE NOTICE '%', sql_text;
-		RETURN 0;
-	END;	
+    BEGIN
+        RAISE NOTICE 'Table %s', quote_ident(schemaname) || '.' || quote_ident(tablename) ;
+        sql_text = 'COMMENT ON TABLE ' || quote_ident(schemaname) || '.' || quote_ident(tablename) || ' IS ' || quote_literal(table_comment) ;
+        EXECUTE sql_text;
+        RETURN 1;
+    EXCEPTION WHEN OTHERS THEN
+        RAISE NOTICE 'ERROR - Failed %s', quote_ident(schemaname) || '.' || quote_ident(tablename);
+        RAISE NOTICE '%', sql_text;
+        RETURN 0;
+    END;
 END;
 $limite$
 LANGUAGE plpgsql
@@ -246,8 +246,10 @@ ORDER BY "ma_colonne_de_schema", "ma_colonne_de_table"
 
 -- Vérification
 SELECT table_schema, table_name, obj_description((quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass) AS commentaire
-FROM information_schema.tables 
+FROM information_schema.tables
 WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
 ORDER BY table_schema, table_name;
 
 ```
+
+Continuer vers [Gestion des droits](./grant.md)

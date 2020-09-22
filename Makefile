@@ -17,3 +17,5 @@ github-pages:
 	@docker run --rm -w /plugin -v $(shell pwd):/plugin 3liz/pymarkdown:latest union.md docs/union.html
 	@docker run --rm -w /plugin -v $(shell pwd):/plugin 3liz/pymarkdown:latest utils.md docs/utils.html
 	@docker run --rm -w /plugin -v $(shell pwd):/plugin 3liz/pymarkdown:latest validate_geometries.md docs/validate_geometries.html
+	@docker run --rm -w /plugin -v $(shell pwd):/plugin 3liz/pymarkdown:latest triggers.md docs/triggers.html
+	@docker run --rm -w /plugin -v $(shell pwd):/plugin 3liz/pymarkdown:latest grant.md docs/grant.html
