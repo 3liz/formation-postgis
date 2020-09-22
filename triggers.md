@@ -33,6 +33,8 @@ ALTER TABLE z_formation.borne_incendie ADD COLUMN modif_date date;
 ALTER TABLE z_formation.borne_incendie ADD COLUMN modif_user text;
 ALTER TABLE z_formation.borne_incendie ADD COLUMN longitude real;
 ALTER TABLE z_formation.borne_incendie ADD COLUMN latitude real;
+ALTER TABLE z_formation.borne_incendie ADD COLUMN donnee_validee boolean;
+ALTER TABLE z_formation.borne_incendie ADD COLUMN last_action text;
 
 ```
 
@@ -46,13 +48,14 @@ AS $limite$
 DECLARE newjsonb jsonb;
 BEGIN
 
-    -- on transforme l'enregistrement en JSON
+    -- on transforme l'enregistrement NEW (la ligne modifie ou ajouée) en JSON
     -- pour connaître la liste des champs
     newjsonb = to_jsonb(NEW);
 
     -- on peut ainsi tester si chaque champ existe dans la table
     -- avant de modifier sa valeur
-    IF newjsonb ? 'modif_date'THEN
+    -- Par exemple, on teste si le champ modif_date est bien dans l'enregistrement courant
+    IF newjsonb ? 'modif_date' THEN
         NEW.modif_date = now();
         RAISE NOTICE 'Date modifiée %', NEW.modif_date;
     END IF;
@@ -61,13 +64,31 @@ BEGIN
         NEW.modif_user = CURRENT_USER;
     END IF;
 
-    -- Ne modifier longitude et latitude que si la géométrie a été modifiée
-    IF NOT ST_Equals(OLD.geom, NEW.geom)
-        AND newjsonb ? 'longitude'
-        AND newjsonb ? 'latitude'
+    -- longitude et latitude
+    IF newjsonb ? 'longitude' AND newjsonb ? 'latitude'
     THEN
-        NEW.longitude = ST_X(NEW.geom);
-        NEW.latitude = ST_Y(NEW.geom);
+        -- Soit on fait un UPDATE et les géométries sont différentes
+        -- Soit on fait un INSERT
+        -- Sinon pas besoin de calculer les coordonnées
+        IF
+            (TG_OP = 'UPDATE' AND NOT ST_Equals(OLD.geom, NEW.geom))
+            OR (TG_OP = 'INSERT')
+        THEN
+            NEW.longitude = ST_X(ST_Centroid(NEW.geom));
+            NEW.latitude = ST_Y(ST_Centroid(NEW.geom));
+        END IF;
+    END IF;
+
+    -- Si je trouve un champ donnee_validee, je le mets à False pour revue par l'administrateur
+    -- Je peux faire une symbologie dans QGIS qui montre les données modifiées depuis dernière validation
+    IF newjsonb ? 'donnee_validee' THEN
+        NEW.donnee_validee = False;
+    END IF;
+
+    -- Si je trouve un champ last_action, je peux y mettre UPDATE ou INSERT
+    -- Pour savoir quelle est la dernière opération utilisée
+    IF newjsonb ? 'last_action' THEN
+        NEW.last_action = TG_OP;
     END IF;
 
     RETURN NEW;
@@ -97,10 +118,10 @@ Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les
 CREATE OR REPLACE FUNCTION z_formation.validation_geometrie_dans_zone_interet()
 RETURNS TRIGGER  AS $limite$
 BEGIN
-    -- On vérifie l'intersection avec les départements, on renvoit une erreur si souci
+    -- On vérifie l'intersection avec les communes, on renvoit une erreur si souci
     IF NOT ST_Intersects(
         NEW.geom,
-        (SELECT ST_Collect(geom) FROM z_formation.commune)
+        st_collectionextract((SELECT ST_Collect(geom) FROM z_formation.commune), 3)::geometry(multipolygon, 2154)
     ) THEN
         -- On renvoit une erreur
         RAISE EXCEPTION 'La géométrie doit se trouver dans les communes';
@@ -119,3 +140,74 @@ FOR EACH ROW EXECUTE PROCEDURE z_formation.validation_geometrie_dans_zone_intere
 ```
 
 Si on essaye de créer un point dans la table `z_formation.borne_incendie` en dehors des communes, la base renverra une erreur.
+
+
+## Écrire les actions produites sur une table
+
+On crée d'abord une table qui permettra de stocker les actions
+
+```sql
+
+CREATE TABLE IF NOT EXISTS z_formation.log (
+    id serial primary key,
+    log_date timestamp,
+    log_user text,
+    log_action text,
+    log_data jsonb
+);
+```
+
+On peut maintenant créer un trigger qui stocke dans cette table les actions effectuées. Dans cet exemple, toutes les données sont stockées, mais on pourrait bien sûr choisir de simplifier cela.
+
+```sql
+CREATE OR REPLACE FUNCTION z_formation.log_actions()
+RETURNS TRIGGER  AS $limite$
+DECLARE
+    row_data jsonb;
+BEGIN
+    -- We keep data
+    IF TG_OP = 'INSERT' THEN
+        -- for insert, we take the new data
+        row_data = to_jsonb(NEW);
+    ELSE
+        -- for UPDATE and DELETE, we keep data before changes
+        row_data = to_jsonb(OLD)
+    END IF;
+
+    -- We insert a new log item
+    INSERT INTO z_formation.log (
+        log_date,
+        log_user,
+        log_action,
+        log_data
+    )
+    VALUES (
+        now(),
+        CURRENT_USER,
+        TG_OP,
+        row_data
+    );
+    IF TG_OP != 'DELETE' THEN
+        RETURN NEW;
+    ELSE
+        RETURN OLD;
+    END IF;
+END;
+$limite$
+LANGUAGE plpgsql;
+
+-- On l'applique sur la couches de test
+-- On écoute après l'action, d'où l'utilisation de `AFTER`
+-- On écoute pour INSERT, UPDATE ou DELETE
+DROP TRIGGER IF EXISTS trg_log_actions ON z_formation.borne_incendie;
+CREATE TRIGGER trg_log_actions
+AFTER INSERT OR UPDATE OR DELETE ON z_formation.borne_incendie
+FOR EACH ROW EXECUTE PROCEDURE z_formation.log_actions();
+
+```
+
+NB:
+
+* Attention, ce type de tables de log peut vite devenir très grosse !
+* pour un log d'audit plus évolué réalisé à partir de triggers, vous pouvez consulter [le dépôt audit_trigger](https://github.com/Oslandia/audit_trigger/blob/master/audit.sql)
+
