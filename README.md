@@ -30,7 +30,7 @@ Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent
 * [Enregistrer les requêtes: VIEW](./save_queries.md)
 * [Réaliser des jointures attributaires et spatiales; JOIN](./join_data.md)
 * [Fusionner des géométries](./merge_geometries.md)
-* [Les triggers](./triggers.sql)
+* [Les triggers](./triggers.md)
 * [Correction des géométries invalides](./validate_geometries.md)
 * [Vérifier la topologie](./check_topology.md)
 * [Fonctions utiles](./utils.md)
