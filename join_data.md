@@ -122,7 +122,7 @@ JOIN "z_formation".commune AS c
 ORDER BY l.nom
 ```
 
-| id_lieu_dit_habite | nom                   | nom_commune              | code_insee | geom | 
+| id_lieu_dit_habite | nom                   | nom_commune              | code_insee | geom |
 |--------------------|-----------------------|--------------------------|------------|------|
 | 58                 | Abbaye du Valasse     | Gruchet-le-Valasse       | 76329      | .... |
 | 1024               | Ablemont              | Bacqueville-en-Caux      | 76051      | .... |
@@ -305,7 +305,7 @@ CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);
 
 On peut bien sûr réaliser des **jointures spatiales** entre 2 couches de **polygones**, et découper les polygones par intersection. Attention, les performances sont forcément moins bonnes qu'avec des points.
 
-Trouver l'ensemble des zonages PLU pour les parcelles du Havre. 
+Trouver l'ensemble des zonages PLU pour les parcelles du Havre.
 
 On va récupérer **plusieurs résultats pour chaque parcelle** si plusieurs zonages chevauchent une parcelle.
 
@@ -389,6 +389,117 @@ CREATE INDEX ON z_formation.decoupe_zonage_parcelle USING GIST (geom);
 
 ```
 
+#### Faire un rapport des surfaces intersectées de zonages sur une table principale
+
+Par exemple, pour chacune des communes, on souhaite calculer la somme des surfaces intersectée par chaque type de zone (parcs, znieff, etc.).
+
+Afin d'avoir à disposition des données de test pour cet exemple de rapport, nous allons créer 2 tables `z_formation.parc_national` et `z_formation.znieff`, et y insérer des fausses données:
+
+
+```sql
+-- Table des parcs nationaux
+CREATE TABLE IF NOT EXISTS z_formation.parc_national (
+    id serial primary key,
+    nom text,
+    geom geometry(multipolygon, 2154)
+);
+CREATE INDEX ON z_formation.parc_national USING GIST (geom);
+
+-- Table des znieff
+CREATE TABLE IF NOT EXISTS z_formation.znieff(
+    id serial primary key,
+    nom_znieff text,
+    geom geometry(multipolygon, 2154)
+);
+CREATE INDEX ON z_formation.znieff USING GIST (geom);
+```
+
+On insère des polygones dans ces deux tables:
+
+```sql
+-- données de test
+-- parcs
+INSERT INTO z_formation.parc_national VALUES (1, 'un', '01060000206A0800000100000001030000000100000008000000C3F7DE73553D20411B3DC1FB0C625A410531F757E93D2041BAECB21FA85E5A41F35B09978081204195F05B9787595A41D61E4865A1A7204147BC8A3AC0605A41ED76A806317F2041A79F7E4876605A41B80752433C832041037846623A655A41E10ED595BA6120413CC1D1C18C685A41C3F7DE73553D20411B3DC1FB0C625A41');
+INSERT INTO z_formation.parc_national VALUES (2, 'deux', '01060000206A080000010000000103000000010000000900000024D68B4AE0412141AAAAAA3C685B5A4130642ACBD01421413A85AE4B72585A41CA08F0240E382141746C4BD107535A41FA30F7A78A4A2141524A29E544555A414796BF5CE63621414DD2E222A4565A416B92160F9B5D2141302807F981575A4130DC700B2E782141DC0ED50B6B5C5A4106FBB8C8294F214150AC17BF015E5A4124D68B4AE0412141AAAAAA3C685B5A41');
+INSERT INTO z_formation.parc_national VALUES (3, 'trois', '01060000206A0800000100000001030000000100000006000000918DCFE7E0861F4137AB79AF14515A411AE56040588A1F41642A43EEC74F5A41DF2EBB3CEBA41F418C31C66ADA4F5A4168864C9562A81F416E87EA40B8505A415CBC8A74C3A31F410FA4F63202515A41918DCFE7E0861F4137AB79AF14515A41');
+INSERT INTO z_formation.parc_national VALUES (4, 'quatre', '01060000206A080000010000000103000000010000000500000004474FE81DBA2041269A684EFD625A41AB17C51223C9204120B507BEAD605A4116329539BBF22041A3273886D5615A416F611F0FB6E32041FA1A9F0F4A645A4104474FE81DBA2041269A684EFD625A41');
+INSERT INTO z_formation.parc_national VALUES (5, 'cinq', '01060000206A0800000100000001030000000100000005000000F2E3C256231E2041E0ACE631AE535A41F7C823E772202041E89C73B6EF505A41B048BCC266362041DAC785A15E515A419E999911782F204180C9F223F8535A41F2E3C256231E2041E0ACE631AE535A41');
+SELECT pg_catalog.setval('z_formation.parc_national_id_seq', 5, true);
+
+-- znieff
+INSERT INTO z_formation.znieff VALUES (1, 'uno', '01060000206A08000001000000010300000001000000050000004039188C39D12041770A5DF74A4A5A413A54B7FBE9CE20410C5DA7C8F5455A41811042C0A4EA204130ECE38267475A416F611F0FB6E320417125FC66FB475A414039188C39D12041770A5DF74A4A5A41');
+INSERT INTO z_formation.znieff VALUES (2, 'dos', '01060000206A080000010000000103000000010000000500000076BEC6DF62492141513FFDF0525A5A417CA32770B24B21411EDBD22150595A419437ABB1F05421410F06E50CBF595A419437ABB1F0542141B022F1FE085A5A4176BEC6DF62492141513FFDF0525A5A41');
+INSERT INTO z_formation.znieff VALUES (3, 'tres', '01060000206A0800000100000001030000000100000005000000A6E6CD62DF5B2141B607528F585C5A41ACCB2EF32E5E2141C5DC3FA4E95B5A414CB7438DE46A2141C5DC3FA4E95B5A41B895F013CE62214189888850A55D5A41A6E6CD62DF5B2141B607528F585C5A41');
+INSERT INTO z_formation.znieff VALUES (4, 'quatro', '01060000206A0800000100000001030000000100000005000000CE857DF445102041985D7665365D5A41DA4F3F15E5142041339521C7305B5A41C2F7DE73553D2041927815D5E65A5A410393E50712252041B607528F585C5A41CE857DF445102041985D7665365D5A41');
+INSERT INTO z_formation.znieff VALUES (5, 'cinco', '01060000206A080000010000000103000000010000000500000045A632DC2B702041FD25CB033C5F5A41CEFDC334A373204115EB459D0E5C5A41F25B099780812041397A8257805D5A415755558D1A7720419E42D7F5855F5A4145A632DC2B702041FD25CB033C5F5A41');
+SELECT pg_catalog.setval('z_formation.znieff_id_seq', 5, true);
+```
+
+Pour chaque commune, on souhaite calculer la somme des surfaces intersectée par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)
+
+* Méthode avec des **jointures LEFT**
+
+```sql
+SELECT
+    -- champs choisis dans la table commune
+    c.id_commune, c.code_insee, c.nom,
+    -- surface en ha
+    ST_Area(c.geom) / 10000 AS surface_commune_ha,
+    -- somme des découpages des parcs par commune
+    sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) AS somme_surface_parcs,
+    -- somme des découpages des znieff par commune
+    sum(ST_Area(ST_Intersection(c.geom, z.geom)) / 10000 ) AS somme_surface_znieff
+
+FROM z_formation.commune AS c
+-- jointure spatiale sur les parcs
+LEFT JOIN z_formation.parc_national AS p
+    ON ST_Intersects(c.geom, p.geom)
+-- jointure spatiale sur les znieff
+LEFT JOIN z_formation.znieff AS z
+    ON ST_Intersects(c.geom, z.geom)
+
+-- clause WHERE optionelle
+-- WHERE p.id IS NOT NULL OR z.id IS NOT NULL
+
+-- on regroupe sur les champs des communes
+GROUP BY c.id_commune, c.code_insee, c.nom
+
+-- on ordonne par nom
+ORDER BY c.nom
+```
+
+Avantage: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
+
+Résultat:
+
+| id_commune | code_insee | nom               | surface_commune_ha | somme_surface_parcs | somme_surface_znieff |
+|------------|------------|-------------------|--------------------|---------------------|----------------------|
+| 1139       | 27042      | Barville          | 275.138028733401   | 87.2237204013011    | None                 |
+| 410        | 27057      | Bernienville      | 779.74546553394    | None                | 5.26504189468878     |
+| 1193       | 27061      | Berthouville      | 757.19696570046    | 19.9975421896336    | None                 |
+| 495        | 27074      | Boisney           | 576.995877227961   | 0.107059260396721   | None                 |
+| 432        | 27077      | Boissey-le-Châtel | 438.373848703835   | 434.510197417769    | 83.9289621127432     |
+
+
+* Méthode avec des sous-requêtes
+
+```sql
+SELECT
+    c.id_commune, c.code_insee, c.nom,
+    ST_Area(c.geom) / 10000 AS surface_commune_ha,
+    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.parc_national AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_parc_national,
+    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.znieff AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_znieff
+FROM z_formation.commune AS c
+ORDER BY c.nom
+```
+
+Avantage: plus simple à écrire, mais ne permet pas de clause WHERE simple
+
+
+**ATTENTION**:
+
+* il faut absolument avoir un index spatial sur le champ `geom` de toutes les tables
+* le calcul de découpage des polygones des communes par ceux des zonages peut être très long (et l'index spatial ne sert à rien ici)
 
 
 #### Distances et tampons entre couches
