@@ -17,10 +17,10 @@
 <p><a href="./index.html">Back</a></p><div class="toc"><span class="toctitle">Table of content</span><ul>
 <li><a href="#les-triggers">Les triggers</a><ul>
 <li><a href="#calcul-automatique-de-certains-champs">Calcul automatique de certains champs</a></li>
-</ul>
-</li>
 <li><a href="#controles-de-conformite">Contrôles de conformité</a></li>
 <li><a href="#ecrire-les-actions-produites-sur-une-table">Écrire les actions produites sur une table</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <h2 id="les-triggers">Les triggers</h2>
@@ -121,7 +121,7 @@ BEFORE INSERT OR UPDATE ON z_formation.borne_incendie
 FOR EACH ROW EXECUTE PROCEDURE z_formation.ajout_metadonnees_modification();
 </code></pre>
 
-<h2 id="controles-de-conformite">Contrôles de conformité</h2>
+<h3 id="controles-de-conformite">Contrôles de conformité</h3>
 <p>Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les valeurs de certains champs. Par exemple, on peut ajouter un contrôle sur la géométrie lors de l'ajout ou de la modification de données: on vérifie si la géométrie est bien en intersection avec les objets de la table des communes</p>
 <pre><code class="sql">-- Contrôle de la géométrie
 -- qui doit être dans la zone d'intérêt
@@ -151,7 +151,7 @@ FOR EACH ROW EXECUTE PROCEDURE z_formation.validation_geometrie_dans_zone_intere
 </code></pre>
 
 <p>Si on essaye de créer un point dans la table <code>z_formation.borne_incendie</code> en dehors des communes, la base renverra une erreur.</p>
-<h2 id="ecrire-les-actions-produites-sur-une-table">Écrire les actions produites sur une table</h2>
+<h3 id="ecrire-les-actions-produites-sur-une-table">Écrire les actions produites sur une table</h3>
 <p>On crée d'abord une table qui permettra de stocker les actions</p>
 <pre><code class="sql">
 CREATE TABLE IF NOT EXISTS z_formation.log (

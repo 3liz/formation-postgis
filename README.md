@@ -35,3 +35,4 @@ Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent
 * [Vérifier la topologie](./check_topology.md)
 * [Fonctions utiles](./utils.md)
 * [Gestion des droits](./grant.md)
+* [Accéder à des données externes: Foreign Data Wrapper](./fdw.md)

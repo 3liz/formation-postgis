@@ -74,3 +74,5 @@ Droits par défaut sur les nouveaux objets créés
 ```sql
 -- TODO
 ```
+
+Continuer vers [Accéder à des données externes: Foreign Data Wrapper](./fdw.md)

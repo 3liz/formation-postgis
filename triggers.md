@@ -115,7 +115,7 @@ BEFORE INSERT OR UPDATE ON z_formation.borne_incendie
 FOR EACH ROW EXECUTE PROCEDURE z_formation.ajout_metadonnees_modification();
 ```
 
-## Contrôles de conformité
+### Contrôles de conformité
 
 Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les valeurs de certains champs. Par exemple, on peut ajouter un contrôle sur la géométrie lors de l'ajout ou de la modification de données: on vérifie si la géométrie est bien en intersection avec les objets de la table des communes
 
@@ -150,7 +150,7 @@ FOR EACH ROW EXECUTE PROCEDURE z_formation.validation_geometrie_dans_zone_intere
 Si on essaye de créer un point dans la table `z_formation.borne_incendie` en dehors des communes, la base renverra une erreur.
 
 
-## Écrire les actions produites sur une table
+### Écrire les actions produites sur une table
 
 On crée d'abord une table qui permettra de stocker les actions
 
