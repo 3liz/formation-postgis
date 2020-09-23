@@ -8,11 +8,11 @@ Sibling: yes
 
 ## Accéder à des données externes : les Foreign Data Wrapper (FDW)
 
-L'utilisation d'un FDW permet de consulter des données externes à la base si elles étaient stockées dans des tables.
+L'utilisation d'un FDW permet de **consulter des données externes** à la base comme si elles étaient stockées dans des tables. On peut lancer des requêtes pour récupérer seulement certains champs, filtrer les données, etc.
 
-Des tables "étrangères" sont créées, qui pointent vers les données externes. A chaque requête sur ces tables, PostgreSQL récupère les données depuis la connexion au serveur externe.
+Des **tables étrangères** sont créées, qui pointent vers les données externes. A chaque requête sur ces tables, PostgreSQL récupère les données depuis la connexion au serveur externe.
 
-On passe par les étapes suivantes:
+On passe classiquement par les étapes suivantes:
 
 * Ajout de l'**extension** correspondant au format souhaité: `postgres_fdw` (bases PostgreSQL externes), `ogr_fdw` (données vectorielles via ogr2ogr), etc.
 * Création d'un **serveur** qui permet de configurer les informations de connexion au serveur externe
@@ -23,13 +23,25 @@ On passe par les étapes suivantes:
 
 ### Le FDW ogr_fdw pour lire des données vectorielles
 
-Avec ce Foreign Data Wrapper **ogr_fdw**, on peut appeler n'importe quelle source de données externe compatible avec l'outil ogr2ogr et les exploiter comme des tables.
+Avec ce Foreign Data Wrapper **ogr_fdw**, on peut appeler n'importe quelle source de données externe compatible avec la librairie **ogr2ogr** et les exploiter comme des tables: fichiers GeoJSON ou Shapefile, GPX, CSV, mais aussi les protocoles comme le WFS.
 
-Voir la (documentation officielle de ogr_fdw)[https://github.com/pramsey/pgsql-ogr-fdw].
+Voir la [documentation officielle de ogr_fdw](https://github.com/pramsey/pgsql-ogr-fdw). 
 
-Ci-dessous un exemple pratique qui montre comment récupérer des données d'un serveur via le protocole WFS, depuis le serveur de l'INPN métropole.
+#### Installation
 
-Ajouter l'**extension** `ogr_fdw`:
+Pour l'installer sur une machine **Linux**, il suffit d'installer le paquet correspondant à la version de PostgreSQL, par exemple `postgresql-11-ogr-fdw`. 
+
+Sous **Windows**, il est disponible avec le paquet PostGIS via l'outil [StackBuilder](https://www.postgresql.org/download/windows/).
+
+#### Exemple d'utilisation: récupérer des couches d'un serveur WFS
+
+Nous allons utiliser le FDW pour récupérer des données mises à disposition sur le serveur de l'INPN via le protocole WFS.
+
+Vous pouvez d'abord tester dans QGIS quelles données sont disponibles sur ce serveur en créant une nouvelle connexion WFS avec l'URL `http://ws.carmencarto.fr/WFS/119/fxx_inpn?`
+
+Via QGIS ou un autre client à la base de données, nous pouvons maintenant montrer comment récuperer ces données:
+
+* Ajouter l'**extension** `ogr_fdw`:
 
 ```sql
 -- Ajouter l'extension pour lire des fichiers SIG
@@ -37,7 +49,7 @@ Ajouter l'**extension** `ogr_fdw`:
 CREATE EXTENSION IF NOT EXISTS ogr_fdw;
 ```
 
-Créer le **serveur** de données:
+* Créer le **serveur** de données:
 
 ```sql
 -- Créer le serveur
@@ -49,14 +61,14 @@ OPTIONS (
 );
 ```
 
-Créer un **schéma** pour y stocker les tables étrangères:
+* Créer un **schéma** pour y stocker les tables étrangères:
 
 ```sql
 -- Créer un schéma pour la dreal
 CREATE SCHEMA IF NOT EXISTS inpn_metropole;
 ```
 
-Créer automatiquement les **tables étrangères** qui "pointent" vers les couches du WFS, via la commande `IMPORT SCHEMA`:
+* Créer automatiquement les **tables étrangères** qui "pointent" vers les couches du WFS, via la commande `IMPORT SCHEMA`:
 
 ```sql
 -- Récupérer l'ensemble des couches WFS comme des tables dans le schéma ref_dreal
@@ -72,7 +84,7 @@ OPTIONS (
 ;
 ```
 
-Lister les tables récupérées
+* Lister les tables récupérées
 
 ```sql
 SELECT foreign_table_schema, foreign_table_name
@@ -80,7 +92,8 @@ FROM information_schema.foreign_tables
 WHERE foreign_table_schema = 'inpn_metropole'
 ORDER BY foreign_table_schema, foreign_table_name;
 ```
-qui montre
+
+ce qui montre:
 
 | foreign_table_schema | foreign_table_name                               |
 |----------------------|--------------------------------------------------|
@@ -112,7 +125,7 @@ qui montre
 | inpn_metropole       | zones_de_protection_speciale                     |
 
 
-Lire les données des couches WFS via une **simple requête** sur les tables étrangères:
+* **Lire les données** des couches WFS via une **simple requête** sur les tables étrangères:
 
 ```sql
 -- Tester
@@ -121,19 +134,33 @@ FROM inpn_metropole.zico
 LIMIT 1;
 ```
 
-Attention, lorsqu'on accède depuis PostgreSQL à un serveur WFS, on est tributaire des performances de ce serveur, et du temps de transfert des données vers la base.
+**Attention**, lorsqu'on accède depuis PostgreSQL à un serveur WFS, on est tributaire 
 
-Nous déconseillons fortement dans ce cas de réaliser des requêtes complexes sur ces tables étrangères, surtout lorsque les données évoluent peu.
+* des performances de ce serveur, 
+* et du temps de transfert des données vers la base.
+
+Nous **déconseillons fortement** dans ce cas de charger le serveur externe en réalisant des requêtes complexes (ou trop fréquentes) sur ces tables étrangères, surtout lorsque les données évoluent peu.
 
 Au contraire, nous conseillons de créer des **vues matérialisées** à partir des tables étrangères pour éviter des requêtes lourdes en stockant les données dans la base:
 
 ```sql
 -- Pour éviter de requêter à chaque fois le WFS, on peut créer des vues matérialisées
+
+-- suppression de la vue si elle existe déjà
 DROP MATERIALIZED VIEW IF EXISTS inpn_metropole.vm_zico;
+
+-- création de la vue: on doit parfois forcer le type de géométrie attendue
 CREATE MATERIALIZED VIEW inpn_metropole.vm_zico AS
-SELECT *, (ST_multi(msgeometry))::geometry(multipolygon, 2154) AS geom FROM inpn_metropole.zico;
+SELECT *, 
+(ST_multi(msgeometry))::geometry(multipolygon, 2154) AS geom
+FROM inpn_metropole.zico
+;
+
+-- Ajout d'un index spatial sur la géométrie
 CREATE INDEX ON inpn_metropole.vm_zico USING GIST (geom);
 ```
+
+Une fois la vue créée, vous pouvez faire vos requêtes sur cette vue, avec des performances bien meilleures et un allègement de la charge sur le serveur externe.
 
 Pour **rafraîchir** les données à partir du serveur WFS, il suffit de rafraîchir la ou les vues matérialisées:
 
