@@ -147,3 +147,34 @@ CREATE INDEX ON nom_du_schema.nom_de_la_table USING GIST (geom);
 Si on souhaite automatiser la création des indexes pour toutes les tables qui n'en ont pas, on peut utiliser une fonction, décrite dans la partie [Fonctions utiles](./utils.md)
 
 Continuer vers l'[Import des données dans PostgreSQL](./import_data.md)
+
+### Utiliser les notifications PostgreSQL
+
+Dans les propriétés de la couche vecteur, activer les notifications avec le message `chef_lieu`.
+
+```sql
+DROP VIEW IF EXISTS buffer_chef_lieu;
+CREATE VIEW buffer_chef_lieu AS
+SELECT 
+	id, nom,
+	ST_BUFFER(geom, 1000) AS geom
+FROM chef_lieu;
+
+CREATE OR REPLACE FUNCTION qgis_notify()
+  RETURNS trigger AS
+$BODY$
+    BEGIN
+        PERFORM pg_notify('qgis', 'chef_lieu');
+        RETURN NULL;
+    END; 
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+CREATE TRIGGER qgis_trigger
+  AFTER INSERT OR UPDATE
+  ON chef_lieu
+  FOR EACH ROW
+  EXECUTE PROCEDURE qgis_notify();
+
+```
