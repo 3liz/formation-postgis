@@ -5,6 +5,8 @@ Favicon: logo.svg
 
 # Formation PostGIS
 
+La version web est consultable en ligne https://docs.3liz.org/formation-postgis/
+
 ## Pré-requis
 
 Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent comprendre l'apport de l'utilisation de PostgreSQL comme outil de centralisation de la données spatiale (et non spatiale):
