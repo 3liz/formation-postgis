@@ -49,5 +49,23 @@ FROM z_formation.parcelle_havre
 WHERE NOT ST_isvalid(geom)
 ```
 
+Il faut aussi supprimer l'ensemble des lignes dans la table qui ne correspondent pas au type de la couche importée. Par exemple, pour les polygones, supprimer les objets dont le nombre de noeuds est inférieur à 3.
+
+* On les trouve:
+
+```sql
+SELECT *
+FROM z_formation.parcelle_havre
+WHERE ST_NPoints(geom) < 3
+```
+
+* On les supprime:
+
+```sql
+DELETE
+FROM z_formation.parcelle_havre
+WHERE ST_NPoints(geom) < 3
+```
+
+
 Continuer vers [Vérifier la topologie](./check_topology.md)
-^^^^^^
