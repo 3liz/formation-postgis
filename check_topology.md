@@ -30,8 +30,7 @@ SELECT
             ),
             3
         )
-    )
-)
+    )::geometry(multipolygon, 2154)
 FROM z_formation.parcelle_havre
 ;
 ```
@@ -92,7 +91,7 @@ parcelle_a, parcelle_b, aire_a, aire_b, ST_Area(geom) AS aire, geom
 FROM (
         SELECT
         a.id_parcelle AS parcelle_a, ST_Area(a.geom) AS aire_a,
-        b.id_parcelle AS parcelle_b, ST_Area(a.geom) AS aire_b,
+        b.id_parcelle AS parcelle_b, ST_Area(b.geom) AS aire_b,
         (ST_Multi(
                 st_collectionextract(
                         ST_MakeValid(ST_Intersection(a.geom, b.geom))
