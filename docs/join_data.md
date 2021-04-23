@@ -1,20 +1,12 @@
----
-Title: Jointure
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Les jointures
+# Les jointures
 
 Les jointures permettent de récupérer des données en relation les unes par rapport aux autres.
 
-### Les jointures attributaires
+## Les jointures attributaires
 
 La condition de jointure est faite sur des champs non géométriques. Par exemple une égalité (code, identifiant).
 
-#### Exemple 1: zonages et communes
+### Exemple 1: zonages et communes
 
 Récupération des informations de la commune pour chaque zonage
 
@@ -31,7 +23,7 @@ JOIN z_formation.commune AS c ON z.insee = c.code_insee
 Il est souvent intéressant, pour des données volumineuses, de **créer un index sur le champ de jointure** (par exemple ici sur les champs insee et ccocom.
 
 
-#### Exemple 2: observations et communes
+### Exemple 2: observations et communes
 
 * On crée une table de points qui contiendra des observations
 
@@ -100,13 +92,11 @@ Résultat
 | 1  | 2020-07-08 | un          | .... | 76618      | Petit-Caux     | 9243            | ok             |
 | 3  | 2020-07-08 | trois       | .... | Null       | Null           | Null            | pas de commune |
 
-
-
-### Les jointures spatiales
+## Les jointures spatiales
 
 Le critère de jointure peut être une **condition spatiale**. On réalise souvent une jointure par **intersection** ou par **proximité**.
 
-#### Joindre des points avec des polygones
+### Joindre des points avec des polygones
 
 Un exemple classique de récupération des données de la table commune (nom, etc.) depuis une table de points.
 
@@ -189,11 +179,11 @@ LIMIT 10
 
 
 
-#### Joindre des lignes avec des polygones
+### Joindre des lignes avec des polygones
 
 Récupérer le code commune de chaque chemin, par **intersection entre le chemin et la commune**.
 
-##### jointure spatiale simple entre les géométries brutes
+#### Jointure spatiale simple entre les géométries brutes
 
 ```sql
 -- Ici, on peut récupérer plusieurs fois le même chemin
@@ -209,7 +199,7 @@ ORDER BY id_chemin, nom
 
 Cela peut renvoyer plusieurs lignes par chemin, car chaque chemin peut passer par plusieurs communes.
 
-##### jointure spatiale entre le centroide des chemins et la géométrie des communes
+#### Jointure spatiale entre le centroide des chemins et la géométrie des communes
 
 On peut utiliser le **centroide de chaque chemin** pour avoir un seul objet par chemin comme résultat.
 
@@ -246,7 +236,7 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 ;
 ```
 
-##### Utilisation d'une jointure LEFT pour garder les communes sans chemins
+#### Utilisation d'une jointure LEFT pour garder les communes sans chemins
 
 La requête précédente ne renvoit pas de lignes pour les communes qui n'ont pas de chemin dont le centroide est dans une commune. C'est une jointure de type **INNER JOIN**
 
@@ -273,7 +263,7 @@ CREATE INDEX ON z_formation.chemin USING GIST(ST_Centroid(geom))
 
 puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâce à ce nouvel index spatial.
 
-##### Affiner le résultat en découpant les chemins
+#### Affiner le résultat en découpant les chemins
 
 Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction **ST_Intersection**. La requête va être plus couteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
 
@@ -299,9 +289,7 @@ CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);
 
 **NB**: Attention à ne pas confondre **ST_Intersects** qui renvoit vrai ou faux, et **ST_Intersection** qui renvoit la géométrie issue du découpage d'une géométrie par une autre.
 
-
-
-#### Joindre des polygones avec des polygones
+### Joindre des polygones avec des polygones
 
 On peut bien sûr réaliser des **jointures spatiales** entre 2 couches de **polygones**, et découper les polygones par intersection. Attention, les performances sont forcément moins bonnes qu'avec des points.
 
@@ -389,7 +377,7 @@ CREATE INDEX ON z_formation.decoupe_zonage_parcelle USING GIST (geom);
 
 ```
 
-#### Faire un rapport des surfaces intersectées de zonages sur une table principale
+### Faire un rapport des surfaces intersectées de zonages sur une table principale
 
 Par exemple, pour chacune des communes, on souhaite calculer la somme des surfaces intersectée par chaque type de zone (parcs, znieff, etc.).
 
@@ -502,7 +490,7 @@ Avantage: plus simple à écrire, mais ne permet pas de clause WHERE simple
 * le calcul de découpage des polygones des communes par ceux des zonages peut être très long (et l'index spatial ne sert à rien ici)
 
 
-#### Distances et tampons entre couches
+### Distances et tampons entre couches
 
 Pour chaque objets d'une table, on souhaite récupéerer des informations sur les** objets proches d'une autre table**. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction **ST_DWithin**
 

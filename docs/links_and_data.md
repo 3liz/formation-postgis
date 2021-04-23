@@ -1,14 +1,6 @@
----
-Title: Liens
-Favicon: logo.svg
-Sibling: yes
-...
+# Liens utiles
 
-[TOC]
-
-## Liens utiles
-
-### Documentation
+## Documentation
 
 Documentation de PostgreSQL : https://docs.postgresql.fr/current/
 
@@ -17,11 +9,11 @@ Documentation des fonctions PostGIS:
 * en anglais : https://postgis.net/docs/reference.html
 * en français https://postgis.net/docs/manual-2.4/postgis-fr.html notamment la référence des fonctions spatiales : https://postgis.net/docs/manual-2.4/postgis-fr.html#reference
 
-### Base de données
+## Base de données
 
 Nous présupposons qu'une **base de données** est accessible pour la formation, via un utilisateur PostgreSQL avec des droits élevés (notamment pour créer des schémas et des tables). L'extension **PostGIS** doit aussi être activée sur cette base de données.
 
-### Jeux de données
+## Jeux de données
 
 Pour cette formation, nous utilisons des données libres de droit:
 

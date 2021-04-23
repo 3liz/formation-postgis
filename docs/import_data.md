@@ -1,16 +1,8 @@
----
-Title: Importer
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Importer des données
+# Importer des données
 
 Pour la formation, on doit importer des données pour pouvoir travailler. QGIS possède plusieurs outils pour réaliser cette importation dans PostgreSQL.
 
-### Import d'une couche depuis QGIS
+## Import d'une couche depuis QGIS
 
 On  doit **charger au préalable la couche source** dans QGIS (SHP, TAB, etc.), puis on doit vérifier :
 
@@ -28,15 +20,15 @@ Après l'import, on peut cliquer, dans le panneau de gauche, sur le nom de la co
 
 **NB**: si un champ s'appelle déjà id dans la donnée source, et qui contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case **Clé primaire** dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier autoincrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune
 
-### Réimporter une donnée dans une table existante.
+## Réimporter une donnée dans une table existante.
 
-#### Avec suppression de la table puis recréation.
+### Avec suppression de la table puis recréation.
 
 Il suffit d'utiliser le même **outil d'import** via le gestionnaire de bdd, et cocher la case **Remplacer la table de destination si existante**.
 
 Attention, cela supprime la table avant de la recréer et de la remplir, ce qui peut entraîner des effets de bord (par exemple, on perd les droits définis)
 
-#### Avec vidage puis ajout des nouvelles données
+### Avec vidage puis ajout des nouvelles données
 
 Imaginons qu'on ait donné tous les droits sur les tables du schéma, par exemple via cette requête
 
@@ -68,7 +60,7 @@ Ensuite, on importe via l'outil spécifique du menu **Traitement / Boîte à out
 
 Lancer l'algorithme, et vérifier une fois les données importées que les nouvelles données ont bien été ajoutées à la table.
 
-### Importer plusieurs couches en batch
+## Importer plusieurs couches en batch
 
 Il est possible d'utiliser l'outil **Importer un vecteur vers une base de données PostGIS (connexions disponibles)** par lot. Pour cela, une fois la boîte de dialogue de cet algorithme ouverte, cliquer sur le bouton **Exécuter comme processus de lot**. Cela affiche un tableau, ou chaque ligne représente les variables d'entrée d'un algorithme.
 

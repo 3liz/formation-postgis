@@ -1,14 +1,6 @@
----
-Title: Calculer
-Favicon: logo.svg
-Sibling: yes
-...
+# Faire des calculs
 
-[TOC]
-
-## Faire des calculs
-
-### Calcul sur des attributs
+## Calcul sur des attributs
 
 Le SQL permet de réaliser des calculs ou des modifications à partir de champs. On peut donc faire des calculs sur des nombres, ou des modifications (remplacement de texte, mise en majuscule, etc.)
 
@@ -59,7 +51,7 @@ LIMIT 10
 
 Il est possible de **combiner plusieurs champs** pour réaliser un calcul. Nous verrons plus loin comment calculer la **densité de population** à partir de la population et de la surface des communes.
 
-### Calculer des caractéristiques spatiales
+## Calculer des caractéristiques spatiales
 
 Par exemple la **longueur** ou la **surface**
 
@@ -85,7 +77,7 @@ FROM z_formation.commune
 LIMIT 10
 ```
 
-### Créer des géométries à partir de géométries
+## Créer des géométries à partir de géométries
 
 On peut modifier les géométries avec des fonctions spatiales, ce qui revient à effectuer un calcul sur les géométries. Deux exemples classiques : **centroides** et **tampons**
 

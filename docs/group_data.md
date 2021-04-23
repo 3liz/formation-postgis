@@ -1,14 +1,6 @@
----
-Title: Grouper
-Favicon: logo.svg
-Sibling: yes
-...
+# Grouper des données et calculer des statistiques
 
-[TOC]
-
-## Grouper des données et calculer des statistiques
-
-### Valeurs distinctes d'un champ
+## Valeurs distinctes d'un champ
 
 On souhaite récupérer **toutes les valeurs possibles** d'un champ
 
@@ -25,7 +17,7 @@ ORDER BY nature
 ```
 
 
-### Regrouper des données en spécifiant les champs de regroupement
+## Regrouper des données en spécifiant les champs de regroupement
 
 Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un **regroupement** via la clause **GROUP BY**
 

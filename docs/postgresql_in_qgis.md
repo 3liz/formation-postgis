@@ -1,14 +1,6 @@
----
-Title: QGIS
-Favicon: logo.svg
-Sibling: yes
-...
+# Gestion des données PostgreSQL dans QGIS
 
-[TOC]
-
-## Gestion des données PostgreSQL dans QGIS
-
-### Introduction
+## Introduction
 
 Lorsqu'on travaille avec des données **PostgreSQL**, QGIS n'accède pas à la donnée en lisant un ou plusieurs fichiers, mais fait des **requêtes** à la base, à chaque fois qu'il en a besoin: déplacement de carte, zoom, ouverture de la table attributaire, sélection par expression, etc.
 
@@ -20,7 +12,7 @@ Lorsqu'on travaille avec des données **PostgreSQL**, QGIS n'accède pas à la d
 La base de données fournit donc un lieu de stockage des données centralisé. On peut gérer les droits d'accès ou d'écriture sur les schémas et les tables.
 
 
-### Créer une connexion QGIS à la base de données
+## Créer une connexion QGIS à la base de données
 
 Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil "Eléphant" : menu **Couches / Ajouter une couche / Ajouter une couche PostgreSQL** . Configurer les options suivantes:
 
@@ -36,7 +28,7 @@ Il est aussi intéressant pour les **performances** d'accès aux données Postgr
 
 **NB** Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet **Rendu** de la boîte de dialogue des propriétés de chaque couche PostGIS.
 
-### Ouvrir une couche PostgreSQL dans QGIS
+## Ouvrir une couche PostgreSQL dans QGIS
 
 Trois solutions sont possibles:
 
@@ -44,7 +36,7 @@ Trois solutions sont possibles:
 * utiliser le menu **Couches / Ajouter une couche**. La boite de dialogue propose de se connecter, puis liste les schémas et les tables
 * utiliser le **Gestionnaire de base de données**, qui présente une fenêtre QGIS séparée dédiée aux manipulations sur les données.
 
-### Le Gestionnaire de base de données
+## Le Gestionnaire de base de données
 
 On travaille via QGIS, avec le gestionnaire de bases de données : menu **Base de données > gestionnaire de base de données** (sinon via l'icône de la barre d’outil base de données).
 
@@ -103,7 +95,7 @@ INSERT INTO z_formation.borne_incendie (code, debit, geom)
 **NB**: Nous verrons plus loin l'utlisation de fonctions de création de géométrie, comme **ST_MakePoint**
 
 
-### Création d’un schéma z_formation dans la base
+## Création d’un schéma z_formation dans la base
 
 * ajout du schéma via le gestionnaire de bdd, ou via une requête:
 
@@ -134,7 +126,7 @@ DROP SCHEMA monschema CASCADE;
 ALTER SCHEMA monschema RENAME TO unschema;
 ```
 
-### Vérifier et créer les indexes spatiaux
+## Vérifier et créer les indexes spatiaux
 
 On peut vérifier si chaque table contient un **index spatial** via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet **Info**. On peut alors créer l'index spatial via le lien bleu **Aucun index spatial défini (en créer un)**.
 

@@ -1,16 +1,8 @@
----
-Title: Utilitaires
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Fonctions utiles
+# Fonctions utiles
 
 Nous regroupons ici quelques fonctions réalisées au cours de formations ou d'accompagnements d'utilisateurs de PostgreSQL.
 
-### Ajout de l'auto-incrémentation sur un champ entier
+## Ajout de l'auto-incrémentation sur un champ entier
 
 Lorsqu'on importe une couche dans une table via les outils de QGIS, le champ d'identifiant choisi n'a pas le support de l'auto-incrémentation, ce qui peut poser des problèmes de l'ajout de nouvelles données.
 
@@ -38,7 +30,7 @@ ALTER SEQUENCE monschema.test_id_seq OWNED BY monschema.test.id;
 
 Dans l'exemple ci-dessus, le schéma est précisé.
 
-### Création automatique d'indexes spatiaux
+## Création automatique d'indexes spatiaux
 
 Pour des données spatiales volumineuses, les performances d'affichage sont bien meilleures à grande échelle si on a ajouté un **index spatial**. L'index est aussi beaucoup utilisé pour améliorer les performances d'analyses spatiales.
 
@@ -59,7 +51,7 @@ SELECT * FROM create_missing_spatial_indexes(  True );
 SELECT * FROM create_missing_spatial_indexes(  False );
 ```
 
-### Ajouter automatiquement plusieurs champs à plusieurs tables
+## Ajouter automatiquement plusieurs champs à plusieurs tables
 
 Il est parfois nécessaire d'**ajouter des champs à une ou plusieurs tables**, par exemple pour y stocker ensuite des métadonnées (date de modification, date d'ajout, utilisateur, lien, etc).
 
@@ -98,9 +90,9 @@ ORDER BY f_table_schema, f_table_name
 ;
 ```
 
-### Vérifier la taille des bases, tables et schémas
+## Vérifier la taille des bases, tables et schémas
 
-#### Connaître la taille des bases de données
+### Connaître la taille des bases de données
 
 On peut lancer la requête suivante, qui renvoit les bases de données ordonnées par taille descendante.
 
@@ -114,7 +106,7 @@ WHERE datname NOT IN ('postgres', 'template0', 'template1')
 ORDER BY db_size DESC;
 ```
 
-#### Calculer la taille des tables
+### Calculer la taille des tables
 
 On crée une fonction `get_table_info` qui utilise les tables système pour lister les tables, récupérer leur schéma et les informations de taille.
 
@@ -171,7 +163,7 @@ SELECT * FROM get_table_info() ORDER BY total_size DESC;
 
 ```
 
-#### Calculer la taille des schémas
+### Calculer la taille des schémas
 
 On crée une simple fonction qui renvoit la somme des tailles des tables d'un schéma
 
@@ -206,7 +198,7 @@ ORDER BY pg_schema_size(schema_name) DESC;
 ```
 
 
-### Gestion des commentaires
+## Gestion des commentaires
 
 Fonction de création d'un commentaire
 

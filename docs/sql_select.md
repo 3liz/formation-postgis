@@ -1,12 +1,4 @@
----
-Title: Sélectionner
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Sélectionner
+# Sélectionner
 
 Nous allons présenter des **requêtes SQL** de plus en plus complexes pour accéder aux données, et exploiter les capacités de PostgreSQL/PostGIS. Une requête est construite avec des instructions standardisées, appelées **clauses**
 

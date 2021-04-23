@@ -1,12 +1,4 @@
----
-Title: Valider
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Correction des géométries
+# Correction des géométries
 
 Avec PostgreSQL on peut **tester la validité des géométries** d'une table, comprendre la raison et localiser les soucis de validité:
 

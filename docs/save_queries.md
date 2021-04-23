@@ -1,14 +1,6 @@
----
-Title: Vues
-Favicon: logo.svg
-Sibling: yes
-...
+# Enregistrer une requête
 
-[TOC]
-
-## Enregistrer une requête
-
-### Les vues
+## Les vues
 
 Une vue est l'enregistrement d'une requête, appelée **définition de la vue**, qui est stocké dans la base, et peut être **utilisée comme une table**.
 
@@ -54,11 +46,11 @@ SELECT * FROM z_formation.v_voies
 WHERE longueur < 10
 ```
 
-### Enregistrer une requête comme une table
+## Enregistrer une requête comme une table
 
 C'est la même chose que pour enregistrer une vue, sauf qu'on crée une table: les données sont donc stockées en base, et n'évoluent plus en fonction des données source. Cela permet d'accéder rapidement aux données, car la requête sous-jacente n'est plus exécutée une fois la table créée.
 
-#### Exemple 1 - créer la table des voies rassemblant les routes et les chemins
+### Exemple 1 - créer la table des voies rassemblant les routes et les chemins
 
 ```sql
 DROP TABLE IF EXISTS z_formation.t_voies;
@@ -95,7 +87,7 @@ ALTER TABLE z_formation.t_voies ADD PRIMARY KEY (gid);
 **Attention** Les données de la table n'évoluent plus en fonction des données des tables source. Il faut donc supprimer la table puis la recréer si besoin. Pour répondre à ce besoin, il existe les **vues matérialisées**.
 
 
-#### Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.
+### Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.
 
 On crée la table si besoin. On ajoutera ensuite les données via **INSERT**
 
@@ -151,7 +143,7 @@ Le résultat est le suivant:
 | 06   | Ruines          | 6     |
 
 
-#### Exemple 3 - créer une table avec l'extraction des parcelles sur une commune
+### Exemple 3 - créer une table avec l'extraction des parcelles sur une commune
 
 On utilise le champ `commune` pour filtrer. On n'oublie pas de créer l'index spatial, qui sera utilisé pour améliorer les performances lors des jointures spatiales.
 
@@ -173,5 +165,3 @@ CREATE INDEX ON z_formation.parcelle_havre USING GIST (geom);
 ```
 
 Continuer vers [Réaliser des jointures attributaires et spatiales; JOIN](./join_data.md)
-
-

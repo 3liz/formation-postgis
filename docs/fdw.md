@@ -1,12 +1,4 @@
----
-Title: Foreign data wrappers
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Accéder à des données externes : les Foreign Data Wrapper (FDW)
+# Accéder à des données externes : les Foreign Data Wrapper (FDW)
 
 L'utilisation d'un FDW permet de **consulter des données externes** à la base comme si elles étaient stockées dans des tables. On peut lancer des requêtes pour récupérer seulement certains champs, filtrer les données, etc.
 
@@ -21,19 +13,19 @@ On passe classiquement par les étapes suivantes:
 * **Requêtes** sur ces tables étrangères
 
 
-### Le FDW ogr_fdw pour lire des données vectorielles
+## Le FDW ogr_fdw pour lire des données vectorielles
 
 Avec ce Foreign Data Wrapper **ogr_fdw**, on peut appeler n'importe quelle source de données externe compatible avec la librairie **ogr2ogr** et les exploiter comme des tables: fichiers GeoJSON ou Shapefile, GPX, CSV, mais aussi les protocoles comme le WFS.
 
 Voir la [documentation officielle de ogr_fdw](https://github.com/pramsey/pgsql-ogr-fdw). 
 
-#### Installation
+## Installation
 
 Pour l'installer sur une machine **Linux**, il suffit d'installer le paquet correspondant à la version de PostgreSQL, par exemple `postgresql-11-ogr-fdw`. 
 
 Sous **Windows**, il est disponible avec le paquet PostGIS via l'outil [StackBuilder](https://www.postgresql.org/download/windows/).
 
-#### Exemple d'utilisation: récupérer des couches d'un serveur WFS
+## Exemple d'utilisation: récupérer des couches d'un serveur WFS
 
 Nous allons utiliser le FDW pour récupérer des données mises à disposition sur le serveur de l'INPN via le protocole WFS.
 
@@ -168,4 +160,3 @@ Pour **rafraîchir** les données à partir du serveur WFS, il suffit de rafraî
 -- Rafraîchir la vue, par exemple à lancer une fois par mois
 REFRESH MATERIALIZED VIEW inpn_metropole.vm_zico;
 ```
-

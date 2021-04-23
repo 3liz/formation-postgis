@@ -1,12 +1,4 @@
----
-Title: Gestion des droits
-Favicon: logo.svg
-Sibling: yes
-...
-
-[TOC]
-
-## Gestion des droits
+# Gestion des droits
 
 Dans PostgreSQL, on peut créer des roles (des utilisateurs) et gérer les droits sur les différents objets: base, schémas, tables, fonctions, etc.
 

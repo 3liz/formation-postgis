@@ -1,0 +1,88 @@
+site_name: Formation PostGIS
+site_author: 3Liz
+site_description: Formation PostGIS
+site_url: https://docs.3liz.org/formation-postgis/
+repo_url: https://github.com/3liz/formation-postgis/
+copyright: '<span class="copyleft">&copy;</span> 3Liz'
+
+site_dir: build
+
+nav:
+    - docs.3liz.org: '../'
+    - Accueil: index.md
+    - Liens et données: links_and_data.md
+    - Gestion des données: postgresql_in_qgis.md
+    - Import des données: import_data.md
+    - Sélection: sql_select.md
+    - Calcul & Fonctions: perform_calculation.md
+    - Filtrer: filter_data.md
+    - Regrouper: group_data.md
+    - Rassembler: union.md
+    - Enregistrer: save_queries.md
+    - Jointures: join_data.md
+    - Fusionner: merge_geometries.md
+    - Triggers: triggers.md
+    - Correction géométries: validate_geometries.md
+    - Topologie: check_topology.md
+    - Fonctions utiles: utils.md
+    - Droits: grant.md
+    - Données externes: fdw.md
+
+markdown_extensions:
+  # - git-revision-date:
+  - toc:
+      permalink: "#"
+  - meta:
+  - pymdownx.highlight:
+      linenums: true
+      linenums_style: pymdownx.inline
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed:
+  - pymdownx.magiclink:
+  - pymdownx.tasklist:
+  - pymdownx.snippets:
+  - pymdownx.keys:
+  - attr_list:
+  - admonition:
+  - pymdownx.details:
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js
+  - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+extra_css:
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css
+
+theme:
+  name: material
+  font: false
+  icon:
+    repo: fontawesome/brands/github-alt
+  language: 'en'
+  logo: logo.svg
+  favicon: logo.svg
+  palette:
+    accent: deep-orange
+    primary: green
+    scheme: default
+  features:
+    # - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+
+extra:
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/3LIZ_news
+
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/company/3liz
+
+    - icon: fontawesome/brands/github
+      link: https://github.com/3liz/
+
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/3liz

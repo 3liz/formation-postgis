@@ -1,14 +1,6 @@
----
-Title: Topologie
-Favicon: logo.svg
-Sibling: yes
-...
+# Vérifier la topologie
 
-[TOC]
-
-## Vérifier la topologie
-
-#### Déplacer les noeuds sur une grille
+## Déplacer les noeuds sur une grille
 
 Avant de vérifier la topologie, il faut au préalable avoir des géométries valides (cf. chapitre précédent).
 
@@ -76,7 +68,7 @@ ST_Multi(
 ```
 
 
-#### Repérer certaines erreurs de topologies
+## Repérer certaines erreurs de topologies
 
 PostGIS possède de nombreuses fonctions de **relations spatiales** qui permettent de trouver les objets qui se chevauchent, qui se touchent, etc. Ces fonctions peuvent être utilisées pour comparer les objets d'une même table, ou de deux tables différentes. Voir: https://postgis.net/docs/reference.html#Spatial_Relationships_Measurements
 
@@ -136,7 +128,7 @@ Une fois les parcelles sélectionnées, on peut utiliser certains outils de QGIS
 * plugin **Go 2 next feature** pour facilement zoomer d'objets en objets
 
 
-### Accrocher les géométries sur d'autres géométries
+## Accrocher les géométries sur d'autres géométries
 
 Dans PostGIS, on peut utiliser la fonction **ST_Snap** dans une requête SQL pour déplacer les noeuds d'une géométrie et les coller sur ceux d'une autre.
 
