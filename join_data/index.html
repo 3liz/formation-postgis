@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/join_data/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
     
     
       
@@ -24,10 +24,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.875de78c.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
         
           
           
@@ -809,8 +809,7 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- création</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- création</span>
 <span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">observation</span> <span class="p">(</span>
     <span class="n">id</span> <span class="nb">serial</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
     <span class="nb">date</span> <span class="nb">date</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="n">now</span><span class="p">())::</span><span class="nb">date</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
@@ -818,7 +817,6 @@
     <span class="n">geom</span> <span class="k">public</span><span class="p">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="mi">2154</span><span class="p">),</span>
     <span class="n">code_insee</span> <span class="nb">character</span> <span class="nb">varying</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="p">);</span>
-<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">observation</span> <span class="k">ADD</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
 <span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">sidx_observation_geom</span> <span class="k">ON</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">observation</span> <span class="k">USING</span> <span class="n">gist</span> <span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 
 <span class="c1">-- on y met des données</span>
@@ -1705,6 +1703,22 @@
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">id_parcelle</span><span class="p">,</span> <span class="n">distance</span>
 </code></pre></div>
 </td></tr></table>
+<p>Pour information, on peut vérifier en créant les tampons</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Tampons non dissous</span>
+<span class="k">SELECT</span> <span class="n">id_borne</span><span class="p">,</span> <span class="n">ST_Buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="k">AS</span> <span class="n">geom</span>
+<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
+
+<span class="c1">-- Tampons dissous</span>
+<span class="k">SELECT</span> <span class="n">ST_Union</span><span class="p">(</span><span class="n">ST_Buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span> <span class="k">AS</span> <span class="n">geom</span>
+<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
+</code></pre></div>
+</td></tr></table>
 <p>Continuer vers <a href="../merge_geometries/">Fusionner des géométries</a></p>
                 
               
@@ -1717,7 +1731,7 @@
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" title="Back to top" data-md-component="top" data-md-state="hidden">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
           </a>
         
@@ -1822,10 +1836,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.34eae1b6.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       
