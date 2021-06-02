@@ -51,6 +51,63 @@ SELECT * FROM create_missing_spatial_indexes(  True );
 SELECT * FROM create_missing_spatial_indexes(  False );
 ```
 
+## Trouver toutes les tables sans clé primaire
+
+Il est très important de déclarer une clé primaire pour vos tables stockées dans PostgreSQL. Cela fournit un moyen aux logiciels comme QGIS d'identifier de manière performante les lignes dans une table. Sans clé primaire, les performances d'accès aux données peuvent être dégradées.
+
+Vous pouvez trouver l'ensemble des tables de votre base de données sans clé primaire en construisant cette vue PostgreSQL `tables_without_primary_key`:
+
+```sql
+DROP VIEW IF EXISTS tables_without_primary_key;
+CREATE VIEW tables_without_primary_key AS
+SELECT t.table_schema, t.table_name
+FROM information_schema.tables AS t
+LEFT JOIN information_schema.table_constraints AS c
+    ON t.table_schema = c.table_schema
+    AND t.table_name = c.table_name
+    AND c.constraint_type = 'PRIMARY KEY'
+WHERE True
+AND t.table_type = 'BASE TABLE'
+AND t.table_schema not in ('pg_catalog', 'information_schema')
+AND c.constraint_name IS NULL
+ORDER BY table_schema, table_name
+;
+```
+
+* Pour lister les tables sans géométries, vous pouvez ensuite lancer la requête suivante:
+
+```sql
+SELECT *
+FROM tables_without_primary_key;
+```
+
+Ce qui peut donner par exemple:
+
+| table_schema  | table_name     |
+|---------------|----------------|
+| agriculture   | parcelles      |
+| agriculture   | puits          |
+| cadastre      | sections       |
+| environnement | znieff         |
+| environnement | parcs_naturels |
+
+
+* Pour lister les tables sans géométries d'un seul schéma, par exemple `cadastre`, vous pouvez ensuite lancer la requête:
+
+```sql
+SELECT *
+FROM tables_without_primary_key
+WHERE table_schema IN ('cadastre');
+```
+
+Ce qui peut alors donner:
+
+| table_schema  | table_name     |
+|---------------|----------------|
+| cadastre      | sections       |
+
+
+
 ## Ajouter automatiquement plusieurs champs à plusieurs tables
 
 Il est parfois nécessaire d'**ajouter des champs à une ou plusieurs tables**, par exemple pour y stocker ensuite des métadonnées (date de modification, date d'ajout, utilisateur, lien, etc).
