@@ -36,7 +36,6 @@ CREATE TABLE z_formation.observation (
     geom public.geometry(Point,2154),
     code_insee character varying(5)
 );
-ALTER TABLE z_formation.observation ADD PRIMARY KEY (id);
 CREATE INDEX sidx_observation_geom ON z_formation.observation USING gist (geom);
 
 -- on y met des données
@@ -523,6 +522,20 @@ JOIN z_formation.borne_incendie AS b
         ON ST_DWithin(p.geom, b.geom, 200)
 ORDER BY id_parcelle, distance
 ```
+
+Pour information, on peut vérifier en créant les tampons
+
+```sql
+-- Tampons non dissous
+SELECT id_borne, ST_Buffer(geom, 200) AS geom
+FROM z_formation.borne_incendie
+
+-- Tampons dissous
+SELECT ST_Union(ST_Buffer(geom, 200)) AS geom
+FROM z_formation.borne_incendie
+```
+
+
 
 
 Continuer vers [Fusionner des géométries](./merge_geometries.md)

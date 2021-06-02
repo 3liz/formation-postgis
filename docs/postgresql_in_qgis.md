@@ -21,7 +21,7 @@ Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil 
 * cocher la dernière case tout en base **Utiliser la table de métadonnées estimées**
 * Valider
 
-**Attention** Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL: 
+**Attention** Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL:
 https://docs.qgis.org/3.10/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
 
 Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles.
@@ -71,6 +71,7 @@ CREATE TABLE z_formation.borne_incendie (
     geom geometry(Point, 2154)
 );
 -- Création de l'index spatial
+DROP INDEX IF EXISTS borne_incendie_geom_idx;
 CREATE INDEX ON z_formation.borne_incendie USING GIST (geom);
 
 ```

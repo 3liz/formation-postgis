@@ -19,7 +19,7 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 ```sql
 -- Sélectionner l'ensemble des données d'une couche: l'étoire veut dire "tous les champs de la table"
 SELECT *
-FROM z_formation.commune
+FROM z_formation.borne_incendie
 ;
 ```
 

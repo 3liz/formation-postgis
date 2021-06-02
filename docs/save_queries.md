@@ -7,43 +7,25 @@ Une vue est l'enregistrement d'une requête, appelée **définition de la vue**,
 Créer une vue via **CREATE VIEW**
 
 ```sql
--- Créer une vue pour stocker la requête et pouvoir l'utiliser comme une table
--- (mais avec des données dynamiques)
+-- On supprime d'abord la vue si elle existe
 DROP VIEW IF EXISTS z_formation.v_voies;
+-- On crée la vue en récupérant les routes de plus de 5 km
 CREATE VIEW z_formation.v_voies AS
-SELECT
--- on récupère tous les champs
-source.*,
--- on calcule la longueur après rassemblement des données
-st_length(geom) AS longueur
-FROM (
-        SELECT id, geom
-        FROM z_formation.chemin
-        UNION ALL
-        SELECT id, geom
-        FROM z_formation.route
-) AS source
-ORDER BY longueur
+SELECT id_route, id AS code, ST_Length(geom) AS longueur, geom
+FROM z_formation.route
+WHERE st_length(geom) > 5000
+
 ;
 ```
 
 Utiliser cette vue dans une autre requête
-
-* pour faire des statistiques
-
-```sql
--- On peut ensuite utiliser cette vue pour faire des stats
-SELECT source, count(*) AS nb, sum(longueur) AS longueur_totale
-FROM z_formation.v_voies
-GROUP BY source
-```
 
 * pour filtrer les données
 
 ```sql
 -- Ou filtrer les données
 SELECT * FROM z_formation.v_voies
-WHERE longueur < 10
+WHERE longueur > 10000
 ```
 
 ## Enregistrer une requête comme une table

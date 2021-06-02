@@ -3,7 +3,7 @@
 Récupérer les données à partir de la **valeur exacte d'un champ**. Ici le nom de la commune
 
 ```sql
--- Récupérer seulement la commune de Bastia
+-- Récupérer seulement la commune du Havre
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
@@ -13,7 +13,7 @@ WHERE nom = 'Le Havre'
 On peut chercher les lignes dont le champ correspondant à **plusieurs valeurs**
 
 ```sql
--- Récupérer la commune de Bastia et d'Ajaccio
+-- Récupérer la commune du Havre et de Rouen
 SELECT id_commune, code_insee, nom,
 population
 FROM z_formation.commune
