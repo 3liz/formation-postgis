@@ -22,9 +22,9 @@ Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil 
 * Valider
 
 **Attention** Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL:
-https://docs.qgis.org/3.10/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
+https://docs.qgis.org/3.16/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
 
-Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles.
+Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles. [Documentation](https://docs.qgis.org/3.16/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings)
 
 **NB** Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet **Rendu** de la boîte de dialogue des propriétés de chaque couche PostGIS.
 
@@ -32,8 +32,8 @@ Il est aussi intéressant pour les **performances** d'accès aux données Postgr
 
 Trois solutions sont possibles:
 
-* **utiliser l'explorateur** : seulement pour les tables spatiales, sauf si on a coché **Lister les tables sans géométries** dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables.
-* utiliser le menu **Couches / Ajouter une couche**. La boite de dialogue propose de se connecter, puis liste les schémas et les tables
+* **utiliser l'explorateur** : seulement pour les tables spatiales, sauf si on a coché **Lister les tables sans géométries** dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables. Une icône devant chaque table/vue indique si une table est géométrique ou non ainsi qie le type de géométrie, point, ligne ou polygône.
+* utiliser le menu **Couche / Ajouter une couche**. La boite de dialogue propose de se connecter, puis liste les schémas et les tables
 * utiliser le **Gestionnaire de base de données**, qui présente une fenêtre QGIS séparée dédiée aux manipulations sur les données.
 
 ## Le Gestionnaire de base de données

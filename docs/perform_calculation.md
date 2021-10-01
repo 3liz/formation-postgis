@@ -17,7 +17,7 @@ Il est aussi possible de faire des calculs à partir d'un ou plusieurs champs.
 
 Nous souhaitons par exemple créer un champ qui contiendra la **population** des communes. Dans la donnée source, le champ **popul** est de type chaîne de caractère, car il contient parfois la valeur 'NC' lorsque la population n'est pas connue.
 
-Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite donc **créer un nouveau champ** population pour y stoker les valeurs entières.
+Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite donc **créer un nouveau champ** population pour y stocker les valeurs entières.
 
 ```sql
 -- Ajout d'un champ de type entier dans la table
@@ -91,6 +91,7 @@ FROM z_formation.commune
 ```
 
 Forcer le **centroïde à l'intérieur du polygone**. Attention, ce calcul est plus long.
+[Si vous souhaitez mieux comprendre l'algorithme derrière cette fonction](https://gis.stackexchange.com/questions/76498/how-is-st-pointonsurface-calculated)
 
 ```sql
 -- Centroides à l'intérieur des communes

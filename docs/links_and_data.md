@@ -18,7 +18,7 @@ Nous présupposons qu'une **base de données** est accessible pour la formation,
 Pour cette formation, nous utilisons des données libres de droit:
 
 * Extraction de données d'**OpenStreetMap** dans un format SIG, sous licence ODBL ( site https://github.com/igeofr/osm2igeo ). On utilisera par exemple les données de l'ancienne région Haute-Normandie:
-https://cloud.data-wax.com/index.php/s/myFFjcLzMFk9QB7/download?path=%2FFRANCE&files=201812_23_HAUTE_NORMANDIE_SHP_L93_2154.zip
+https://www.data.data-wax.com/OSM2IGEO/FRANCE/202103_OSM2IGEO_23_HAUTE_NORMANDIE_SHP_L93_2154.zip
 
 * Données cadastrales (site https://cadastre.data.gouv.fr ), sous licence  Par exemple pour la Seine-Maritime:
 https://cadastre.data.gouv.fr/data/etalab-cadastre/2019-01-01/shp/departements/76/
@@ -33,7 +33,7 @@ Ces données seront importées dans la base de formation via les outils de QGIS.
 
 Un rappel sur les concepts de table, champs, relations.
 
-* Documentation de QGIS : https://docs.qgis.org/3.10/fr/docs/training_manual/database_concepts/index.html
+* Documentation de QGIS : https://docs.qgis.org/3.16/fr/docs/training_manual/database_concepts/index.html
 
 
 ## Quelques extensions QGIS
