@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/import_data/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.875de78c.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.3754935a.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.f1a3b89f.min.css">
@@ -45,6 +45,8 @@
     
     
       
+
+
     
     
   </head>
@@ -200,7 +202,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../" class="md-nav__link">
+      <a href="../" class="md-nav__link">
         docs.3liz.org
       </a>
     </li>
@@ -639,18 +641,18 @@
 <h2 id="import-dune-couche-depuis-qgis">Import d'une couche depuis QGIS<a class="headerlink" href="#import-dune-couche-depuis-qgis" title="Permanent link">#</a></h2>
 <p>On  doit <strong>charger au préalable la couche source</strong> dans QGIS (SHP, TAB, etc.), puis on doit vérifier :</p>
 <ul>
-<li>la <strong>projection</strong>, idéalement EPSG:2154 ou EPSG:3948</li>
+<li>la <strong>projection</strong>, idéalement EPSG:2154</li>
 <li>l'<strong>encodage</strong> : UTF-8, ISO-8859-15 ? Il faut ouvrir la table attributaire, et vérifier si les accents sont bien affichés. Sinon choisir le bon encodage dans l'onglet <strong>Général</strong> des <strong>propriétés de la couche</strong></li>
 <li>les <strong>champs</strong>: noms, type, contenu</li>
 </ul>
-<p>Pour importer, on utilise le bouton d’import du gestionnaire de bdd. On choisit par exemple le fichier des communes:</p>
+<p>Pour importer, on utilise le bouton <strong>Import de couche/fichier</strong> du gestionnaire de bdd. On choisit par exemple le fichier des communes:</p>
 <ul>
 <li>on clique sur <strong>Mettre à jour les options</strong></li>
 <li>on choisit le <strong>nom</strong> de la couche et le schéma <strong>z_formation</strong></li>
-<li>on coche bien les 2 cases du bas pour <strong>convertir les champs en minuscule</strong> (Convert fieldnames to lowercase) et pour <strong>créer l'index spatial</strong></li>
+<li>on coche bien les 2 cases du bas pour <strong>convertir les noms de champ en minuscule</strong> (Convert fieldnames to lowercase) et pour <strong>créer l'index spatial</strong></li>
 </ul>
 <p>Après l'import, on peut cliquer, dans le panneau de gauche, sur le nom de la couche créée et parcourir les données avec l'onglet <strong>Table</strong>. Si on souhaite comparer avec la couche d'origine, il suffit de charger la table, en double-cliquant dessus dans l'arbre (ou via les autres outils de QGIS)</p>
-<p><strong>NB</strong>: si un champ s'appelle déjà id dans la donnée source, et qui contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case <strong>Clé primaire</strong> dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier autoincrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune</p>
+<p><strong>NB</strong>: si un champ s'appelle déjà id dans la donnée source, et qu'il contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case <strong>Clé primaire</strong> dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier autoincrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune</p>
 <h2 id="reimporter-une-donnee-dans-une-table-existante">Réimporter une donnée dans une table existante.<a class="headerlink" href="#reimporter-une-donnee-dans-une-table-existante" title="Permanent link">#</a></h2>
 <h3 id="avec-suppression-de-la-table-puis-recreation">Avec suppression de la table puis recréation.<a class="headerlink" href="#avec-suppression-de-la-table-puis-recreation" title="Permanent link">#</a></h3>
 <p>Il suffit d'utiliser le même <strong>outil d'import</strong> via le gestionnaire de bdd, et cocher la case <strong>Remplacer la table de destination si existante</strong>.</p>
@@ -676,7 +678,7 @@
 <span class="k">TRUNCATE</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span> <span class="k">RESTART</span> <span class="k">IDENTITY</span><span class="p">;</span>
 </code></pre></div>
 </td></tr></table>
-<p>Ensuite, on importe via l'outil spécifique du menu <strong>Traitement / Boîte à outil</strong>. Chercher "import" dans le champ du haut, et lancer l'algorithme <strong>Importer un vecteur vers une base de données PostGIS (connexions disponibles)</strong>. Il faut choisir les options suivantes:</p>
+<p>Ensuite, on importe via l'outil spécifique du menu <strong>Traitement / Boîte à outil</strong>. Chercher "export" dans le champ du haut, et lancer l'algorithme <strong>Exporter vers PostgreSQL (connexions disponibles)</strong> de <strong>GDAL</strong>. Il faut choisir les options suivantes:</p>
 <ul>
 <li>Choisir la bonne <strong>connexion</strong>, la couche en entrée, etc.</li>
 <li>choisir le <strong>schéma</strong>, par exemple z_formation</li>
@@ -690,7 +692,7 @@
 <h2 id="importer-plusieurs-couches-en-batch">Importer plusieurs couches en batch<a class="headerlink" href="#importer-plusieurs-couches-en-batch" title="Permanent link">#</a></h2>
 <p>Il est possible d'utiliser l'outil <strong>Importer un vecteur vers une base de données PostGIS (connexions disponibles)</strong> par lot. Pour cela, une fois la boîte de dialogue de cet algorithme ouverte, cliquer sur le bouton <strong>Exécuter comme processus de lot</strong>. Cela affiche un tableau, ou chaque ligne représente les variables d'entrée d'un algorithme.</p>
 <p>Vous pouvez créer manuellement chaque ligne, ou choisir directement les couches depuis votre projet QGIS. Voir la documentation QGIS pour plus de détail:
-<a href="https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html">https://docs.qgis.org/3.10/fr/docs/user_manual/processing/batch.html</a></p>
+<a href="https://docs.qgis.org/3.16/fr/docs/user_manual/processing/batch.html">https://docs.qgis.org/3.16/fr/docs/user_manual/processing/batch.html</a></p>
 <p>Continuer vers <a href="../sql_select/">Sélectionner des données: SELECT</a></p>
                 
               
@@ -703,8 +705,9 @@
           </div>
         </div>
         
-          <a href="#" class="md-top md-icon" title="Back to top" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
           </a>
         
       </main>
@@ -714,7 +717,8 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../postgresql_in_qgis/" class="md-footer__link md-footer__link--prev" rel="prev">
+        
+        <a href="../postgresql_in_qgis/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Gestion des données" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -729,7 +733,8 @@
         </a>
       
       
-        <a href="../sql_select/" class="md-footer__link md-footer__link--next" rel="next">
+        
+        <a href="../sql_select/" class="md-footer__link md-footer__link--next" aria-label="Next: Sélection" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
@@ -808,10 +813,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.34eae1b6.min.js"></script>
+      <script src="../assets/javascripts/bundle.ddd52ceb.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       
