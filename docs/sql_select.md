@@ -17,7 +17,7 @@ LIMIT 10
 Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 
 ```sql
--- Sélectionner l'ensemble des données d'une couche: l'étoire veut dire "tous les champs de la table"
+-- Sélectionner l'ensemble des données d'une couche: l'étoile veut dire "tous les champs de la table"
 SELECT *
 FROM z_formation.borne_incendie
 ;
@@ -73,7 +73,7 @@ FROM z_formation.commune
 ORDER BY nom
 ```
 
-On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre qu'on veut, et renommer le champ en sortie.
+On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.
 
 
 ## Visualiser une requête dans QGIS

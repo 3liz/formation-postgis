@@ -90,6 +90,7 @@ ST_Centroid(geom) AS geom
 FROM z_formation.commune
 ```
 
+Le centroïde peut ne pas être à l'intérieur du polygone, par exemple sur la commune de **Arnières-sur-Iton**.
 Forcer le **centroïde à l'intérieur du polygone**. Attention, ce calcul est plus long.
 [Si vous souhaitez mieux comprendre l'algorithme derrière cette fonction](https://gis.stackexchange.com/questions/76498/how-is-st-pointonsurface-calculated)
 
