@@ -316,9 +316,39 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Filtrer
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Filtrer
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    Quiz
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -508,6 +538,21 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    Quiz
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -523,7 +568,7 @@
                   </a>
                 
                 
-                <h1 id="filtrer-les-donnees-la-clause-where">Filtrer les données: la clause WHERE<a class="headerlink" href="#filtrer-les-donnees-la-clause-where" title="Permanent link">#</a></h1>
+                <h1 id="filtrer-les-donnees-la-clause-where">Filtrer les données : la clause WHERE<a class="headerlink" href="#filtrer-les-donnees-la-clause-where" title="Permanent link">#</a></h1>
 <p>Récupérer les données à partir de la <strong>valeur exacte d'un champ</strong>. Ici le nom de la commune</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -601,6 +646,42 @@
 </code></pre></div>
 </td></tr></table>
 <p>Continuer vers <a href="../group_data/">Regrouper des données: GROUP BY</a></p>
+<h2 id="quiz">Quiz<a class="headerlink" href="#quiz" title="Permanent link">#</a></h2>
+<details>
+  <summary>Écrire une requête retournant toutes les communes de Seine-Maritime qui contiennent la chaine de caractères 'saint'</summary>
+
+  <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Toutes les communes de Seine-Maritime qui contiennent le mot saint</span>
+<span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span> <span class="k">True</span>
+<span class="k">AND</span> <span class="n">depart</span> <span class="o">=</span> <span class="s1">&#39;SEINE-MARITIME&#39;</span>
+<span class="k">AND</span> <span class="n">nom</span> <span class="k">ILIKE</span> <span class="s1">&#39;%saint%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+</details>
+
+<details>
+  <summary>Écrire une requête retournant les nom et centroïde des communes de Seinte-Maritime avec une population inférieure ou égale à 50</summary>
+
+  <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Nom et centroïde des communes de Seinte-Maritime avec une population &lt;= 50</span>
+<span class="k">SELECT</span> <span class="n">nom</span><span class="p">,</span> <span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span> <span class="k">True</span>
+<span class="k">AND</span> <span class="n">depart</span> <span class="o">=</span> <span class="s1">&#39;SEINE-MARITIME&#39;</span>
+<span class="k">AND</span> <span class="n">population</span> <span class="o">&lt;=</span> <span class="mi">50</span>
+</code></pre></div>
+</td></tr></table>
+</details>
                 
               
               

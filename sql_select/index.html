@@ -593,7 +593,7 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner l&#39;ensemble des données d&#39;une couche: l&#39;étoire veut dire &quot;tous les champs de la table&quot;</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner l&#39;ensemble des données d&#39;une couche: l&#39;étoile veut dire &quot;tous les champs de la table&quot;</span>
 <span class="k">SELECT</span> <span class="o">*</span>
 <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
 <span class="p">;</span>
@@ -659,7 +659,7 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
 </code></pre></div>
 </td></tr></table>
-<p>On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre qu'on veut, et renommer le champ en sortie.</p>
+<p>On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.</p>
 <h2 id="visualiser-une-requete-dans-qgis">Visualiser une requête dans QGIS<a class="headerlink" href="#visualiser-une-requete-dans-qgis" title="Permanent link">#</a></h2>
 <p>Si on veut charger le résultat de la requête dans QGIS, il suffit de cocher la case <strong>Charger en tant que nouvelle couche</strong> puis de choisir le champ d'<strong>identifiant unique</strong>, et si et seulement si c'est une couche spatiale, choisir le <strong>champ de géométrie</strong> .</p>
 <p>Attention, si la table est non spatiale, il faut bien penser à décocher <strong>Colonne de géométrie</strong> !</p>
