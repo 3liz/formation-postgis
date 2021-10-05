@@ -583,6 +583,7 @@
                 
                 
                 <h1 id="grouper-des-donnees-et-calculer-des-statistiques">Grouper des données et calculer des statistiques<a class="headerlink" href="#grouper-des-donnees-et-calculer-des-statistiques" title="Permanent link">#</a></h1>
+<p><a href="https://docs.postgresql.fr/14/functions-aggregate.html">Les fonctions d'agrégat dans PostgreSQL</a></p>
 <h2 id="valeurs-distinctes-dun-champ">Valeurs distinctes d'un champ<a class="headerlink" href="#valeurs-distinctes-dun-champ" title="Permanent link">#</a></h2>
 <p>On souhaite récupérer <strong>toutes les valeurs possibles</strong> d'un champ</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
@@ -636,10 +637,10 @@
 <span class="normal">7</span>
 <span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">depart</span><span class="p">,</span>
 <span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb</span><span class="p">,</span>
-<span class="k">min</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">min_aire_ha</span><span class="p">,</span>
-<span class="k">max</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">max_aire_ha</span><span class="p">,</span>
-<span class="k">avg</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">moy_aire_ha</span><span class="p">,</span>
-<span class="k">sum</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">1000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">total_aire_ha</span>
+<span class="k">min</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">min_aire_ha</span><span class="p">,</span>
+<span class="k">max</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">max_aire_ha</span><span class="p">,</span>
+<span class="k">avg</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">moy_aire_ha</span><span class="p">,</span>
+<span class="k">sum</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">total_aire_ha</span>
 <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
 <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
 </code></pre></div>

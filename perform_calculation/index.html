@@ -710,7 +710,7 @@ Forcer le <strong>centroïde à l'intérieur du polygone</strong>. Attention, ce
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Tampons de 10km autour des commues</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Tampons de 1km autour des communes</span>
 <span class="k">SELECT</span> <span class="n">id_commune</span><span class="p">,</span> <span class="n">nom</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span>
 <span class="n">ST_Buffer</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> <span class="k">AS</span> <span class="n">geom</span>
 <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>

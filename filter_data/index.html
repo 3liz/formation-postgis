@@ -666,7 +666,7 @@
 </details>
 
 <details>
-  <summary>Écrire une requête retournant les nom et centroïde des communes de Seinte-Maritime avec une population inférieure ou égale à 50</summary>
+  <summary>Écrire une requête retournant les nom et centroïde des communes de Seine-Maritime avec une population inférieure ou égale à 50</summary>
 
   <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -674,7 +674,7 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Nom et centroïde des communes de Seinte-Maritime avec une population &lt;= 50</span>
-<span class="k">SELECT</span> <span class="n">nom</span><span class="p">,</span> <span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+<span class="k">SELECT</span> <span class="n">nom</span><span class="p">,</span> <span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="k">as</span> <span class="n">geom</span>
 <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
 <span class="k">WHERE</span> <span class="k">True</span>
 <span class="k">AND</span> <span class="n">depart</span> <span class="o">=</span> <span class="s1">&#39;SEINE-MARITIME&#39;</span>
