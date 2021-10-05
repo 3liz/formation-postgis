@@ -105,7 +105,7 @@ FROM z_formation.commune
 Calculer le **tampon** autour d'objets
 
 ```sql
--- Tampons de 10km autour des commues
+-- Tampons de 1km autour des communes
 SELECT id_commune, nom, population,
 ST_Buffer(geom, 1000) AS geom
 FROM z_formation.commune

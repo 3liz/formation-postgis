@@ -75,11 +75,11 @@ Continuer vers [Regrouper des données: GROUP BY](./group_data.md)
 </details>
 
 <details>
-  <summary>Écrire une requête retournant les nom et centroïde des communes de Seinte-Maritime avec une population inférieure ou égale à 50</summary>
+  <summary>Écrire une requête retournant les nom et centroïde des communes de Seine-Maritime avec une population inférieure ou égale à 50</summary>
   
   ```sql
   -- Nom et centroïde des communes de Seinte-Maritime avec une population <= 50
-  SELECT nom, ST_Centroid(geom)
+  SELECT nom, ST_Centroid(geom) as geom
   FROM z_formation.commune
   WHERE True
   AND depart = 'SEINE-MARITIME'

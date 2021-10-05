@@ -1,5 +1,7 @@
 # Grouper des données et calculer des statistiques
 
+[Les fonctions d'agrégat dans PostgreSQL](https://docs.postgresql.fr/14/functions-aggregate.html)
+
 ## Valeurs distinctes d'un champ
 
 On souhaite récupérer **toutes les valeurs possibles** d'un champ
@@ -41,10 +43,10 @@ Calculer des **statistiques sur l'aire** des communes pour chaque département
 ```sql
 SELECT depart,
 count(id_commune) AS nb,
-min(ST_Area(geom)/1000)::int AS min_aire_ha,
-max(ST_Area(geom)/1000)::int AS max_aire_ha,
-avg(ST_Area(geom)/1000)::int AS moy_aire_ha,
-sum(ST_Area(geom)/1000)::int AS total_aire_ha
+min(ST_Area(geom)/10000)::int AS min_aire_ha,
+max(ST_Area(geom)/10000)::int AS max_aire_ha,
+avg(ST_Area(geom)/10000)::int AS moy_aire_ha,
+sum(ST_Area(geom)/10000)::int AS total_aire_ha
 FROM z_formation.commune
 GROUP BY depart
 ```
