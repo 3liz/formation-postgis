@@ -600,7 +600,7 @@
 <h2 id="deplacer-les-noeuds-sur-une-grille">Déplacer les noeuds sur une grille<a class="headerlink" href="#deplacer-les-noeuds-sur-une-grille" title="Permanent link">#</a></h2>
 <p>Avant de vérifier la topologie, il faut au préalable avoir des géométries valides (cf. chapitre précédent).</p>
 <p>Certaines micro-erreurs de topologie peuvent peuvent être corrigées en réalisant une simplification des données à l'aide d'une grille, par exemple pour corriger des soucis d'arrondis. Pour cela, PostGIS a une fonction <strong>ST_SnapToGrid</strong>.</p>
-<p>On peut utiliser conjointement <strong>ST_Simplify* et </strong>ST_SnapToGrid** pour effectuer une première correction sur les données. Attention, ces fonctions modifient la donnée. A vous de choisir la bonne tolérance, par exemple 5 cm, qui dépend de votre donnée et de votre cas d'utilisation.</p>
+<p>On peut utiliser conjointement <strong>ST_Simplify</strong> et <strong>ST_SnapToGrid</strong> pour effectuer une première correction sur les données. Attention, ces fonctions modifient la donnée. A vous de choisir la bonne tolérance, par exemple 5 cm, qui dépend de votre donnée et de votre cas d'utilisation.</p>
 <p>Tester la simplification en lançant la requête suivante, et en chargeant le résultat comme une nouvelle couche dans QGIS</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>

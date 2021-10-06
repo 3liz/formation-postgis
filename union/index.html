@@ -535,14 +535,28 @@
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Rassembler des données de tables différentes</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Rassembler des données de tables différentes</span>
 <span class="c1">-- On utilise une UNION ALL</span>
-<span class="k">SELECT</span> <span class="s1">&#39;chemin&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">round</span><span class="p">(</span><span class="n">st_length</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
+
+    <span class="p">(</span><span class="k">SELECT</span> <span class="s1">&#39;chemin&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span>
+                <span class="n">geom</span><span class="p">,</span>
+                <span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
+        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
+        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
 <span class="c1">-- UNION ALL est placé entre 2 SELECT</span>
-<span class="k">UNION</span> <span class="k">ALL</span>
-<span class="k">SELECT</span> <span class="s1">&#39;route&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span> <span class="n">geom</span><span class="p">,</span> <span class="n">round</span><span class="p">(</span><span class="n">st_length</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+<span class="k">UNION</span> <span class="k">ALL</span> 
+    <span class="p">(</span><span class="k">SELECT</span> <span class="s1">&#39;route&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span>
+                <span class="n">geom</span><span class="p">,</span>
+                <span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
+        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
 <span class="c1">-- Le ORDER BY doit être réalisé à la fin, et non sur chaque SELECT</span>
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">longueur</span>
 </code></pre></div>
@@ -561,17 +575,21 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
 <span class="c1">-- on récupère tous les champs</span>
 <span class="k">source</span><span class="p">.</span><span class="o">*</span><span class="p">,</span>
 <span class="c1">-- on calcule la longueur après rassemblement des données</span>
 <span class="n">st_length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="k">AS</span> <span class="n">longueur</span>
 <span class="k">FROM</span> <span class="p">(</span>
-        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
+        <span class="p">(</span><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
         <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
+        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
         <span class="k">UNION</span> <span class="k">ALL</span>
-        <span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
+        <span class="p">(</span><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
         <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
 <span class="p">)</span> <span class="k">AS</span> <span class="k">source</span>
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">longueur</span> <span class="k">DESC</span>
 <span class="p">;</span>

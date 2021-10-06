@@ -368,6 +368,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    Quiz
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -565,6 +572,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#quiz" class="md-nav__link">
+    Quiz
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -691,12 +705,12 @@
 <span class="k">FROM</span> <span class="p">(</span>
         <span class="k">SELECT</span>
         <span class="n">nature</span><span class="p">,</span>
-        <span class="c1">-- ST_Convexhull renvoit l&#39;enveloppe convexe</span>
+        <span class="c1">-- ST_Convexhull renvoie l&#39;enveloppe convexe</span>
         <span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span> <span class="k">AS</span> <span class="n">geom</span>
         <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span>
         <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">nature</span>
 <span class="p">)</span> <span class="k">AS</span> <span class="k">source</span>
-<span class="c1">-- GeometryType renvoit le type de géométrie</span>
+<span class="c1">-- GeometryType renvoie le type de géométrie</span>
 <span class="k">WHERE</span> <span class="n">Geometrytype</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;POLYGON&#39;</span>
 </code></pre></div>
 </td></tr></table>
@@ -733,6 +747,26 @@
 </td></tr></table>
 <p>Attention, cette requête est lourde, et devra être enregistrée comme une table.</p>
 <p>Continuer vers <a href="../union/">Rassembler des données: UNION ALL</a></p>
+<h2 id="quiz">Quiz<a class="headerlink" href="#quiz" title="Permanent link">#</a></h2>
+<details>
+  <summary>Écrire une requête retournant pour les départements 'SEINE-MARITIME' et 'EURE', le nom, le nombre de communes ainsi que la surface et la surface de l'enveloppe convexe sous forme d'entier</summary>
+
+  <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">depart</span><span class="p">,</span>
+<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_commune</span><span class="p">,</span>
+<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">int8</span> <span class="k">AS</span> <span class="n">surface</span><span class="p">,</span>
+<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)))::</span><span class="nb">int8</span> <span class="k">AS</span> <span class="n">surface_enveloppe_convexe</span>
+<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span> <span class="n">depart</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="p">,</span> <span class="s1">&#39;EURE&#39;</span><span class="p">)</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
+</code></pre></div>
+</td></tr></table>
+</details>
                 
               
               
