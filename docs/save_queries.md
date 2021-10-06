@@ -13,9 +13,7 @@ DROP VIEW IF EXISTS z_formation.v_voies;
 CREATE VIEW z_formation.v_voies AS
 SELECT id_route, id AS code, ST_Length(geom) AS longueur, geom
 FROM z_formation.route
-WHERE st_length(geom) > 5000
-
-;
+WHERE ST_Length(geom) > 5000
 ```
 
 Utiliser cette vue dans une autre requête
@@ -41,13 +39,15 @@ SELECT
 -- on récupère tous les champs
 source.*,
 -- on calcule la longueur après rassemblement des données
-st_length(geom) AS longueur
+ST_Length(geom) AS longueur
 FROM (
-        SELECT id, geom
+        (SELECT id, geom
         FROM z_formation.chemin
+        LIMIT 100)
         UNION ALL
-        SELECT id, geom
+        (SELECT id, geom
         FROM z_formation.route
+        LIMIT 100)
 ) AS source
 ORDER BY longueur
 ;

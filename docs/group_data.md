@@ -85,12 +85,12 @@ SELECT *
 FROM (
         SELECT
         nature,
-        -- ST_Convexhull renvoit l'enveloppe convexe
+        -- ST_Convexhull renvoie l'enveloppe convexe
         ST_Convexhull(ST_Collect(geom)) AS geom
         FROM z_formation.lieu_dit_habite
         GROUP BY nature
 ) AS source
--- GeometryType renvoit le type de géométrie
+-- GeometryType renvoie le type de géométrie
 WHERE Geometrytype(geom) = 'POLYGON'
 ```
 
@@ -124,3 +124,18 @@ GROUP BY depart
 Attention, cette requête est lourde, et devra être enregistrée comme une table.
 
 Continuer vers [Rassembler des données: UNION ALL](./union.md)
+
+## Quiz
+<details>
+  <summary>Écrire une requête retournant pour les départements 'SEINE-MARITIME' et 'EURE', le nom, le nombre de communes ainsi que la surface et la surface de l'enveloppe convexe sous forme d'entier</summary>
+  
+  ```sql
+  SELECT depart,
+  count(id_commune) AS nb_commune,
+  ST_Area(ST_Collect(geom))::int8 AS surface,
+  ST_Area(ST_Convexhull(ST_Collect(geom)))::int8 AS surface_enveloppe_convexe
+  FROM z_formation.commune
+  WHERE depart IN ('SEINE-MARITIME', 'EURE')
+  GROUP BY depart
+  ```
+</details>

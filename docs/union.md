@@ -7,12 +7,19 @@ La clause **UNION** peut être utilisée pour regrouper les données de sources 
 ```sql
 -- Rassembler des données de tables différentes
 -- On utilise une UNION ALL
-SELECT 'chemin' AS nature, geom, round(st_length(geom))::integer AS longueur
-FROM z_formation.chemin
+
+	(SELECT 'chemin' AS nature,
+                geom,
+                ROUND(ST_LENGTH(geom))::integer AS longueur
+        FROM z_formation.chemin
+        LIMIT 100)
 -- UNION ALL est placé entre 2 SELECT
-UNION ALL
-SELECT 'route' AS nature, geom, round(st_length(geom))::integer AS longueur
-FROM z_formation.route
+UNION ALL 
+	(SELECT 'route' AS nature,
+                geom,
+                ROUND(ST_LENGTH(geom))::integer AS longueur
+        FROM z_formation.route
+        LIMIT 100)
 -- Le ORDER BY doit être réalisé à la fin, et non sur chaque SELECT
 ORDER BY longueur
 ```
@@ -26,11 +33,13 @@ source.*,
 -- on calcule la longueur après rassemblement des données
 st_length(geom) AS longueur
 FROM (
-        SELECT id, geom
+        (SELECT id, geom
         FROM z_formation.chemin
+        LIMIT 100)
         UNION ALL
-        SELECT id, geom
+        (SELECT id, geom
         FROM z_formation.route
+        LIMIT 100)
 ) AS source
 ORDER BY longueur DESC
 ;

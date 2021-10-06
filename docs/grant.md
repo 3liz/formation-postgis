@@ -6,7 +6,7 @@ La [documentation officielle de PostgreSQL](https://www.postgresql.org/docs/curr
 
 Nous montrons ci-dessous quelques utilisations possibles. Attention, pour pouvoir réaliser certaines opérations, vous devez:
 
-* soit être **super-utilisateur* (créer un rôle de connexion)
+* soit être **super-utilisateur** (créer un rôle de connexion)
 * soit être **propriétaire** des objets pour lesquels modifier les droits
 
 

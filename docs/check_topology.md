@@ -6,7 +6,7 @@ Avant de vérifier la topologie, il faut au préalable avoir des géométries va
 
 Certaines micro-erreurs de topologie peuvent peuvent être corrigées en réalisant une simplification des données à l'aide d'une grille, par exemple pour corriger des soucis d'arrondis. Pour cela, PostGIS a une fonction **ST_SnapToGrid**.
 
-On peut utiliser conjointement **ST_Simplify* et **ST_SnapToGrid** pour effectuer une première correction sur les données. Attention, ces fonctions modifient la donnée. A vous de choisir la bonne tolérance, par exemple 5 cm, qui dépend de votre donnée et de votre cas d'utilisation.
+On peut utiliser conjointement **ST_Simplify** et **ST_SnapToGrid** pour effectuer une première correction sur les données. Attention, ces fonctions modifient la donnée. A vous de choisir la bonne tolérance, par exemple 5 cm, qui dépend de votre donnée et de votre cas d'utilisation.
 
 Tester la simplification en lançant la requête suivante, et en chargeant le résultat comme une nouvelle couche dans QGIS
 
