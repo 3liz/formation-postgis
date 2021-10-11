@@ -160,3 +160,5 @@ Pour **rafraîchir** les données à partir du serveur WFS, il suffit de rafraî
 -- Rafraîchir la vue, par exemple à lancer une fois par mois
 REFRESH MATERIALIZED VIEW inpn_metropole.vm_zico;
 ```
+
+Continuer vers [Accéder à des données externes: Foreign Data Wrapper](./tutoriel.md)

@@ -27,6 +27,7 @@ nav:
     - Fonctions utiles: utils.md
     - Droits: grant.md
     - Données externes: fdw.md
+    - Tutoriels en ligne: tutoriel.md
 
 markdown_extensions:
   # - git-revision-date:

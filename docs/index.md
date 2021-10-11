@@ -36,3 +36,4 @@ Cette formation concerne des utilisateurs de QGIS, géomaticiens, qui souhaitent
 * [Fonctions utiles](./utils.md)
 * [Gestion des droits](./grant.md)
 * [Accéder à des données externes: Foreign Data Wrapper](./fdw.md)
+* [Tutoriels en ligne](./tutoriel.md)
