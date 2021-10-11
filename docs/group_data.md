@@ -127,7 +127,7 @@ Continuer vers [Rassembler des données: UNION ALL](./union.md)
 
 ## Quiz
 <details>
-  <summary>Écrire une requête retournant pour les départements 'SEINE-MARITIME' et 'EURE', le nom, le nombre de communes ainsi que la surface et la surface de l'enveloppe convexe sous forme d'entier</summary>
+  <summary>Écrire une requête retournant pour les départements 'SEINE-MARITIME' et 'EURE', leur nom, le nombre de communes ainsi que la surface et la surface de l'enveloppe convexe en mètre carré sous forme d'entier.</summary>
   
   ```sql
   SELECT depart,

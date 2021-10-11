@@ -17,6 +17,10 @@ Nous présupposons qu'une **base de données** est accessible pour la formation,
 
 Pour cette formation, nous utilisons des données libres de droit:
 
+* Un zip est téléchargable en cliquant sur ce [lien](https://drive.google.com/file/d/1a2JgGRleE4OTMGAUFPkgkMJAaoOLBArL/view?usp=sharing).
+
+Ce jeu de données a pour sources :
+
 * Extraction de données d'**OpenStreetMap** dans un format SIG, sous licence ODBL ( site https://github.com/igeofr/osm2igeo ). On utilisera par exemple les données de l'ancienne région Haute-Normandie:
 https://www.data.data-wax.com/OSM2IGEO/FRANCE/202103_OSM2IGEO_23_HAUTE_NORMANDIE_SHP_L93_2154.zip
 
