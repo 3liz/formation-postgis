@@ -13,14 +13,14 @@
         <meta name="author" content="3Liz">
       
       
-        <link rel="canonical" href="https://docs.3liz.org/formation-postgis/sql_select/">
+        <link rel="canonical" href="https://docs.3liz.org/formation-postgis/tutoriel/">
       
       <link rel="icon" href="../logo.svg">
       <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
     
     
       
-        <title>Sélection - Formation PostGIS</title>
+        <title>Tutoriels en ligne - Formation PostGIS</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#selectionner" class="md-skip">
+        <a href="#tutoriel" class="md-skip">
           Skip to content
         </a>
       
@@ -97,7 +97,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Sélection
+              Tutoriels en ligne
             
           </span>
         </div>
@@ -275,51 +275,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Sélection
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../sql_select/" class="md-nav__link">
         Sélection
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#visualiser-une-requete-dans-qgis" class="md-nav__link">
-    Visualiser une requête dans QGIS
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -525,11 +485,21 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../tutoriel/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Tutoriels en ligne
       </a>
+      
     </li>
   
 
@@ -553,21 +523,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#visualiser-une-requete-dans-qgis" class="md-nav__link">
-    Visualiser une requête dans QGIS
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -578,122 +533,20 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/3liz/formation-postgis/edit/master/docs/sql_select.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/3liz/formation-postgis/edit/master/docs/tutoriel.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="selectionner">Sélectionner<a class="headerlink" href="#selectionner" title="Permanent link">#</a></h1>
-<p>Nous allons présenter des <strong>requêtes SQL</strong> de plus en plus complexes pour accéder aux données, et exploiter les capacités de PostgreSQL/PostGIS. Une requête est construite avec des instructions standardisées, appelées <strong>clauses</strong></p>
-<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Ordre des clauses SQL</span>
-<span class="k">SELECT</span> <span class="n">une_colonne</span><span class="p">,</span> <span class="n">une_autre_colonne</span>
-<span class="k">FROM</span> <span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span>
-<span class="p">(</span><span class="k">LEFT</span><span class="p">)</span> <span class="k">JOIN</span> <span class="n">autre_schema</span><span class="p">.</span><span class="n">autre_table</span>
-        <span class="k">ON</span> <span class="n">critere_de_jointure</span>
-<span class="k">WHERE</span> <span class="n">condition</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">champs_de_regroupement</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">champs_d_ordre</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
-Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner l&#39;ensemble des données d&#39;une couche: l&#39;étoile veut dire &quot;tous les champs de la table&quot;</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
-<span class="p">;</span>
-</code></pre></div>
-</td></tr></table>
-<p>Les 10 premiers objets</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner les 10 premières communes par ordre alphabétique</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
-<p>Les 10 premiers objets par ordre alphabétique</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner les 10 premières communes par ordre alphabétique descendant</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span> <span class="k">DESC</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
-<p>Les 10 premiers objets avec un ordre sur plusieurs champs</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- On peut utiliser plusieurs champs pour l&#39;ordre</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">depart</span><span class="p">,</span> <span class="n">nom</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
-</code></pre></div>
-</td></tr></table>
-<p>Sélectionner seulement certains champs</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner seulement certains champs, et avec un ordre</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span><span class="p">,</span> <span class="n">code_insee</span><span class="p">,</span> <span class="n">nom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
-</code></pre></div>
-</td></tr></table>
-<p>Donner un alias (un autre nom) aux champs</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Donner des alias aux noms des colonnes</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span> <span class="k">AS</span> <span class="n">identifiant</span><span class="p">,</span>
-<span class="n">code_insee</span> <span class="k">AS</span> <span class="ss">&quot;code_commune&quot;</span><span class="p">,</span>
-<span class="n">nom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
-</code></pre></div>
-</td></tr></table>
-<p>On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.</p>
-<h2 id="visualiser-une-requete-dans-qgis">Visualiser une requête dans QGIS<a class="headerlink" href="#visualiser-une-requete-dans-qgis" title="Permanent link">#</a></h2>
-<p>Si on veut charger le résultat de la requête dans QGIS, il suffit de cocher la case <strong>Charger en tant que nouvelle couche</strong> puis de choisir le champ d'<strong>identifiant unique</strong>, et si et seulement si c'est une couche spatiale, choisir le <strong>champ de géométrie</strong> .</p>
-<p>Attention, si la table est non spatiale, il faut bien penser à décocher <strong>Colonne de géométrie</strong> !</p>
-<p>Par exemple, pour afficher les communes avec leur information sommaire:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Ajouter la géométrie pour visualiser les données dans QGIS</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span> <span class="k">AS</span> <span class="n">identifiant</span><span class="p">,</span>
-<span class="n">code_insee</span> <span class="k">AS</span> <span class="ss">&quot;code_commune&quot;</span><span class="p">,</span>
-<span class="n">nom</span><span class="p">,</span> <span class="n">geom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
-</code></pre></div>
-</td></tr></table>
-<p>On choisira ici le champ <strong>identifiant</strong> comme identifiant unique, et le champ <strong>geom</strong> comme géométrie</p>
-<p>Continuer vers <a href="../perform_calculation/">Réaliser des calculs et créer des géométries: FONCTIONS</a></p>
+                <h1 id="tutoriel">Tutoriel<a class="headerlink" href="#tutoriel" title="Permanent link">#</a></h1>
+<p>Afin de vous entrainer il existe différentes tutoriels en ligne vous permettant de vous exercer.</p>
+<ul>
+<li><a href="https://sql.sh/exercices-sql">https://sql.sh/exercices-sql</a></li>
+<li><a href="https://sqlzoo.net/wiki/SQL_Tutorial">https://sqlzoo.net/wiki/SQL_Tutorial</a></li>
+<li><a href="https://fxjollois.github.io/cours-sql/">https://fxjollois.github.io/cours-sql/</a></li>
+<li><a href="http://webtic.free.fr/sql/exint/q1.htm">http://webtic.free.fr/sql/exint/q1.htm</a></li>
+<li><a href="https://www.hackerrank.com/domains/sql">https://www.hackerrank.com/domains/sql</a></li>
+</ul>
                 
               
               
@@ -718,7 +571,7 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../import_data/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Import des données" rel="prev">
+        <a href="../fdw/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Données externes" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -727,26 +580,11 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
               <span class="md-footer__direction">
                 Previous
               </span>
-              Import des données
+              Données externes
             </div>
           </div>
         </a>
       
-      
-        
-        <a href="../perform_calculation/" class="md-footer__link md-footer__link--next" aria-label="Next: Calcul &amp; Fonctions" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Calcul & Fonctions
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   
