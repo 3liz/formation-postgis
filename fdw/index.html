@@ -930,26 +930,26 @@
 <span class="k">DROP</span> <span class="n">SERVER</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">foreign_server_test</span> <span class="k">CASCADE</span><span class="p">;</span>
 <span class="k">CREATE</span> <span class="n">SERVER</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">foreign_server_test</span>
 <span class="k">FOREIGN</span> <span class="k">DATA</span> <span class="n">WRAPPER</span> <span class="n">postgres_fdw</span>
-<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">host</span> <span class="s1">&#39;mon_serveur_postgresql_externe.com&#39;</span><span class="p">,</span> <span class="n">port</span> <span class="s1">&#39;5432&#39;</span><span class="p">,</span> <span class="n">dbname</span> <span class="s1">&#39;lizmap_opensis_sis04&#39;</span><span class="p">)</span>
+<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">host</span> <span class="s1">&#39;mon_serveur_postgresql_externe.com&#39;</span><span class="p">,</span> <span class="n">port</span> <span class="s1">&#39;5432&#39;</span><span class="p">,</span> <span class="n">dbname</span> <span class="s1">&#39;external_database&#39;</span><span class="p">)</span>
 <span class="p">;</span>
 
-<span class="c1">-- on déclare se connecter en tant que lizmap@avignon lorsqu&#39;on récupère des données depuis une connexion par le groupe &quot;__grp_lizmap&quot;</span>
-<span class="k">CREATE</span> <span class="k">USER</span> <span class="n">MAPPING</span> <span class="k">FOR</span> <span class="ss">&quot;lizmap@valabre&quot;</span>
+<span class="c1">-- on déclare se connecter en tant qu&#39;utilisateur mon_utilisateur externe lorsqu&#39;on récupère des données</span>
+<span class="k">CREATE</span> <span class="k">USER</span> <span class="n">MAPPING</span> <span class="k">FOR</span> <span class="ss">&quot;&quot;</span>
 <span class="n">SERVER</span> <span class="n">foreign_server_test</span>
-<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">user</span> <span class="s1">&#39;admin_sis04@valabre&#39;</span><span class="p">,</span> <span class="n">password</span> <span class="s1">&#39;***********&#39;</span><span class="p">);</span>
+<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">user</span> <span class="s1">&#39;mon_utilisateur&#39;</span><span class="p">,</span> <span class="n">password</span> <span class="s1">&#39;***********&#39;</span><span class="p">);</span>
 
 <span class="c1">-- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur</span>
 <span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">fdw_test_schema</span> <span class="k">CASCADE</span><span class="p">;</span>
 <span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">fdw_test_schema</span><span class="p">;</span>
 
 <span class="c1">-- importer automatiquement les tables d&#39;un schéma de la base distante</span>
-<span class="n">IMPORT</span> <span class="k">FOREIGN</span> <span class="k">SCHEMA</span> <span class="ss">&quot;d04_sandbox&quot;</span>
-<span class="k">LIMIT</span> <span class="k">TO</span> <span class="p">(</span><span class="ss">&quot;04_pei&quot;</span><span class="p">,</span> <span class="ss">&quot;antennes_relais&quot;</span><span class="p">)</span>
+<span class="n">IMPORT</span> <span class="k">FOREIGN</span> <span class="k">SCHEMA</span> <span class="ss">&quot;un_schema&quot;</span>
+<span class="k">LIMIT</span> <span class="k">TO</span> <span class="p">(</span><span class="ss">&quot;une_table&quot;</span><span class="p">,</span> <span class="ss">&quot;une_autre_table&quot;</span><span class="p">)</span>
 <span class="k">FROM</span> <span class="n">SERVER</span> <span class="n">foreign_server_test</span>
 <span class="k">INTO</span> <span class="n">fdw_test_schema</span><span class="p">;</span>
 
 <span class="c1">-- Tester</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">fdw_test_schema</span><span class="p">.</span><span class="n">antennes_relais</span> <span class="k">LIMIT</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">fdw_test_schema</span><span class="p">.</span><span class="n">une_table</span> <span class="k">LIMIT</span> <span class="mi">1</span><span class="p">;</span>
 </code></pre></div>
 </td></tr></table>
 <p>Continuer vers <a href="../tutoriel/">Tutoriels en ligne</a></p>
