@@ -19,13 +19,13 @@ Avec ce Foreign Data Wrapper **ogr_fdw**, on peut appeler n'importe quelle sourc
 
 Voir la [documentation officielle de ogr_fdw](https://github.com/pramsey/pgsql-ogr-fdw). 
 
-## Installation
+### Installation
 
 Pour l'installer sur une machine **Linux**, il suffit d'installer le paquet correspondant à la version de PostgreSQL, par exemple `postgresql-11-ogr-fdw`. 
 
 Sous **Windows**, il est disponible avec le paquet PostGIS via l'outil [StackBuilder](https://www.postgresql.org/download/windows/).
 
-## Exemple d'utilisation: récupérer des couches d'un serveur WFS
+### Exemple d'utilisation: récupérer des couches d'un serveur WFS
 
 Nous allons utiliser le FDW pour récupérer des données mises à disposition sur le serveur de l'INPN via le protocole WFS.
 
@@ -161,4 +161,34 @@ Pour **rafraîchir** les données à partir du serveur WFS, il suffit de rafraî
 REFRESH MATERIALIZED VIEW inpn_metropole.vm_zico;
 ```
 
-Continuer vers [Accéder à des données externes: Foreign Data Wrapper](./tutoriel.md)
+## Le FDW postgres_fdw pour accéder aux tables d'une autre base de données PostgreSQL
+
+```sql
+-- Création du serveur externe
+DROP SERVER IF EXISTS foreign_server_test CASCADE;
+CREATE SERVER IF NOT EXISTS foreign_server_test
+FOREIGN DATA WRAPPER postgres_fdw
+OPTIONS (host 'mon_serveur_postgresql_externe.com', port '5432', dbname 'lizmap_opensis_sis04')
+;
+
+-- on déclare se connecter en tant que lizmap@avignon lorsqu'on récupère des données depuis une connexion par le groupe "__grp_lizmap"
+CREATE USER MAPPING FOR "lizmap@valabre"
+SERVER foreign_server_test
+OPTIONS (user 'admin_sis04@valabre', password '***********');
+
+-- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur
+DROP SCHEMA IF EXISTS fdw_test_schema CASCADE;
+CREATE SCHEMA IF NOT EXISTS fdw_test_schema;
+
+-- importer automatiquement les tables d'un schéma de la base distante
+IMPORT FOREIGN SCHEMA "d04_sandbox"
+LIMIT TO ("04_pei", "antennes_relais")
+FROM SERVER foreign_server_test
+INTO fdw_test_schema;
+
+-- Tester
+SELECT * FROM fdw_test_schema.antennes_relais LIMIT 1;
+```
+
+
+Continuer vers [Tutoriels en ligne](./tutoriel.md)
