@@ -69,6 +69,8 @@ ALTER TABLE z_formation.t_voies ADD PRIMARY KEY (gid);
 **Attention** Les données de la table n'évoluent plus en fonction des données des tables source. Il faut donc supprimer la table puis la recréer si besoin. Pour répondre à ce besoin, il existe les **vues matérialisées**.
 
 
+
+
 ### Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.
 
 On crée la table si besoin. On ajoutera ensuite les données via **INSERT**
@@ -144,6 +146,28 @@ ALTER TABLE z_formation.parcelle_havre ADD PRIMARY KEY (id_parcelle);
 
 -- Ajouter l'index spatial
 CREATE INDEX ON z_formation.parcelle_havre USING GIST (geom);
+```
+
+## Enregistrer une requête comme une vue matérialisée
+
+
+```sql
+-- On supprime d'abord la vue matérialisée si elle existe
+DROP MATERIALIZED VIEW IF EXISTS z_formation.vm_voies;
+-- On crée la vue en récupérant les routes de plus de 5 km
+CREATE MATERIALIZED VIEW z_formation.vm_voies AS
+SELECT id_route, id AS code, ST_Length(geom) AS longueur, geom
+FROM z_formation.route
+WHERE ST_Length(geom) > 6000
+
+-- Ajout des indexes sur le champ id_route et de géométrie
+CREATE INDEX ON z_formation.vm_voies (id_route);
+CREATE INDEX ON z_formation.vm_voies USING GIST (geom);
+
+-- On rafraîchit la vue matérialisée quand on en a besoin
+-- par exemple quand les données source ont été modifiées
+REFRESH MATERIALIZED VIEW z_formation.vm_voies;
+
 ```
 
 Continuer vers [Réaliser des jointures attributaires et spatiales; JOIN](./join_data.md)
