@@ -509,18 +509,31 @@
     Le FDW ogr_fdw pour lire des données vectorielles
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Le FDW ogr_fdw pour lire des données vectorielles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     Installation
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs" class="md-nav__link">
     Exemple d'utilisation: récupérer des couches d'un serveur WFS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql" class="md-nav__link">
+    Le FDW postgres_fdw pour accéder aux tables d'une autre base de données PostgreSQL
   </a>
   
 </li>
@@ -578,18 +591,31 @@
     Le FDW ogr_fdw pour lire des données vectorielles
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Le FDW ogr_fdw pour lire des données vectorielles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#installation" class="md-nav__link">
     Installation
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs" class="md-nav__link">
     Exemple d'utilisation: récupérer des couches d'un serveur WFS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql" class="md-nav__link">
+    Le FDW postgres_fdw pour accéder aux tables d'une autre base de données PostgreSQL
   </a>
   
 </li>
@@ -625,10 +651,10 @@
 <h2 id="le-fdw-ogr_fdw-pour-lire-des-donnees-vectorielles">Le FDW ogr_fdw pour lire des données vectorielles<a class="headerlink" href="#le-fdw-ogr_fdw-pour-lire-des-donnees-vectorielles" title="Permanent link">#</a></h2>
 <p>Avec ce Foreign Data Wrapper <strong>ogr_fdw</strong>, on peut appeler n'importe quelle source de données externe compatible avec la librairie <strong>ogr2ogr</strong> et les exploiter comme des tables: fichiers GeoJSON ou Shapefile, GPX, CSV, mais aussi les protocoles comme le WFS.</p>
 <p>Voir la <a href="https://github.com/pramsey/pgsql-ogr-fdw">documentation officielle de ogr_fdw</a>. </p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h2>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h3>
 <p>Pour l'installer sur une machine <strong>Linux</strong>, il suffit d'installer le paquet correspondant à la version de PostgreSQL, par exemple <code>postgresql-11-ogr-fdw</code>. </p>
 <p>Sous <strong>Windows</strong>, il est disponible avec le paquet PostGIS via l'outil <a href="https://www.postgresql.org/download/windows/">StackBuilder</a>.</p>
-<h2 id="exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs">Exemple d'utilisation: récupérer des couches d'un serveur WFS<a class="headerlink" href="#exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs" title="Permanent link">#</a></h2>
+<h3 id="exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs">Exemple d'utilisation: récupérer des couches d'un serveur WFS<a class="headerlink" href="#exemple-dutilisation-recuperer-des-couches-dun-serveur-wfs" title="Permanent link">#</a></h3>
 <p>Nous allons utiliser le FDW pour récupérer des données mises à disposition sur le serveur de l'INPN via le protocole WFS.</p>
 <p>Vous pouvez d'abord tester dans QGIS quelles données sont disponibles sur ce serveur en créant une nouvelle connexion WFS avec l'URL <code>http://ws.carmencarto.fr/WFS/119/fxx_inpn?</code></p>
 <p>Via QGIS ou un autre client à la base de données, nous pouvons maintenant montrer comment récuperer ces données:</p>
@@ -876,7 +902,57 @@
 <span class="n">REFRESH</span> <span class="n">MATERIALIZED</span> <span class="k">VIEW</span> <span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="p">;</span>
 </code></pre></div>
 </td></tr></table>
-<p>Continuer vers <a href="../tutoriel/">Accéder à des données externes: Foreign Data Wrapper</a></p>
+<h2 id="le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql">Le FDW postgres_fdw pour accéder aux tables d'une autre base de données PostgreSQL<a class="headerlink" href="#le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql" title="Permanent link">#</a></h2>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Création du serveur externe</span>
+<span class="k">DROP</span> <span class="n">SERVER</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">foreign_server_test</span> <span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="n">SERVER</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">foreign_server_test</span>
+<span class="k">FOREIGN</span> <span class="k">DATA</span> <span class="n">WRAPPER</span> <span class="n">postgres_fdw</span>
+<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">host</span> <span class="s1">&#39;mon_serveur_postgresql_externe.com&#39;</span><span class="p">,</span> <span class="n">port</span> <span class="s1">&#39;5432&#39;</span><span class="p">,</span> <span class="n">dbname</span> <span class="s1">&#39;lizmap_opensis_sis04&#39;</span><span class="p">)</span>
+<span class="p">;</span>
+
+<span class="c1">-- on déclare se connecter en tant que lizmap@avignon lorsqu&#39;on récupère des données depuis une connexion par le groupe &quot;__grp_lizmap&quot;</span>
+<span class="k">CREATE</span> <span class="k">USER</span> <span class="n">MAPPING</span> <span class="k">FOR</span> <span class="ss">&quot;lizmap@valabre&quot;</span>
+<span class="n">SERVER</span> <span class="n">foreign_server_test</span>
+<span class="k">OPTIONS</span> <span class="p">(</span><span class="k">user</span> <span class="s1">&#39;admin_sis04@valabre&#39;</span><span class="p">,</span> <span class="n">password</span> <span class="s1">&#39;***********&#39;</span><span class="p">);</span>
+
+<span class="c1">-- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur</span>
+<span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">fdw_test_schema</span> <span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">fdw_test_schema</span><span class="p">;</span>
+
+<span class="c1">-- importer automatiquement les tables d&#39;un schéma de la base distante</span>
+<span class="n">IMPORT</span> <span class="k">FOREIGN</span> <span class="k">SCHEMA</span> <span class="ss">&quot;d04_sandbox&quot;</span>
+<span class="k">LIMIT</span> <span class="k">TO</span> <span class="p">(</span><span class="ss">&quot;04_pei&quot;</span><span class="p">,</span> <span class="ss">&quot;antennes_relais&quot;</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">SERVER</span> <span class="n">foreign_server_test</span>
+<span class="k">INTO</span> <span class="n">fdw_test_schema</span><span class="p">;</span>
+
+<span class="c1">-- Tester</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">fdw_test_schema</span><span class="p">.</span><span class="n">antennes_relais</span> <span class="k">LIMIT</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+<p>Continuer vers <a href="../tutoriel/">Tutoriels en ligne</a></p>
                 
               
               
