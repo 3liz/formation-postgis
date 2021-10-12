@@ -168,26 +168,26 @@ REFRESH MATERIALIZED VIEW inpn_metropole.vm_zico;
 DROP SERVER IF EXISTS foreign_server_test CASCADE;
 CREATE SERVER IF NOT EXISTS foreign_server_test
 FOREIGN DATA WRAPPER postgres_fdw
-OPTIONS (host 'mon_serveur_postgresql_externe.com', port '5432', dbname 'lizmap_opensis_sis04')
+OPTIONS (host 'mon_serveur_postgresql_externe.com', port '5432', dbname 'external_database')
 ;
 
--- on déclare se connecter en tant que lizmap@avignon lorsqu'on récupère des données depuis une connexion par le groupe "__grp_lizmap"
-CREATE USER MAPPING FOR "lizmap@valabre"
+-- on déclare se connecter en tant qu'utilisateur mon_utilisateur externe lorsqu'on récupère des données
+CREATE USER MAPPING FOR ""
 SERVER foreign_server_test
-OPTIONS (user 'admin_sis04@valabre', password '***********');
+OPTIONS (user 'mon_utilisateur', password '***********');
 
 -- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur
 DROP SCHEMA IF EXISTS fdw_test_schema CASCADE;
 CREATE SCHEMA IF NOT EXISTS fdw_test_schema;
 
 -- importer automatiquement les tables d'un schéma de la base distante
-IMPORT FOREIGN SCHEMA "d04_sandbox"
-LIMIT TO ("04_pei", "antennes_relais")
+IMPORT FOREIGN SCHEMA "un_schema"
+LIMIT TO ("une_table", "une_autre_table")
 FROM SERVER foreign_server_test
 INTO fdw_test_schema;
 
 -- Tester
-SELECT * FROM fdw_test_schema.antennes_relais LIMIT 1;
+SELECT * FROM fdw_test_schema.une_table LIMIT 1;
 ```
 
 
