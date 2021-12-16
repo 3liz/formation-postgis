@@ -29,6 +29,10 @@ nav:
     - Données externes: fdw.md
     - Tutoriels en ligne: tutoriel.md
 
+plugins:
+  - search
+  - git-revision-date-localized
+
 markdown_extensions:
   - toc:
       permalink: "#"
