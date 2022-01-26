@@ -465,7 +465,7 @@
         
           <li class="md-nav__item">
   <a href="#jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes" class="md-nav__link">
-    Jointure spatiale entre le centroide des chemins et la géométrie des communes
+    Jointure spatiale entre le centroïde des chemins et la géométrie des communes
   </a>
   
 </li>
@@ -728,7 +728,7 @@
         
           <li class="md-nav__item">
   <a href="#jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes" class="md-nav__link">
-    Jointure spatiale entre le centroide des chemins et la géométrie des communes
+    Jointure spatiale entre le centroïde des chemins et la géométrie des communes
   </a>
   
 </li>
@@ -812,11 +812,11 @@
 <span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">zone_urba</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">z</span><span class="w"></span>
 <span class="k">JOIN</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z</span><span class="p">.</span><span class="n">insee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">code_insee</span><span class="w"></span>
 <span class="c1">-- IMPORTANT: ne pas oublier le ON cad le critère de jointure,</span>
-<span class="c1">-- sous peine de &quot;produit cartésien&quot; (calcul couteux de tous les possibles)</span>
+<span class="c1">-- sous peine de &quot;produit cartésien&quot; (calcul coûteux de tous les possibles)</span>
 <span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>Il est souvent intéressant, pour des données volumineuses, de <strong>créer un index sur le champ de jointure</strong> (par exemple ici sur les champs insee et ccocom.</p>
+<p>Il est souvent intéressant, pour des données volumineuses, de <strong>créer un index sur le champ de jointure</strong> (par exemple ici sur les champs <code>insee</code> et <code>ccocom</code>.</p>
 <h3 id="exemple-2-observations-et-communes">Exemple 2: observations et communes<a class="headerlink" href="#exemple-2-observations-et-communes" title="Permanent link">#</a></h3>
 <ul>
 <li>On crée une table de points qui contiendra des observations</li>
@@ -1255,8 +1255,8 @@
 </code></pre></div>
 </td></tr></table>
 <p>Cela peut renvoyer plusieurs lignes par chemin, car chaque chemin peut passer par plusieurs communes.</p>
-<h4 id="jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes">Jointure spatiale entre le centroide des chemins et la géométrie des communes<a class="headerlink" href="#jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes" title="Permanent link">#</a></h4>
-<p>On peut utiliser le <strong>centroide de chaque chemin</strong> pour avoir un seul objet par chemin comme résultat.</p>
+<h4 id="jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes">Jointure spatiale entre le centroïde des chemins et la géométrie des communes<a class="headerlink" href="#jointure-spatiale-entre-le-centroide-des-chemins-et-la-geometrie-des-communes" title="Permanent link">#</a></h4>
+<p>On peut utiliser le <strong>centroïde de chaque chemin</strong> pour avoir un seul objet par chemin comme résultat.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1306,7 +1306,7 @@
 </code></pre></div>
 </td></tr></table>
 <h4 id="utilisation-dune-jointure-left-pour-garder-les-communes-sans-chemins">Utilisation d'une jointure LEFT pour garder les communes sans chemins<a class="headerlink" href="#utilisation-dune-jointure-left-pour-garder-les-communes-sans-chemins" title="Permanent link">#</a></h4>
-<p>La requête précédente ne renvoit pas de lignes pour les communes qui n'ont pas de chemin dont le centroide est dans une commune. C'est une jointure de type <strong>INNER JOIN</strong></p>
+<p>La requête précédente ne renvoie pas de lignes pour les communes qui n'ont pas de chemin dont le centroïde est dans une commune. C'est une jointure de type <strong>INNER JOIN</strong></p>
 <p>Si on veut quand même récupérer ces communes, on fait une jointure <strong>LEFT JOIN</strong>: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à NULL.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1333,7 +1333,7 @@
 </td></tr></table>
 <p>puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâce à ce nouvel index spatial.</p>
 <h4 id="affiner-le-resultat-en-decoupant-les-chemins">Affiner le résultat en découpant les chemins<a class="headerlink" href="#affiner-le-resultat-en-decoupant-les-chemins" title="Permanent link">#</a></h4>
-<p>Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le <strong>morceau exacte qui est sur chaque commune</strong>. Pour cela, on va utiliser la fonction <strong>ST_Intersection</strong>. La requête va être plus couteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.</p>
+<p>Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le <strong>morceau exacte qui est sur chaque commune</strong>. Pour cela, on va utiliser la fonction <strong>ST_Intersection</strong>. La requête va être plus coûteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.</p>
 <p>On va découper exactement les chemins par commune et récupérer les informations</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1364,7 +1364,7 @@
 <span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">decoupe_chemin_par_commune</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p><strong>NB</strong>: Attention à ne pas confondre <strong>ST_Intersects</strong> qui renvoit vrai ou faux, et <strong>ST_Intersection</strong> qui renvoit la géométrie issue du découpage d'une géométrie par une autre.</p>
+<p><strong>NB</strong>: Attention à ne pas confondre <strong>ST_Intersects</strong> qui renvoie vrai ou faux, et <strong>ST_Intersection</strong> qui renvoie la géométrie issue du découpage d'une géométrie par une autre.</p>
 <h3 id="joindre-des-polygones-avec-des-polygones">Joindre des polygones avec des polygones<a class="headerlink" href="#joindre-des-polygones-avec-des-polygones" title="Permanent link">#</a></h3>
 <p>On peut bien sûr réaliser des <strong>jointures spatiales</strong> entre 2 couches de <strong>polygones</strong>, et découper les polygones par intersection. Attention, les performances sont forcément moins bonnes qu'avec des points.</p>
 <p>Trouver l'ensemble des zonages PLU pour les parcelles du Havre.</p>
@@ -1551,7 +1551,7 @@
 <span class="k">SELECT</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">setval</span><span class="p">(</span><span class="s1">&#39;z_formation.znieff_id_seq&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="k">true</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>Pour chaque commune, on souhaite calculer la somme des surfaces intersectée par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)</p>
+<p>Pour chaque commune, on souhaite calculer la somme des surfaces intersectées par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)</p>
 <ul>
 <li>Méthode avec des <strong>jointures LEFT</strong></li>
 </ul>
@@ -1608,7 +1608,7 @@
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">nom</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<p>Avantage: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via <code>WHERE p.id IS NOT NULL OR z.id IS NOT NULL</code> (commenté ci-dessus pour le désactiver)</p>
+<p><strong>Avantage</strong>: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via <code>WHERE p.id IS NOT NULL OR z.id IS NOT NULL</code> (commenté ci-dessus pour le désactiver)</p>
 <p>Résultat:</p>
 <table>
 <thead>
@@ -1689,8 +1689,8 @@
 <li>le calcul de découpage des polygones des communes par ceux des zonages peut être très long (et l'index spatial ne sert à rien ici)</li>
 </ul>
 <h3 id="distances-et-tampons-entre-couches">Distances et tampons entre couches<a class="headerlink" href="#distances-et-tampons-entre-couches" title="Permanent link">#</a></h3>
-<p>Pour chaque objets d'une table, on souhaite récupéerer des informations sur les<strong> objets proches d'une autre table</strong>. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction <strong>ST_DWithin</strong></p>
-<p>On prend comme exemple la table des bornes à incendie créée précédememnt (remplie avec quelques données de test).</p>
+<p>Pour chaque objets d'une table, on souhaite récupérer des informations sur les<strong> objets proches d'une autre table</strong>. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction <strong>ST_DWithin</strong></p>
+<p>On prend comme exemple la table des bornes à incendie créée précédemment (remplie avec quelques données de test).</p>
 <p>Trouver toutes les parcelles <strong>à moins de 200m</strong> d'une borne à incendie</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -1744,6 +1744,7 @@
 <span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
+<p>Un <a href="http://blog.cleverelephant.ca/2021/12/knn-syntax.html">article intéressant de Paul Ramsey</a> sur le calcul de distance via l'opérateur <code>&lt;-&gt;</code> pour trouver le plus proche voisin d'un objet.</p>
 <p>Continuer vers <a href="../merge_geometries/">Fusionner des géométries</a></p>
 
   <hr>
@@ -1751,7 +1752,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 2, 2021</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 26, 2022</span>
       
     
   </small>
