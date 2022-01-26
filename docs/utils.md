@@ -254,51 +254,111 @@ WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_schema_size(schema_name) DESC;
 ```
 
+## Tester les différences entre 2 tables de même structure
 
-## Gestion des commentaires
+Nous souhaitons **comparer deux tables de la base**, par exemple une table de communes en 2021 `communes_2021` et une table de communes en 2022 `communes_2022`.
 
-Fonction de création d'un commentaire
+On peut utiliser une fonction qui utilise les possibilités du format hstore pour comparer les données entre elles.
 
 ```sql
-CREATE OR REPLACE FUNCTION public.comment_table_from_query(schemaname text, tablename text, table_comment text)
-RETURNS INTEGER AS
-$limite$
+-- On ajoute le support du format hstore
+CREATE EXTENSION IF NOT EXISTS hstore;
+
+-- On crée la fonction de comparaison
+DROP FUNCTION compare_tables(text,text,text,text,text,text[]);
+CREATE OR REPLACE FUNCTION compare_tables(
+	p_schema_name_a text,
+	p_table_name_a text,
+	p_schema_name_b text,
+	p_table_name_b text,
+	p_common_identifier_field text,
+	p_excluded_fields text[]
+
+) RETURNS TABLE(
+	uid text,
+	status text,
+	table_a_values hstore,
+	table_b_values hstore
+)
+    LANGUAGE plpgsql
+    AS $_$
 DECLARE
-    sql_text text;
+    sqltemplate text;
 BEGIN
 
-    BEGIN
-        RAISE NOTICE 'Table %s', quote_ident(schemaname) || '.' || quote_ident(tablename) ;
-        sql_text = 'COMMENT ON TABLE ' || quote_ident(schemaname) || '.' || quote_ident(tablename) || ' IS ' || quote_literal(table_comment) ;
-        EXECUTE sql_text;
-        RETURN 1;
-    EXCEPTION WHEN OTHERS THEN
-        RAISE NOTICE 'ERROR - Failed %s', quote_ident(schemaname) || '.' || quote_ident(tablename);
-        RAISE NOTICE '%', sql_text;
-        RETURN 0;
-    END;
+    -- Compare data
+    sqltemplate = '
+    SELECT
+        coalesce(ta."%1$s", tb."%1$s") AS "%1$s",
+        CASE
+            WHEN ta."%1$s" IS NULL THEN ''not in table A''
+            WHEN tb."%1$s" IS NULL THEN ''not in table B''
+            ELSE ''table A != table B''
+        END AS status,
+        CASE
+            WHEN ta."%1$s" IS NULL THEN NULL
+            ELSE (hstore(ta.*) - ''%6$s''::text[]) - (hstore(tb) - ''%6$s''::text[])
+        END AS values_in_table_a,
+        CASE
+            WHEN tb."%1$s" IS NULL THEN NULL
+            ELSE (hstore(tb.*) - ''%6$s''::text[]) - (hstore(ta) - ''%6$s''::text[])
+        END AS values_in_table_b
+    FROM "%2$s"."%3$s" AS ta
+    FULL JOIN "%4$s"."%5$s" AS tb
+        ON ta."%1$s" = tb."%1$s"
+    WHERE
+        (hstore(ta.*) - ''%6$s''::text[]) != (hstore(tb.*) - ''%6$s''::text[])
+        OR (ta."%1$s" IS NULL)
+        OR (tb."%1$s" IS NULL)
+    ';
+
+    RETURN QUERY
+    EXECUTE format(sqltemplate,
+		p_common_identifier_field,
+        p_schema_name_a,
+        p_table_name_a,
+        p_schema_name_b,
+        p_table_name_b,
+        p_excluded_fields
+    );
+
 END;
-$limite$
-LANGUAGE plpgsql
-;
-
--- Test
-SELECT comment_table_from_query('admin', 'mairie', 'Commentaire des mairies')
-
--- Appplication sur toutes les tables listées dans le catalogue
-SELECT "ma_colonne_de_schema", "ma_colonne_de_table",
-comment_table_from_query("ma_colonne_de_schema", "ma_colonne_de_table", "commentaire")
-FROM metadonnees.catalogue
-WHERE "ma_colonne_de_table" IS NOT NULL AND "commentaire" IS NOT NULL
-ORDER BY "ma_colonne_de_schema", "ma_colonne_de_table"
-;
-
--- Vérification
-SELECT table_schema, table_name, obj_description((quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass) AS commentaire
-FROM information_schema.tables
-WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
-ORDER BY table_schema, table_name;
-
+$_$;
 ```
+
+Cette fonction attend en paramètres
+
+* le schéma de la **table A**. Ex: `referentiels`
+* le nom de la **table A**. Ex: `communes_2021`
+* le schéma de la **table B**. Ex: `referentiels`
+* le nom de la **table B**. Ex: `communes_2022`
+* le nom du champ qui identifie de manière unique la donnée. Ce n'est pas forcément la clé primaire. Ex `code_commune`
+* un tableau de champs pour lesquels ne pas vérifier les différences. Ex: `array['region', 'departement']`
+
+La requête à lancer est la suivantes
+```sql
+SELECT "uid", "status", "table_a_values", "table_b_values"
+FROM compare_tables(
+    'referentiels', 'commune_2021',
+    'referentiels', 'commune_2022',
+    'code_commune',
+    array['region', 'departement']
+)
+ORDER BY status, uid
+;
+```
+
+Exemple de données renvoyées:
+
+| uid   | status             | table_a_values                                                              | table_b_values                                                               |
+|-------|--------------------|-----------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| 12345 | not in table A     | NULL                                                                        | "annee_ref"=>"2022", "nom_commune"=>"Nouvelle commune", "population"=>"5723" |
+| 97612 | not in table B     | "annee_ref"=>"2021", "nom_commune"=>"Ancienne commune", "population"=>"840" | NULL                                                                         |
+| 97602 | table A != table B | "annee_ref"=>"2021", "population"=>"1245"                                   | "annee_ref"=>"2022", "population"=>"1322"                                    |
+
+Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais la fonction teste aussi les différences de géométries.
+
+*Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.*
+
 
 Continuer vers [Gestion des droits](./grant.md)
