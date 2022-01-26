@@ -16,11 +16,11 @@ SELECT z.*, c.nom
 FROM z_formation.zone_urba AS z
 JOIN z_formation.commune AS c ON z.insee = c.code_insee
 -- IMPORTANT: ne pas oublier le ON cad le critère de jointure,
--- sous peine de "produit cartésien" (calcul couteux de tous les possibles)
+-- sous peine de "produit cartésien" (calcul coûteux de tous les possibles)
 ;
 ```
 
-Il est souvent intéressant, pour des données volumineuses, de **créer un index sur le champ de jointure** (par exemple ici sur les champs insee et ccocom.
+Il est souvent intéressant, pour des données volumineuses, de **créer un index sur le champ de jointure** (par exemple ici sur les champs `insee` et `ccocom`.
 
 
 ### Exemple 2: observations et communes
@@ -198,9 +198,9 @@ ORDER BY id_chemin, nom
 
 Cela peut renvoyer plusieurs lignes par chemin, car chaque chemin peut passer par plusieurs communes.
 
-#### Jointure spatiale entre le centroide des chemins et la géométrie des communes
+#### Jointure spatiale entre le centroïde des chemins et la géométrie des communes
 
-On peut utiliser le **centroide de chaque chemin** pour avoir un seul objet par chemin comme résultat.
+On peut utiliser le **centroïde de chaque chemin** pour avoir un seul objet par chemin comme résultat.
 
 ```sql
 -- création de l'index
@@ -237,7 +237,7 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 
 #### Utilisation d'une jointure LEFT pour garder les communes sans chemins
 
-La requête précédente ne renvoit pas de lignes pour les communes qui n'ont pas de chemin dont le centroide est dans une commune. C'est une jointure de type **INNER JOIN**
+La requête précédente ne renvoie pas de lignes pour les communes qui n'ont pas de chemin dont le centroïde est dans une commune. C'est une jointure de type **INNER JOIN**
 
 Si on veut quand même récupérer ces communes, on fait une jointure **LEFT JOIN**: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à NULL.
 
@@ -264,7 +264,7 @@ puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâc
 
 #### Affiner le résultat en découpant les chemins
 
-Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction **ST_Intersection**. La requête va être plus couteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
+Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction **ST_Intersection**. La requête va être plus coûteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
 
 On va découper exactement les chemins par commune et récupérer les informations
 
@@ -286,7 +286,7 @@ CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);
 ```
 
 
-**NB**: Attention à ne pas confondre **ST_Intersects** qui renvoit vrai ou faux, et **ST_Intersection** qui renvoit la géométrie issue du découpage d'une géométrie par une autre.
+**NB**: Attention à ne pas confondre **ST_Intersects** qui renvoie vrai ou faux, et **ST_Intersection** qui renvoie la géométrie issue du découpage d'une géométrie par une autre.
 
 ### Joindre des polygones avec des polygones
 
@@ -422,7 +422,7 @@ INSERT INTO z_formation.znieff VALUES (5, 'cinco', '01060000206A0800000100000001
 SELECT pg_catalog.setval('z_formation.znieff_id_seq', 5, true);
 ```
 
-Pour chaque commune, on souhaite calculer la somme des surfaces intersectée par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)
+Pour chaque commune, on souhaite calculer la somme des surfaces intersectées par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)
 
 * Méthode avec des **jointures LEFT**
 
@@ -455,7 +455,7 @@ GROUP BY c.id_commune, c.code_insee, c.nom
 ORDER BY c.nom
 ```
 
-Avantage: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
+**Avantage**: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
 
 Résultat:
 
@@ -491,9 +491,9 @@ Avantage: plus simple à écrire, mais ne permet pas de clause WHERE simple
 
 ### Distances et tampons entre couches
 
-Pour chaque objets d'une table, on souhaite récupéerer des informations sur les** objets proches d'une autre table**. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction **ST_DWithin**
+Pour chaque objets d'une table, on souhaite récupérer des informations sur les** objets proches d'une autre table**. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction **ST_DWithin**
 
-On prend comme exemple la table des bornes à incendie créée précédememnt (remplie avec quelques données de test).
+On prend comme exemple la table des bornes à incendie créée précédemment (remplie avec quelques données de test).
 
 Trouver toutes les parcelles **à moins de 200m** d'une borne à incendie
 
@@ -535,6 +535,7 @@ SELECT ST_Union(ST_Buffer(geom, 200)) AS geom
 FROM z_formation.borne_incendie
 ```
 
+Un [article intéressant de Paul Ramsey](http://blog.cleverelephant.ca/2021/12/knn-syntax.html) sur le calcul de distance via l'opérateur `<->` pour trouver le plus proche voisin d'un objet.
 
 
 
