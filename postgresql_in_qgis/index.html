@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/postgresql_in_qgis/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -759,19 +759,19 @@
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- création d&#39;un schéma</span>
-<span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">z_formation</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- création de la table</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span> <span class="p">(</span>
-    <span class="c1">-- un serial est un entier auto-incrémenté</span>
-    <span class="n">id_borne</span> <span class="nb">serial</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
-    <span class="n">code</span> <span class="nb">text</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-    <span class="n">debit</span> <span class="nb">real</span><span class="p">,</span>
-    <span class="n">geom</span> <span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span> <span class="mi">2154</span><span class="p">)</span>
-<span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- un serial est un entier auto-incrémenté</span>
+<span class="w">    </span><span class="n">id_borne</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">code</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">debit</span><span class="w"> </span><span class="nb">real</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"></span>
+<span class="p">);</span><span class="w"></span>
 <span class="c1">-- Création de l&#39;index spatial</span>
-<span class="k">DROP</span> <span class="k">INDEX</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">borne_incendie_geom_idx</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="k">ON</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span> <span class="k">USING</span> <span class="n">GIST</span> <span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">borne_incendie_geom_idx</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h3 id="ajouter-des-donnees-dans-une-table">Ajouter des données dans une table<a class="headerlink" href="#ajouter-des-donnees-dans-une-table" title="Permanent link">#</a></h3>
@@ -783,13 +783,13 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span> <span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">debit</span><span class="p">,</span> <span class="n">geom</span><span class="p">)</span>
- <span class="k">VALUES</span>
- <span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span> <span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">490846</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="mi">6936902</span><span class="p">.</span><span class="mi">7</span><span class="p">),</span> <span class="mi">2154</span><span class="p">)),</span>
- <span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span>  <span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span> <span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">491284</span><span class="p">.</span><span class="mi">9</span><span class="p">,</span><span class="mi">6936551</span><span class="p">.</span><span class="mi">6</span><span class="p">),</span> <span class="mi">2154</span><span class="p">)),</span>
- <span class="p">(</span><span class="s1">&#39;FGH&#39;</span><span class="p">,</span>  <span class="mi">2</span><span class="p">.</span><span class="mi">9</span><span class="p">,</span> <span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">490839</span><span class="p">.</span><span class="mi">8</span><span class="p">,</span><span class="mi">6937794</span><span class="p">.</span><span class="mi">8</span><span class="p">),</span> <span class="mi">2154</span><span class="p">)),</span>
- <span class="p">(</span><span class="s1">&#39;IOP&#39;</span><span class="p">,</span>  <span class="mi">3</span><span class="p">.</span><span class="mi">6</span><span class="p">,</span> <span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">491203</span><span class="p">.</span><span class="mi">3</span><span class="p">,</span><span class="mi">6937488</span><span class="p">.</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2154</span><span class="p">))</span>
-<span class="p">;</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">debit</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="w"> </span><span class="k">VALUES</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">490846</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="mi">6936902</span><span class="p">.</span><span class="mi">7</span><span class="p">),</span><span class="w"> </span><span class="mi">2154</span><span class="p">)),</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="s1">&#39;XYZ&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">491284</span><span class="p">.</span><span class="mi">9</span><span class="p">,</span><span class="mi">6936551</span><span class="p">.</span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="mi">2154</span><span class="p">)),</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="s1">&#39;FGH&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">.</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">490839</span><span class="p">.</span><span class="mi">8</span><span class="p">,</span><span class="mi">6937794</span><span class="p">.</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="mi">2154</span><span class="p">)),</span><span class="w"></span>
+<span class="w"> </span><span class="p">(</span><span class="s1">&#39;IOP&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">3</span><span class="p">.</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">491203</span><span class="p">.</span><span class="mi">3</span><span class="p">,</span><span class="mi">6937488</span><span class="p">.</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2154</span><span class="p">))</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p><strong>NB</strong>: Nous verrons plus loin l'utlisation de fonctions de création de géométrie, comme <strong>ST_MakePoint</strong></p>
@@ -797,7 +797,7 @@
 <ul>
 <li>ajout du schéma via le gestionnaire de bdd, ou via une requête:</li>
 </ul>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">z_formation</span><span class="p">;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <ul>
@@ -805,7 +805,7 @@
 </ul>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- On donne ici tous les droits à &quot;utilisateur&quot;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">SCHEMA</span> <span class="n">z_formation</span> <span class="k">TO</span> <span class="ss">&quot;utilisateur&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">z_formation</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;utilisateur&quot;</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <ul>
@@ -816,22 +816,22 @@
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Suppression du schéma si il est vide</span>
-<span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="n">monschema</span><span class="p">;</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- suppression du schéma et de toutes les tables de ce schéma (via CASCADE) !!! ATTENTION !!!</span>
-<span class="k">DROP</span> <span class="k">SCHEMA</span> <span class="n">monschema</span> <span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <ul>
 <li>renommer un schéma</li>
 </ul>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">ALTER</span> <span class="k">SCHEMA</span> <span class="n">monschema</span> <span class="k">RENAME</span> <span class="k">TO</span> <span class="n">unschema</span><span class="p">;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="w"> </span><span class="k">RENAME</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">unschema</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h2 id="verifier-et-creer-les-indexes-spatiaux">Vérifier et créer les indexes spatiaux<a class="headerlink" href="#verifier-et-creer-les-indexes-spatiaux" title="Permanent link">#</a></h2>
 <p>On peut vérifier si chaque table contient un <strong>index spatial</strong> via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet <strong>Info</strong>. On peut alors créer l'index spatial via le lien bleu <strong>Aucun index spatial défini (en créer un)</strong>.</p>
 <p>Sinon, il est possible de le faire en SQL via la requête suivante:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="k">ON</span> <span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span> <span class="k">USING</span> <span class="n">GIST</span> <span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Si on souhaite automatiser la création des indexes pour toutes les tables qui n'en ont pas, on peut utiliser une fonction, décrite dans la partie <a href="../utils/">Fonctions utiles</a></p>
@@ -961,10 +961,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

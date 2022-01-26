@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/group_data/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -632,14 +632,14 @@
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Vérifier les valeurs distinctes d&#39;un champ: table commune</span>
-<span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">depart</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">depart</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
 
 <span class="c1">-- idem sur la table lieu_dit_habite</span>
-<span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">nature</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nature</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h2 id="regrouper-des-donnees-en-specifiant-les-champs-de-regroupement">Regrouper des données en spécifiant les champs de regroupement<a class="headerlink" href="#regrouper-des-donnees-en-specifiant-les-champs-de-regroupement" title="Permanent link">#</a></h2>
@@ -655,13 +655,13 @@
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Regrouper des données</span>
 <span class="c1">-- Compter le nombre de communes par département</span>
-<span class="k">SELECT</span> <span class="n">depart</span><span class="p">,</span>
-<span class="k">count</span><span class="p">(</span><span class="n">code_insee</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_commune</span><span class="p">,</span>
-<span class="k">sum</span><span class="p">(</span><span class="n">population</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_population</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">WHERE</span> <span class="k">True</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nb_commune</span> <span class="k">DESC</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">depart</span><span class="p">,</span><span class="w"></span>
+<span class="k">count</span><span class="p">(</span><span class="n">code_insee</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_commune</span><span class="p">,</span><span class="w"></span>
+<span class="k">sum</span><span class="p">(</span><span class="n">population</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_population</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nb_commune</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Calculer des <strong>statistiques sur l'aire</strong> des communes pour chaque département</p>
@@ -672,14 +672,14 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span>
-<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">depart</span><span class="p">,</span>
-<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb</span><span class="p">,</span>
-<span class="k">min</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">min_aire_ha</span><span class="p">,</span>
-<span class="k">max</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">max_aire_ha</span><span class="p">,</span>
-<span class="k">avg</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">moy_aire_ha</span><span class="p">,</span>
-<span class="k">sum</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span> <span class="k">AS</span> <span class="n">total_aire_ha</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">depart</span><span class="p">,</span><span class="w"></span>
+<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb</span><span class="p">,</span><span class="w"></span>
+<span class="k">min</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">min_aire_ha</span><span class="p">,</span><span class="w"></span>
+<span class="k">max</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">max_aire_ha</span><span class="p">,</span><span class="w"></span>
+<span class="k">avg</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">moy_aire_ha</span><span class="p">,</span><span class="w"></span>
+<span class="k">sum</span><span class="p">(</span><span class="n">ST_Area</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="o">/</span><span class="mi">10000</span><span class="p">)::</span><span class="nb">int</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_aire_ha</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p><strong>Compter</strong> le nombre de routes par nature</p>
@@ -689,11 +689,11 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Compter le nombre de routes par nature</span>
-<span class="k">SELECT</span> <span class="k">count</span><span class="p">(</span><span class="n">id_route</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_route</span><span class="p">,</span> <span class="n">nature</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
-<span class="k">WHERE</span> <span class="k">True</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">nature</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nb_route</span> <span class="k">DESC</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="n">id_route</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_route</span><span class="p">,</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nb_route</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Compter le nombre de routes par nature et par sens</p>
@@ -701,11 +701,11 @@
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="k">count</span><span class="p">(</span><span class="n">id_route</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_route</span><span class="p">,</span> <span class="n">nature</span><span class="p">,</span> <span class="n">sens</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
-<span class="k">WHERE</span> <span class="k">True</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">nature</span><span class="p">,</span> <span class="n">sens</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nature</span><span class="p">,</span> <span class="n">sens</span> <span class="k">DESC</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="n">id_route</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_route</span><span class="p">,</span><span class="w"> </span><span class="n">nature</span><span class="p">,</span><span class="w"> </span><span class="n">sens</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="p">,</span><span class="w"> </span><span class="n">sens</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="p">,</span><span class="w"> </span><span class="n">sens</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Les caculs sur des ensembles groupés peuvent aussi être réalisé <strong>sur les géométries.</strong>. Les plus utilisés sont</p>
@@ -724,17 +724,17 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="p">(</span>
-        <span class="k">SELECT</span>
-        <span class="n">nature</span><span class="p">,</span>
-        <span class="c1">-- ST_Convexhull renvoie l&#39;enveloppe convexe</span>
-        <span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span> <span class="k">AS</span> <span class="n">geom</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span>
-        <span class="k">GROUP</span> <span class="k">BY</span> <span class="n">nature</span>
-<span class="p">)</span> <span class="k">AS</span> <span class="k">source</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">        </span><span class="n">nature</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">-- ST_Convexhull renvoie l&#39;enveloppe convexe</span>
+<span class="w">        </span><span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span><span class="w"></span>
+<span class="w">        </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">source</span><span class="w"></span>
 <span class="c1">-- GeometryType renvoie le type de géométrie</span>
-<span class="k">WHERE</span> <span class="n">Geometrytype</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="o">=</span> <span class="s1">&#39;POLYGON&#39;</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">Geometrytype</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;POLYGON&#39;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Attention, on doit donner un alias à la sous-requête (ici <code>source</code>)</p>
@@ -742,10 +742,10 @@
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="k">count</span><span class="p">(</span><span class="n">id_borne</span><span class="p">),</span> <span class="p">((</span><span class="n">id_borne</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">AS</span> <span class="n">pair</span><span class="p">,</span>
-<span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)))</span> <span class="k">AS</span> <span class="n">geom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">pair</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="n">id_borne</span><span class="p">),</span><span class="w"> </span><span class="p">((</span><span class="n">id_borne</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pair</span><span class="p">,</span><span class="w"></span>
+<span class="p">(</span><span class="n">st_convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pair</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On peut réaliser l'équivalent d'un <strong>DISSOLVE</strong> de QGIS en regroupant les géométries via <strong>ST_Union</strong>. Par exemple fusionner l'ensemble des communes pour construire les géométries des départements:</p>
@@ -757,15 +757,15 @@
 <span class="normal">6</span>
 <span class="normal">7</span>
 <span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-<span class="n">depart</span><span class="p">,</span>
-<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_com</span><span class="p">,</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"></span>
+<span class="n">depart</span><span class="p">,</span><span class="w"></span>
+<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_com</span><span class="p">,</span><span class="w"></span>
 <span class="c1">-- ST_Union crée une seule géométrie en fusionnant les géométries.</span>
-<span class="n">ST_Union</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="k">AS</span> <span class="n">geom</span>
+<span class="n">ST_Union</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
 
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
 
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Attention, cette requête est lourde, et devra être enregistrée comme une table.</p>
@@ -780,13 +780,13 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">depart</span><span class="p">,</span>
-<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_commune</span><span class="p">,</span>
-<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">int8</span> <span class="k">AS</span> <span class="n">surface</span><span class="p">,</span>
-<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)))::</span><span class="nb">int8</span> <span class="k">AS</span> <span class="n">surface_enveloppe_convexe</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">WHERE</span> <span class="n">depart</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="p">,</span> <span class="s1">&#39;EURE&#39;</span><span class="p">)</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">depart</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">depart</span><span class="p">,</span><span class="w"></span>
+<span class="k">count</span><span class="p">(</span><span class="n">id_commune</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_commune</span><span class="p">,</span><span class="w"></span>
+<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">int8</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">surface</span><span class="p">,</span><span class="w"></span>
+<span class="n">ST_Area</span><span class="p">(</span><span class="n">ST_Convexhull</span><span class="p">(</span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)))::</span><span class="nb">int8</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">surface_enveloppe_convexe</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;EURE&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 </details>
@@ -915,10 +915,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/sql_select/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -602,14 +602,14 @@
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Ordre des clauses SQL</span>
-<span class="k">SELECT</span> <span class="n">une_colonne</span><span class="p">,</span> <span class="n">une_autre_colonne</span>
-<span class="k">FROM</span> <span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span>
-<span class="p">(</span><span class="k">LEFT</span><span class="p">)</span> <span class="k">JOIN</span> <span class="n">autre_schema</span><span class="p">.</span><span class="n">autre_table</span>
-        <span class="k">ON</span> <span class="n">critere_de_jointure</span>
-<span class="k">WHERE</span> <span class="n">condition</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">champs_de_regroupement</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">champs_d_ordre</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">une_colonne</span><span class="p">,</span><span class="w"> </span><span class="n">une_autre_colonne</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span><span class="w"></span>
+<span class="p">(</span><span class="k">LEFT</span><span class="p">)</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">autre_schema</span><span class="p">.</span><span class="n">autre_table</span><span class="w"></span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="n">critere_de_jointure</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">condition</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">champs_de_regroupement</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">champs_d_ordre</span><span class="w"></span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes</p>
@@ -617,9 +617,9 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner l&#39;ensemble des données d&#39;une couche: l&#39;étoile veut dire &quot;tous les champs de la table&quot;</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
-<span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Les 10 premiers objets</p>
@@ -628,10 +628,10 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner les 10 premières communes par ordre alphabétique</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Les 10 premiers objets par ordre alphabétique</p>
@@ -640,10 +640,10 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner les 10 premières communes par ordre alphabétique descendant</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span> <span class="k">DESC</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Les 10 premiers objets avec un ordre sur plusieurs champs</p>
@@ -652,10 +652,10 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- On peut utiliser plusieurs champs pour l&#39;ordre</span>
-<span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">depart</span><span class="p">,</span> <span class="n">nom</span>
-<span class="k">LIMIT</span> <span class="mi">10</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">depart</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Sélectionner seulement certains champs</p>
@@ -663,9 +663,9 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Sélectionner seulement certains champs, et avec un ordre</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span><span class="p">,</span> <span class="n">code_insee</span><span class="p">,</span> <span class="n">nom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="p">,</span><span class="w"> </span><span class="n">code_insee</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Donner un alias (un autre nom) aux champs</p>
@@ -675,11 +675,11 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Donner des alias aux noms des colonnes</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span> <span class="k">AS</span> <span class="n">identifiant</span><span class="p">,</span>
-<span class="n">code_insee</span> <span class="k">AS</span> <span class="ss">&quot;code_commune&quot;</span><span class="p">,</span>
-<span class="n">nom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">identifiant</span><span class="p">,</span><span class="w"></span>
+<span class="n">code_insee</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;code_commune&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="n">nom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.</p>
@@ -693,11 +693,11 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Ajouter la géométrie pour visualiser les données dans QGIS</span>
-<span class="k">SELECT</span> <span class="n">id_commune</span> <span class="k">AS</span> <span class="n">identifiant</span><span class="p">,</span>
-<span class="n">code_insee</span> <span class="k">AS</span> <span class="ss">&quot;code_commune&quot;</span><span class="p">,</span>
-<span class="n">nom</span><span class="p">,</span> <span class="n">geom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">nom</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">identifiant</span><span class="p">,</span><span class="w"></span>
+<span class="n">code_insee</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="ss">&quot;code_commune&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="n">nom</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nom</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On choisira ici le champ <strong>identifiant</strong> comme identifiant unique, et le champ <strong>geom</strong> comme géométrie</p>
@@ -827,10 +827,10 @@ Récupérer tous les objets d'une table, et les valeurs pour toutes les colonnes
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

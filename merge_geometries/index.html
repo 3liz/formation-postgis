@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/merge_geometries/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -551,10 +551,10 @@
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="k">count</span><span class="p">(</span><span class="n">id_zone_urba</span><span class="p">)</span> <span class="k">AS</span> <span class="n">nb_objets</span><span class="p">,</span> <span class="n">typezone</span><span class="p">,</span>
-<span class="n">ST_Union</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="k">AS</span> <span class="n">geom</span>
-<span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">zone_urba</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">typezone</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="n">id_zone_urba</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nb_objets</span><span class="p">,</span><span class="w"> </span><span class="n">typezone</span><span class="p">,</span><span class="w"></span>
+<span class="n">ST_Union</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">zone_urba</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">typezone</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On souhaite parfois <strong>fusionner toutes les géométries qui sont jointives</strong>.
@@ -575,23 +575,23 @@ Par exemple, on veut fusionner <strong>toutes les parcelles jointives</strong> p
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
-<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">DROP</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span> <span class="k">AS</span>
-<span class="k">SELECT</span>
-<span class="n">row_number</span><span class="p">()</span> <span class="n">OVER</span><span class="p">()</span> <span class="k">AS</span> <span class="n">id</span><span class="p">,</span>
-<span class="n">string_agg</span><span class="p">(</span><span class="n">id</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="p">)</span> <span class="k">AS</span> <span class="n">ids</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">geom</span><span class="p">::</span><span class="n">geometry</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="mi">2154</span><span class="p">)</span> <span class="k">AS</span> <span class="n">geom</span>
-<span class="k">FROM</span> <span class="p">(</span>
-        <span class="k">SELECT</span>
-        <span class="p">(</span><span class="n">St_Dump</span><span class="p">(</span><span class="n">ST_Union</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">geom</span><span class="p">))).</span><span class="n">geom</span> <span class="k">AS</span> <span class="n">geom</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span> <span class="k">AS</span> <span class="n">a</span>
-        <span class="k">WHERE</span> <span class="n">ST_IsValid</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="p">)</span> <span class="n">t</span>
-<span class="k">JOIN</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span> <span class="k">AS</span> <span class="n">p</span>
-    <span class="k">ON</span> <span class="n">ST_Intersects</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">t</span><span class="p">.</span><span class="n">geom</span>
-<span class="p">;</span>
-<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span> <span class="k">ADD</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
-<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="k">ON</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span> <span class="k">USING</span> <span class="n">GIST</span> <span class="p">(</span><span class="n">geom</span><span class="p">);</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"></span>
+<span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"></span>
+<span class="n">string_agg</span><span class="p">(</span><span class="n">id</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;, &#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ids</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">geom</span><span class="p">::</span><span class="n">geometry</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="n">St_Dump</span><span class="p">(</span><span class="n">ST_Union</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">geom</span><span class="p">))).</span><span class="n">geom</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">a</span><span class="w"></span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="p">)</span><span class="w"> </span><span class="n">t</span><span class="w"></span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"></span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">geom</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">bloc_parcelle_havre</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Continuer vers <a href="../triggers/">Les triggers</a></p>
@@ -720,10 +720,10 @@ Par exemple, on veut fusionner <strong>toutes les parcelles jointives</strong> p
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

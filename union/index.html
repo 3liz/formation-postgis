@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/union/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -567,20 +567,20 @@
 <span class="normal">17</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Rassembler des données de tables différentes</span>
 <span class="c1">-- On utilise une UNION ALL</span>
 
-    <span class="p">(</span><span class="k">SELECT</span> <span class="s1">&#39;chemin&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span>
-                <span class="n">geom</span><span class="p">,</span>
-                <span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
-        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;chemin&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nature</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span><span class="w"></span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
 <span class="c1">-- UNION ALL est placé entre 2 SELECT</span>
-<span class="k">UNION</span> <span class="k">ALL</span> 
-    <span class="p">(</span><span class="k">SELECT</span> <span class="s1">&#39;route&#39;</span> <span class="k">AS</span> <span class="n">nature</span><span class="p">,</span>
-                <span class="n">geom</span><span class="p">,</span>
-                <span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span> <span class="k">AS</span> <span class="n">longueur</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
-        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
+<span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span>
+<span class="w">    </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;route&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">nature</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">geom</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="n">ROUND</span><span class="p">(</span><span class="n">ST_LENGTH</span><span class="p">(</span><span class="n">geom</span><span class="p">))::</span><span class="nb">integer</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
 <span class="c1">-- Le ORDER BY doit être réalisé à la fin, et non sur chaque SELECT</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">longueur</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Si on doit réaliser le même calcul sur chaque sous-ensemble (chaque SELECT), on peut le faire en 2 étapes via une sous-requête (ou une clause WITH)</p>
@@ -599,22 +599,22 @@
 <span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
-<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"></span>
 <span class="c1">-- on récupère tous les champs</span>
-<span class="k">source</span><span class="p">.</span><span class="o">*</span><span class="p">,</span>
+<span class="k">source</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"></span>
 <span class="c1">-- on calcule la longueur après rassemblement des données</span>
-<span class="n">st_length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="k">AS</span> <span class="n">longueur</span>
-<span class="k">FROM</span> <span class="p">(</span>
-        <span class="p">(</span><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
-        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
-        <span class="k">UNION</span> <span class="k">ALL</span>
-        <span class="p">(</span><span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">geom</span>
-        <span class="k">FROM</span> <span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
-        <span class="k">LIMIT</span> <span class="mi">100</span><span class="p">)</span>
-<span class="p">)</span> <span class="k">AS</span> <span class="k">source</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">longueur</span> <span class="k">DESC</span>
-<span class="p">;</span>
+<span class="n">st_length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span><span class="w"></span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">source</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">longueur</span><span class="w"> </span><span class="k">DESC</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Continuer vers <a href="../save_queries/">Enregistrer les requêtes: VIEW</a></p>
@@ -743,10 +743,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

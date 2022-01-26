@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/grant/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -560,23 +560,23 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- création d&#39;un schéma de test</span>
-<span class="k">CREATE</span> <span class="k">SCHEMA</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">nouveau_schema</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- création de tables pour tester</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span> <span class="p">(</span><span class="n">id</span> <span class="nb">serial</span> <span class="k">primary</span> <span class="k">key</span><span class="p">,</span> <span class="n">nom</span> <span class="nb">text</span><span class="p">,</span> <span class="n">geom</span> <span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="mi">2154</span><span class="p">));</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">nouveau_schema</span><span class="p">.</span><span class="n">nomenclature</span> <span class="p">(</span><span class="n">id</span> <span class="nb">serial</span> <span class="k">primary</span> <span class="k">key</span><span class="p">,</span> <span class="n">code</span> <span class="nb">text</span><span class="p">,</span> <span class="n">libelle</span> <span class="nb">text</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">point</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">));</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">nomenclature</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">libelle</span><span class="w"> </span><span class="nb">text</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Création d'un rôle de connexion (en tant que super-utilisateur, ou en tant qu'utilisateur ayant le droit de créer des rôles)</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- création d&#39;un rôle nommé invite</span>
-<span class="k">CREATE</span> <span class="k">ROLE</span> <span class="n">invite</span> <span class="k">WITH</span> <span class="n">PASSWORD</span> <span class="s1">&#39;mot_de_passe_a_changer&#39;</span> <span class="n">LOGIN</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="n">invite</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;mot_de_passe_a_changer&#39;</span><span class="w"> </span><span class="n">LOGIN</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On donne le droit de connexion sur la base (nommée ici qgis)</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- on donne le droit de connexion sur la base</span>
-<span class="k">GRANT</span> <span class="k">CONNECT</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">qgis</span> <span class="k">TO</span> <span class="n">invite</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">qgis</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">invite</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Exemple de requêtes pratiques pour donner ou retirer des droits (en tant qu'utilisateur propriétaire de la base et des objets)</p>
@@ -601,24 +601,24 @@
 <span class="normal">19</span>
 <span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- on donne le droit à invite d&#39;utiliser les schéma public et nouveau_schema</span>
 <span class="c1">-- Utile pour pouvoir lister les tables</span>
-<span class="k">GRANT</span> <span class="k">USAGE</span> <span class="k">ON</span> <span class="k">SCHEMA</span> <span class="k">public</span><span class="p">,</span> <span class="n">nouveau_schema</span> <span class="k">TO</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- on permet à invite de lire les données (SELECT)</span>
 <span class="c1">-- de toutes les tables du schéma nouveau_schema</span>
-<span class="k">GRANT</span> <span class="k">SELECT</span> <span class="k">ON</span> <span class="k">ALL</span> <span class="n">TABLES</span> <span class="k">IN</span> <span class="k">SCHEMA</span> <span class="n">nouveau_schema</span> <span class="k">TO</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- On permet l&#39;ajout et la modification de données sur la table observation seulement</span>
-<span class="k">GRANT</span> <span class="k">INSERT</span> <span class="k">OR</span> <span class="k">UPDATE</span> <span class="k">ON</span> <span class="k">TABLE</span> <span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span> <span class="k">TO</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- On peut aussi enlever des droits avec REVOKE.</span>
 <span class="c1">-- Ex: on enlève la possibilité de faire des suppresions</span>
-<span class="k">REVOKE</span> <span class="k">DELETE</span> <span class="k">ON</span> <span class="k">TABLE</span> <span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span> <span class="k">FROM</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- On enlève tous les privilèges sur les tables du schéma public</span>
-<span class="k">REVOKE</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">ALL</span> <span class="n">TABLES</span> <span class="k">IN</span> <span class="k">SCHEMA</span> <span class="k">public</span> <span class="k">FROM</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- On donne les droits de sélection sur les tables du schéma public</span>
-<span class="k">GRANT</span> <span class="k">SELECT</span> <span class="k">ON</span> <span class="k">ALL</span> <span class="n">TABLES</span> <span class="k">IN</span> <span class="k">SCHEMA</span> <span class="k">public</span> <span class="k">TO</span> <span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Droits par défaut sur les nouveaux objets créés</p>
@@ -751,10 +751,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       

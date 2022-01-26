@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://docs.3liz.org/formation-postgis/utils/">
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.2">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.8">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6e60f8b8.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
@@ -544,8 +544,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gestion-des-commentaires" class="md-nav__link">
-    Gestion des commentaires
+  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
+    Tester les différences entre 2 tables de même structure
   </a>
   
 </li>
@@ -692,8 +692,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#gestion-des-commentaires" class="md-nav__link">
-    Gestion des commentaires
+  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
+    Tester les différences entre 2 tables de même structure
   </a>
   
 </li>
@@ -720,7 +720,7 @@
 <h2 id="ajout-de-lauto-incrementation-sur-un-champ-entier">Ajout de l'auto-incrémentation sur un champ entier<a class="headerlink" href="#ajout-de-lauto-incrementation-sur-un-champ-entier" title="Permanent link">#</a></h2>
 <p>Lorsqu'on importe une couche dans une table via les outils de QGIS, le champ d'identifiant choisi n'a pas le support de l'auto-incrémentation, ce qui peut poser des problèmes de l'ajout de nouvelles données.</p>
 <p>Par exemple, pour une séquence <code>monschema.ma_sequence</code>, si la requête suivante échoue, c'est que la séquence n'est en effet pas correctement configurée :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="n">currval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">);</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">currval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Pour ajouter le support de l'auto-incrémentation sur un champ entier à une table existante, on peut utiliser les commandes suivantes:</p>
@@ -735,16 +735,16 @@
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Création de la séquence</span>
-<span class="k">CREATE</span> <span class="n">SEQUENCE</span> <span class="n">monschema</span><span class="p">.</span><span class="n">test_id_seq</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w"> </span><span class="n">monschema</span><span class="p">.</span><span class="n">test_id_seq</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- Modification du champ pour ajouter la valeur par défaut</span>
-<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">monschema</span><span class="p">.</span><span class="n">test</span> <span class="k">ALTER</span> <span class="k">COLUMN</span> <span class="n">id</span> <span class="k">SET</span> <span class="k">DEFAULT</span> <span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">monschema</span><span class="p">.</span><span class="n">test</span><span class="w"> </span><span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">nextval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">-- Modification de la valeur actuelle de la séquence au maximum du champ id</span>
-<span class="k">SELECT</span> <span class="n">setval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">,</span> <span class="p">(</span><span class="k">SELECT</span> <span class="k">max</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">monschema</span><span class="p">.</span><span class="n">test</span><span class="p">));</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">setval</span><span class="p">(</span><span class="s1">&#39;&quot;monschema&quot;.&quot;test_id_seq&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">max</span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">monschema</span><span class="p">.</span><span class="n">test</span><span class="p">));</span><span class="w"></span>
 
 <span class="c1">-- Déclarer à PostgreSQL que la séquence et le champ sont liés</span>
-<span class="k">ALTER</span> <span class="n">SEQUENCE</span> <span class="n">monschema</span><span class="p">.</span><span class="n">test_id_seq</span> <span class="n">OWNED</span> <span class="k">BY</span> <span class="n">monschema</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="n">SEQUENCE</span><span class="w"> </span><span class="n">monschema</span><span class="p">.</span><span class="n">test_id_seq</span><span class="w"> </span><span class="n">OWNED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">monschema</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">id</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Dans l'exemple ci-dessus, le schéma est précisé.</p>
@@ -764,10 +764,10 @@
 <span class="c1">-- On lance avec False si on veut créer les indexes automatiquement</span>
 
 <span class="c1">-- Vérification</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">create_missing_spatial_indexes</span><span class="p">(</span>  <span class="k">True</span> <span class="p">);</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">create_missing_spatial_indexes</span><span class="p">(</span><span class="w">  </span><span class="k">True</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">-- Création</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">create_missing_spatial_indexes</span><span class="p">(</span>  <span class="k">False</span> <span class="p">);</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">create_missing_spatial_indexes</span><span class="p">(</span><span class="w">  </span><span class="k">False</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h2 id="trouver-toutes-les-tables-sans-cle-primaire">Trouver toutes les tables sans clé primaire<a class="headerlink" href="#trouver-toutes-les-tables-sans-cle-primaire" title="Permanent link">#</a></h2>
@@ -786,28 +786,28 @@
 <span class="normal">11</span>
 <span class="normal">12</span>
 <span class="normal">13</span>
-<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">DROP</span> <span class="k">VIEW</span> <span class="k">IF</span> <span class="k">EXISTS</span> <span class="n">tables_without_primary_key</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">VIEW</span> <span class="n">tables_without_primary_key</span> <span class="k">AS</span>
-<span class="k">SELECT</span> <span class="n">t</span><span class="p">.</span><span class="n">table_schema</span><span class="p">,</span> <span class="n">t</span><span class="p">.</span><span class="k">table_name</span>
-<span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span> <span class="k">AS</span> <span class="n">t</span>
-<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">table_constraints</span> <span class="k">AS</span> <span class="k">c</span>
-    <span class="k">ON</span> <span class="n">t</span><span class="p">.</span><span class="n">table_schema</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="n">table_schema</span>
-    <span class="k">AND</span> <span class="n">t</span><span class="p">.</span><span class="k">table_name</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="k">table_name</span>
-    <span class="k">AND</span> <span class="k">c</span><span class="p">.</span><span class="n">constraint_type</span> <span class="o">=</span> <span class="s1">&#39;PRIMARY KEY&#39;</span>
-<span class="k">WHERE</span> <span class="k">True</span>
-<span class="k">AND</span> <span class="n">t</span><span class="p">.</span><span class="n">table_type</span> <span class="o">=</span> <span class="s1">&#39;BASE TABLE&#39;</span>
-<span class="k">AND</span> <span class="n">t</span><span class="p">.</span><span class="n">table_schema</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span> <span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
-<span class="k">AND</span> <span class="k">c</span><span class="p">.</span><span class="k">constraint_name</span> <span class="k">IS</span> <span class="k">NULL</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">table_schema</span><span class="p">,</span> <span class="k">table_name</span>
-<span class="p">;</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">tables_without_primary_key</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">tables_without_primary_key</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="k">table_name</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">t</span><span class="w"></span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">table_constraints</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"></span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">table_schema</span><span class="w"></span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="k">table_name</span><span class="w"></span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">constraint_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;PRIMARY KEY&#39;</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">table_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;BASE TABLE&#39;</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">table_schema</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;information_schema&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="k">constraint_name</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <ul>
 <li>Pour lister les tables sans géométries, vous pouvez ensuite lancer la requête suivante:</li>
 </ul>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">tables_without_primary_key</span><span class="p">;</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tables_without_primary_key</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Ce qui peut donner par exemple:</p>
@@ -846,9 +846,9 @@
 </ul>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span> <span class="o">*</span>
-<span class="k">FROM</span> <span class="n">tables_without_primary_key</span>
-<span class="k">WHERE</span> <span class="n">table_schema</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;cadastre&#39;</span><span class="p">);</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tables_without_primary_key</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;cadastre&#39;</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Ce qui peut alors donner:</p>
@@ -875,9 +875,9 @@
 </ul>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-<span class="n">ajout_champs_dynamiques</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;commune&#39;</span><span class="p">,</span> <span class="s1">&#39;date_creation timestamp DEFAULT now(), date_modification timestamp DEFAULT now(), utilisateur text&#39;</span><span class="p">)</span>
-<span class="p">;</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"></span>
+<span class="n">ajout_champs_dynamiques</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;date_creation timestamp DEFAULT now(), date_modification timestamp DEFAULT now(), utilisateur text&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <ul>
@@ -903,21 +903,21 @@
 <span class="normal">18</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Lancer la création de champs sur toutes les tables</span>
 <span class="c1">-- du schéma test</span>
 <span class="c1">-- contenant des géométries de type Point</span>
-<span class="k">SELECT</span> <span class="n">f_table_schema</span><span class="p">,</span> <span class="n">f_table_name</span><span class="p">,</span>
-<span class="n">ajout_champs_dynamiques</span><span class="p">(</span>
-    <span class="c1">-- schéma</span>
-    <span class="n">f_table_schema</span><span class="p">,</span>
-    <span class="c1">-- table</span>
-    <span class="n">f_table_name</span><span class="p">,</span>
-    <span class="c1">-- liste des champs, au format nom_du_champ TYPE</span>
-    <span class="s1">&#39;date_creation timestamp DEFAULT now(), date_modification timestamp DEFAULT now(), utilisateur text&#39;</span>
-<span class="p">)</span>
-<span class="k">FROM</span> <span class="n">geometry_columns</span>
-<span class="k">WHERE</span> <span class="k">True</span>
-<span class="k">AND</span> <span class="ss">&quot;type&quot;</span> <span class="k">LIKE</span> <span class="s1">&#39;%POINT&#39;</span>
-<span class="k">AND</span> <span class="n">f_table_schema</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">f_table_schema</span><span class="p">,</span> <span class="n">f_table_name</span>
-<span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">f_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">f_table_name</span><span class="p">,</span><span class="w"></span>
+<span class="n">ajout_champs_dynamiques</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- schéma</span>
+<span class="w">    </span><span class="n">f_table_schema</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- table</span>
+<span class="w">    </span><span class="n">f_table_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">-- liste des champs, au format nom_du_champ TYPE</span>
+<span class="w">    </span><span class="s1">&#39;date_creation timestamp DEFAULT now(), date_modification timestamp DEFAULT now(), utilisateur text&#39;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">geometry_columns</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="ss">&quot;type&quot;</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%POINT&#39;</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="n">f_table_schema</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">f_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">f_table_name</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h2 id="verifier-la-taille-des-bases-tables-et-schemas">Vérifier la taille des bases, tables et schémas<a class="headerlink" href="#verifier-la-taille-des-bases-tables-et-schemas" title="Permanent link">#</a></h2>
@@ -929,13 +929,13 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
-<span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span> <span class="k">AS</span> <span class="n">db_name</span><span class="p">,</span>
-<span class="n">pg_database_size</span><span class="p">(</span><span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">)</span> <span class="k">AS</span> <span class="n">db_size</span><span class="p">,</span>
-<span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_database_size</span><span class="p">(</span><span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">))</span> <span class="k">AS</span> <span class="n">db_pretty_size</span>
-<span class="k">FROM</span> <span class="n">pg_database</span>
-<span class="k">WHERE</span> <span class="n">datname</span> <span class="k">NOT</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;postgres&#39;</span><span class="p">,</span> <span class="s1">&#39;template0&#39;</span><span class="p">,</span> <span class="s1">&#39;template1&#39;</span><span class="p">)</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">db_size</span> <span class="k">DESC</span><span class="p">;</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"></span>
+<span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">db_name</span><span class="p">,</span><span class="w"></span>
+<span class="n">pg_database_size</span><span class="p">(</span><span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">db_size</span><span class="p">,</span><span class="w"></span>
+<span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_database_size</span><span class="p">(</span><span class="n">pg_database</span><span class="p">.</span><span class="n">datname</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">db_pretty_size</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_database</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">datname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;postgres&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;template0&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;template1&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">db_size</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h3 id="calculer-la-taille-des-tables">Calculer la taille des tables<a class="headerlink" href="#calculer-la-taille-des-tables" title="Permanent link">#</a></h3>
@@ -978,45 +978,45 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">get_table_info</span><span class="p">()</span>
-<span class="k">RETURNS</span> <span class="k">TABLE</span> <span class="p">(</span>
-    <span class="n">oid</span> <span class="n">oid</span><span class="p">,</span>
-    <span class="k">schema_name</span> <span class="nb">text</span><span class="p">,</span>
-    <span class="k">table_name</span> <span class="nb">text</span><span class="p">,</span>
-    <span class="k">row_count</span> <span class="nb">integer</span><span class="p">,</span>
-    <span class="n">total_size</span> <span class="nb">integer</span><span class="p">,</span>
-    <span class="n">pretty_total_size</span> <span class="nb">text</span>
-<span class="p">)</span>
-<span class="k">AS</span> <span class="err">$$</span>
-<span class="k">BEGIN</span>
-    <span class="k">RETURN</span> <span class="n">QUERY</span>
-    <span class="k">SELECT</span>
-        <span class="n">b</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="k">schema_name</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="k">table_name</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span>
-        <span class="n">b</span><span class="p">.</span><span class="k">row_count</span><span class="p">::</span><span class="nb">integer</span><span class="p">,</span>
-        <span class="n">b</span><span class="p">.</span><span class="n">total_size</span><span class="p">::</span><span class="nb">integer</span><span class="p">,</span>
-        <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">total_size</span><span class="p">)</span> <span class="k">AS</span> <span class="n">pretty_total_size</span>
-    <span class="k">FROM</span> <span class="p">(</span>
-        <span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span>
-        <span class="n">a</span><span class="p">.</span><span class="n">total_size</span> <span class="o">-</span> <span class="n">index_bytes</span> <span class="o">-</span> <span class="k">COALESCE</span><span class="p">(</span><span class="n">toast_bytes</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="k">AS</span> <span class="n">table_bytes</span>
-        <span class="k">FROM</span> <span class="p">(</span>
-            <span class="k">SELECT</span>
-            <span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
-            <span class="n">nspname</span> <span class="k">AS</span> <span class="k">schema_name</span><span class="p">,</span>
-            <span class="n">relname</span> <span class="k">AS</span> <span class="k">TABLE_NAME</span><span class="p">,</span>
-            <span class="k">c</span><span class="p">.</span><span class="n">reltuples</span> <span class="k">AS</span> <span class="k">row_count</span><span class="p">,</span>
-            <span class="n">pg_total_relation_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">total_size</span><span class="p">,</span>
-            <span class="n">pg_indexes_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">index_bytes</span><span class="p">,</span>
-            <span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">reltoastrelid</span><span class="p">)</span> <span class="k">AS</span> <span class="n">toast_bytes</span>
-            <span class="k">FROM</span> <span class="n">pg_class</span> <span class="k">c</span>
-            <span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">pg_namespace</span> <span class="n">n</span>
-                <span class="k">ON</span> <span class="n">n</span><span class="p">.</span><span class="n">oid</span> <span class="o">=</span> <span class="k">c</span><span class="p">.</span><span class="n">relnamespace</span>
-            <span class="k">WHERE</span> <span class="n">relkind</span> <span class="o">=</span> <span class="s1">&#39;r&#39;</span>
-            <span class="k">AND</span> <span class="n">nspname</span> <span class="k">NOT</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span> <span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
-        <span class="p">)</span> <span class="k">AS</span> <span class="n">a</span>
-    <span class="p">)</span> <span class="k">AS</span> <span class="n">b</span>
-    <span class="p">;</span>
-<span class="k">END</span><span class="p">;</span> <span class="err">$$</span>
-<span class="k">LANGUAGE</span> <span class="s1">&#39;plpgsql&#39;</span><span class="p">;</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">get_table_info</span><span class="p">()</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">oid</span><span class="w"> </span><span class="n">oid</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">schema_name</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">table_name</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">row_count</span><span class="w"> </span><span class="nb">integer</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">total_size</span><span class="w"> </span><span class="nb">integer</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">pretty_total_size</span><span class="w"> </span><span class="nb">text</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+<span class="k">AS</span><span class="w"> </span><span class="err">$$</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">QUERY</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">        </span><span class="n">b</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="k">schema_name</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="k">table_name</span><span class="p">::</span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">b</span><span class="p">.</span><span class="k">row_count</span><span class="p">::</span><span class="nb">integer</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">b</span><span class="p">.</span><span class="n">total_size</span><span class="p">::</span><span class="nb">integer</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">total_size</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">pretty_total_size</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">        </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">a</span><span class="p">.</span><span class="n">total_size</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">index_bytes</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">toast_bytes</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">table_bytes</span><span class="w"></span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">nspname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">schema_name</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">relname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">TABLE_NAME</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">reltuples</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">row_count</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total_size</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">pg_indexes_size</span><span class="p">(</span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">index_bytes</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">reltoastrelid</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">toast_bytes</span><span class="w"></span>
+<span class="w">            </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span><span class="w"></span>
+<span class="w">            </span><span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">                </span><span class="k">ON</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relnamespace</span><span class="w"></span>
+<span class="w">            </span><span class="k">WHERE</span><span class="w"> </span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="w"></span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;information_schema&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">a</span><span class="w"></span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">b</span><span class="w"></span>
+<span class="w">    </span><span class="p">;</span><span class="w"></span>
+<span class="k">END</span><span class="p">;</span><span class="w"> </span><span class="err">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="s1">&#39;plpgsql&#39;</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On peut l'utiliser simplement de la manière suivante</p>
@@ -1025,10 +1025,10 @@
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Liste les tables</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">get_table_info</span><span class="p">()</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">schema_name</span><span class="p">,</span> <span class="k">table_name</span> <span class="k">DESC</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">get_table_info</span><span class="p">()</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">schema_name</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">-- Lister les tables dans l&#39;ordre inverse de taille</span>
-<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">get_table_info</span><span class="p">()</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">total_size</span> <span class="k">DESC</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">get_table_info</span><span class="p">()</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total_size</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <h3 id="calculer-la-taille-des-schemas">Calculer la taille des schémas<a class="headerlink" href="#calculer-la-taille-des-schemas" title="Permanent link">#</a></h3>
@@ -1043,21 +1043,21 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- Fonction pour calculer la taille d&#39;un schéma</span>
-<span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span> <span class="nb">text</span><span class="p">)</span>
-<span class="k">RETURNS</span> <span class="nb">BIGINT</span> <span class="k">AS</span>
-<span class="err">$$</span>
-    <span class="k">SELECT</span>
-        <span class="k">SUM</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">quote_ident</span><span class="p">(</span><span class="n">schemaname</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;.&#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)))::</span><span class="nb">BIGINT</span>
-    <span class="k">FROM</span> <span class="n">pg_tables</span>
-    <span class="k">WHERE</span> <span class="n">schemaname</span> <span class="o">=</span> <span class="k">schema_name</span>
-<span class="err">$$</span>
-<span class="k">LANGUAGE</span> <span class="k">SQL</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="w"> </span><span class="nb">text</span><span class="p">)</span><span class="w"></span>
+<span class="k">RETURNS</span><span class="w"> </span><span class="nb">BIGINT</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="err">$$</span><span class="w"></span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"></span>
+<span class="w">        </span><span class="k">SUM</span><span class="p">(</span><span class="n">pg_total_relation_size</span><span class="p">(</span><span class="n">quote_ident</span><span class="p">(</span><span class="n">schemaname</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)))::</span><span class="nb">BIGINT</span><span class="w"></span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_tables</span><span class="w"></span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">schemaname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">schema_name</span><span class="w"></span>
+<span class="err">$$</span><span class="w"></span>
+<span class="k">LANGUAGE</span><span class="w"> </span><span class="k">SQL</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>On peut alors l'utiliser pour connaître la taille d'un schéma</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- utilisation pour un schéma</span>
-<span class="k">SELECT</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_schema_size</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span> <span class="k">AS</span> <span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_schema_size</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
 <p>Ou lister l'ensemble des schémas</p>
@@ -1066,14 +1066,15 @@
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- lister les schémas et récupérer leur taille</span>
-<span class="k">SELECT</span> <span class="k">schema_name</span><span class="p">,</span> <span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="p">))</span>
-<span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">schemata</span>
-<span class="k">WHERE</span> <span class="k">schema_name</span> <span class="k">NOT</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span> <span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="p">)</span> <span class="k">DESC</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">schema_name</span><span class="p">,</span><span class="w"> </span><span class="n">pg_size_pretty</span><span class="p">(</span><span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="p">))</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">schemata</span><span class="w"></span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">schema_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;information_schema&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
-<h2 id="gestion-des-commentaires">Gestion des commentaires<a class="headerlink" href="#gestion-des-commentaires" title="Permanent link">#</a></h2>
-<p>Fonction de création d'un commentaire</p>
+<h2 id="tester-les-differences-entre-2-tables-de-meme-structure">Tester les différences entre 2 tables de même structure<a class="headerlink" href="#tester-les-differences-entre-2-tables-de-meme-structure" title="Permanent link">#</a></h2>
+<p>Nous souhaitons <strong>comparer deux tables de la base</strong>, par exemple une table de communes en 2021 <code>communes_2021</code> et une table de communes en 2022 <code>communes_2022</code>.</p>
+<p>On peut utiliser une fonction qui utilise les possibilités du format hstore pour comparer les données entre elles.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1111,46 +1112,158 @@
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">CREATE</span> <span class="k">OR</span> <span class="k">REPLACE</span> <span class="k">FUNCTION</span> <span class="k">public</span><span class="p">.</span><span class="n">comment_table_from_query</span><span class="p">(</span><span class="n">schemaname</span> <span class="nb">text</span><span class="p">,</span> <span class="n">tablename</span> <span class="nb">text</span><span class="p">,</span> <span class="n">table_comment</span> <span class="nb">text</span><span class="p">)</span>
-<span class="k">RETURNS</span> <span class="nb">INTEGER</span> <span class="k">AS</span>
-<span class="err">$</span><span class="n">limite$</span>
-<span class="k">DECLARE</span>
-    <span class="n">sql_text</span> <span class="nb">text</span><span class="p">;</span>
-<span class="k">BEGIN</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="c1">-- On ajoute le support du format hstore</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">hstore</span><span class="p">;</span><span class="w"></span>
 
-    <span class="k">BEGIN</span>
-        <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">&#39;Table %s&#39;</span><span class="p">,</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">schemaname</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;.&#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)</span> <span class="p">;</span>
-        <span class="n">sql_text</span> <span class="o">=</span> <span class="s1">&#39;COMMENT ON TABLE &#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">schemaname</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;.&#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39; IS &#39;</span> <span class="o">||</span> <span class="n">quote_literal</span><span class="p">(</span><span class="n">table_comment</span><span class="p">)</span> <span class="p">;</span>
-        <span class="k">EXECUTE</span> <span class="n">sql_text</span><span class="p">;</span>
-        <span class="k">RETURN</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="k">EXCEPTION</span> <span class="k">WHEN</span> <span class="n">OTHERS</span> <span class="k">THEN</span>
-        <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">&#39;ERROR - Failed %s&#39;</span><span class="p">,</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">schemaname</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;.&#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="n">tablename</span><span class="p">);</span>
-        <span class="n">RAISE</span> <span class="n">NOTICE</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="n">sql_text</span><span class="p">;</span>
-        <span class="k">RETURN</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="k">END</span><span class="p">;</span>
-<span class="k">END</span><span class="p">;</span>
-<span class="err">$</span><span class="n">limite$</span>
-<span class="k">LANGUAGE</span> <span class="n">plpgsql</span>
-<span class="p">;</span>
+<span class="c1">-- On crée la fonction de comparaison</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">[]);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_schema_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_table_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_schema_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_table_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_common_identifier_field</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">p_excluded_fields</span><span class="w"> </span><span class="nb">text</span><span class="p">[]</span><span class="w"></span>
 
-<span class="c1">-- Test</span>
-<span class="k">SELECT</span> <span class="n">comment_table_from_query</span><span class="p">(</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;mairie&#39;</span><span class="p">,</span> <span class="s1">&#39;Commentaire des mairies&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">TABLE</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">uid</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">table_a_values</span><span class="w"> </span><span class="n">hstore</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">table_b_values</span><span class="w"> </span><span class="n">hstore</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span><span class="w"></span>
+<span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="err">$</span><span class="n">_$</span><span class="w"></span>
+<span class="k">DECLARE</span><span class="w"></span>
+<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="nb">text</span><span class="p">;</span><span class="w"></span>
+<span class="k">BEGIN</span><span class="w"></span>
 
-<span class="c1">-- Appplication sur toutes les tables listées dans le catalogue</span>
-<span class="k">SELECT</span> <span class="ss">&quot;ma_colonne_de_schema&quot;</span><span class="p">,</span> <span class="ss">&quot;ma_colonne_de_table&quot;</span><span class="p">,</span>
-<span class="n">comment_table_from_query</span><span class="p">(</span><span class="ss">&quot;ma_colonne_de_schema&quot;</span><span class="p">,</span> <span class="ss">&quot;ma_colonne_de_table&quot;</span><span class="p">,</span> <span class="ss">&quot;commentaire&quot;</span><span class="p">)</span>
-<span class="k">FROM</span> <span class="n">metadonnees</span><span class="p">.</span><span class="n">catalogue</span>
-<span class="k">WHERE</span> <span class="ss">&quot;ma_colonne_de_table&quot;</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">AND</span> <span class="ss">&quot;commentaire&quot;</span> <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="ss">&quot;ma_colonne_de_schema&quot;</span><span class="p">,</span> <span class="ss">&quot;ma_colonne_de_table&quot;</span>
-<span class="p">;</span>
+<span class="w">    </span><span class="c1">-- Compare data</span>
+<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">    SELECT</span>
+<span class="s1">        coalesce(ta.&quot;%1$s&quot;, tb.&quot;%1$s&quot;) AS &quot;%1$s&quot;,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table A&#39;&#39;</span>
+<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table B&#39;&#39;</span>
+<span class="s1">            ELSE &#39;&#39;table A != table B&#39;&#39;</span>
+<span class="s1">        END AS status,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN NULL</span>
+<span class="s1">            ELSE (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(tb) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        END AS values_in_table_a,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN NULL</span>
+<span class="s1">            ELSE (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(ta) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        END AS values_in_table_b</span>
+<span class="s1">    FROM &quot;%2$s&quot;.&quot;%3$s&quot; AS ta</span>
+<span class="s1">    FULL JOIN &quot;%4$s&quot;.&quot;%5$s&quot; AS tb</span>
+<span class="s1">        ON ta.&quot;%1$s&quot; = tb.&quot;%1$s&quot;</span>
+<span class="s1">    WHERE</span>
+<span class="s1">        (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) != (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        OR (ta.&quot;%1$s&quot; IS NULL)</span>
+<span class="s1">        OR (tb.&quot;%1$s&quot; IS NULL)</span>
+<span class="s1">    &#39;</span><span class="p">;</span><span class="w"></span>
 
-<span class="c1">-- Vérification</span>
-<span class="k">SELECT</span> <span class="n">table_schema</span><span class="p">,</span> <span class="k">table_name</span><span class="p">,</span> <span class="n">obj_description</span><span class="p">((</span><span class="n">quote_ident</span><span class="p">(</span><span class="n">table_schema</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;.&#39;</span> <span class="o">||</span> <span class="n">quote_ident</span><span class="p">(</span><span class="k">table_name</span><span class="p">))::</span><span class="n">regclass</span><span class="p">)</span> <span class="k">AS</span> <span class="n">commentaire</span>
-<span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
-<span class="k">WHERE</span> <span class="n">table_schema</span> <span class="k">NOT</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span> <span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
-<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">table_schema</span><span class="p">,</span> <span class="k">table_name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">QUERY</span><span class="w"></span>
+<span class="w">    </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">format</span><span class="p">(</span><span class="n">sqltemplate</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_common_identifier_field</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_schema_name_a</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_table_name_a</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_schema_name_b</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_table_name_b</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="n">p_excluded_fields</span><span class="w"></span>
+<span class="w">    </span><span class="p">);</span><span class="w"></span>
+
+<span class="k">END</span><span class="p">;</span><span class="w"></span>
+<span class="err">$</span><span class="n">_$</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </td></tr></table>
+<p>Cette fonction attend en paramètres</p>
+<ul>
+<li>le schéma de la <strong>table A</strong>. Ex: <code>referentiels</code></li>
+<li>le nom de la <strong>table A</strong>. Ex: <code>communes_2021</code></li>
+<li>le schéma de la <strong>table B</strong>. Ex: <code>referentiels</code></li>
+<li>le nom de la <strong>table B</strong>. Ex: <code>communes_2022</code></li>
+<li>le nom du champ qui identifie de manière unique la donnée. Ce n'est pas forcément la clé primaire. Ex <code>code_commune</code></li>
+<li>un tableau de champs pour lesquels ne pas vérifier les différences. Ex: <code>array['region', 'departement']</code></li>
+</ul>
+<p>La requête à lancer est la suivantes
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="ss">&quot;uid&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;status&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_a_values&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_b_values&quot;</span><span class="w"></span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2021&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2022&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s1">&#39;code_commune&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nb">array</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;departement&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">uid</span><span class="w"></span>
+<span class="p">;</span><span class="w"></span>
+</code></pre></div>
+</td></tr></table></p>
+<p>Exemple de données renvoyées:</p>
+<table>
+<thead>
+<tr>
+<th>uid</th>
+<th>status</th>
+<th>table_a_values</th>
+<th>table_b_values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12345</td>
+<td>not in table A</td>
+<td>NULL</td>
+<td>"annee_ref"=&gt;"2022", "nom_commune"=&gt;"Nouvelle commune", "population"=&gt;"5723"</td>
+</tr>
+<tr>
+<td>97612</td>
+<td>not in table B</td>
+<td>"annee_ref"=&gt;"2021", "nom_commune"=&gt;"Ancienne commune", "population"=&gt;"840"</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>97602</td>
+<td>table A != table B</td>
+<td>"annee_ref"=&gt;"2021", "population"=&gt;"1245"</td>
+<td>"annee_ref"=&gt;"2022", "population"=&gt;"1322"</td>
+</tr>
+</tbody>
+</table>
+<p>Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais la fonction teste aussi les différences de géométries.</p>
+<p><em>Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.</em></p>
 <p>Continuer vers <a href="../grant/">Gestion des droits</a></p>
 
   <hr>
@@ -1158,7 +1271,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 2, 2021</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 26, 2022</span>
       
     
   </small>
@@ -1277,10 +1390,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.0bbba5b5.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../assets/javascripts/bundle.960e086b.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       
