@@ -168,13 +168,14 @@ ORDER BY db_size DESC;
 On crée une fonction `get_table_info` qui utilise les tables système pour lister les tables, récupérer leur schéma et les informations de taille.
 
 ```sql
+DROP FUNCTION IF EXISTS get_table_info();
 CREATE OR REPLACE FUNCTION get_table_info()
 RETURNS TABLE (
     oid oid,
     schema_name text,
     table_name text,
     row_count integer,
-    total_size integer,
+    total_size bigint,
     pretty_total_size text
 )
 AS $$
@@ -183,7 +184,7 @@ BEGIN
     SELECT
         b.oid, b.schema_name::text, b.table_name::text,
         b.row_count::integer,
-        b.total_size::integer,
+        b.total_size::bigint,
         pg_size_pretty(b.total_size) AS pretty_total_size
     FROM (
         SELECT *,
@@ -361,4 +362,25 @@ Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais l
 *Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.*
 
 
+## Lister les triggers appliqués sur les tables
+
+On peut utiliser la requête suivante pour lister l'ensemble des triggers activés sur les tables
+
+```sql
+SELECT
+    event_object_schema AS table_schema,
+    event_object_table AS table_name,
+    trigger_schema,
+    trigger_name,
+    string_agg(event_manipulation, ',') AS event,
+    action_timing AS activation,
+    action_condition AS condition,
+    action_statement AS definition
+FROM information_schema.triggers
+GROUP BY 1,2,3,4,6,7,8
+ORDER BY table_schema, table_name
+;
+```
+
 Continuer vers [Gestion des droits](./grant.md)
+
