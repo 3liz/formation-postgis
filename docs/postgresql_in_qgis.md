@@ -5,7 +5,7 @@
 Lorsqu'on travaille avec des données **PostgreSQL**, QGIS n'accède pas à la donnée en lisant un ou plusieurs fichiers, mais fait des **requêtes** à la base, à chaque fois qu'il en a besoin: déplacement de carte, zoom, ouverture de la table attributaire, sélection par expression, etc.
 
 * QGIS se connecte à la base de données, et récupère des données qui sont stockées dans des tables. Il doit donc **télécharger la donnée** à chaque action (pas de cache car la donnée peut changer entre temps).
-* une table équivaut à une couche SIG, définie par un nom, une liste de champs typés, et une ou plusieurs champs de géométrie.
+* une table équivaut à une couche SIG, définie par un nom, une liste de champs typés, et un ou plusieurs champs de géométrie.
 * une géométrie est caractérisée par un type (polygone, point, ligne, etc.), une dimension (2D ou 3D) et une projection (Ex: EPSG:2154) codifiée via un SRID ( Ex: 2154)
 * certaines tables n'ont pas de géométrie: on les appelle alors non spatiales. QGIS sait les exploiter, ce qui permet de stocker des informations de contexte (nomenclature, événements).
 
@@ -18,13 +18,13 @@ Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil 
 
 * laisser le champ **Service** vide
 * cocher les cases **Enregistrer** à côté de l'utilisateur et du mot de passe, après avoir **Tester la connexion** (via le bouton dédié)
-* cocher la dernière case tout en base **Utiliser la table de métadonnées estimées**
+* cocher la case en bas **Utiliser la table de métadonnées estimées**
 * Valider
 
 **Attention** Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL:
-https://docs.qgis.org/3.16/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
+https://docs.qgis.org/3.22/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
 
-Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles. [Documentation](https://docs.qgis.org/3.16/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings)
+Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles. [Documentation](https://docs.qgis.org/3.22/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings)
 
 **NB** Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet **Rendu** de la boîte de dialogue des propriétés de chaque couche PostGIS.
 
@@ -32,21 +32,21 @@ Il est aussi intéressant pour les **performances** d'accès aux données Postgr
 
 Trois solutions sont possibles:
 
-* **utiliser l'explorateur** : seulement pour les tables spatiales, sauf si on a coché **Lister les tables sans géométries** dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables. Une icône devant chaque table/vue indique si une table est géométrique ou non ainsi qie le type de géométrie, point, ligne ou polygône.
+* **utiliser l'explorateur** : seulement pour les tables spatiales, sauf si on a coché **Lister les tables sans géométries** dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables. Une icône devant chaque table/vue indique si une table est géométrique ou non ainsi que le type de géométrie, point, ligne ou polygône.
 * utiliser le menu **Couche / Ajouter une couche**. La boite de dialogue propose de se connecter, puis liste les schémas et les tables
 * utiliser le **Gestionnaire de base de données**, qui présente une fenêtre QGIS séparée dédiée aux manipulations sur les données.
 
 ## Le Gestionnaire de base de données
 
-On travaille via QGIS, avec le gestionnaire de bases de données : menu **Base de données > gestionnaire de base de données** (sinon via l'icône de la barre d’outil base de données).
+On travaille via QGIS, avec le gestionnaire de bases de données : menu **Base de données > Gestionnaire BD** (sinon via l'icône de la barre d’outil base de données).
 
 Dans l'arbre qui se présente à gauche du gestionnaire de bdd, on peut **choisir sa connexion**, puis double-cliquer, ce qui montre l'ensemble des **schémas**, et l'ouverture d'un schéma montre la liste des tables et vues. Les menus du gestionnaire permettent de créer ou d'éditer des objets (schémas, tables).
 
-Une **fenêtre SQL** permet de lancer manuellement des requêtes SQL. Nous allons principalement utiliser cet outil : menu **Base de données / fenêtre SQL** (on peut aussi le lancer via F2). :
+Une **fenêtre SQL** permet de lancer manuellement des requêtes SQL. Nous allons principalement utiliser cet outil : menu **Base de données / Fenêtre SQL** (on peut aussi le lancer via F2). :
 
 ### Création de tables
 
-Depuis **QGIS**: dans le gestionnaire de base de données, menu table, créer une table:
+Depuis **QGIS**: dans le gestionnaire de base de données, menu ** Table / Créer une table**:
 
 * choisir le **schéma** et le **nom** de la table, en minuscule, sans accents ni caractères complexes
 * Via le bouton **Ajouter un champ**, on commence par ajouter un champ **id** de type **serial** (entier auto-incrémenté), puis d'autres champs en choisissant le nom et le type. Choisir des noms de champ simples !
