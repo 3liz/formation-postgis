@@ -37,7 +37,7 @@ Ces données seront importées dans la base de formation via les outils de QGIS.
 
 Un rappel sur les concepts de table, champs, relations.
 
-* Documentation de QGIS : https://docs.qgis.org/3.16/fr/docs/training_manual/database_concepts/index.html
+* Documentation de QGIS : https://docs.qgis.org/latest/fr/docs/training_manual/database_concepts/index.html
 
 
 ## Quelques extensions QGIS

@@ -22,9 +22,9 @@ Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil 
 * Valider
 
 **Attention** Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL:
-https://docs.qgis.org/3.22/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
+https://docs.qgis.org/latest/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file
 
-Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles. [Documentation](https://docs.qgis.org/3.22/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings)
+Il est aussi intéressant pour les **performances** d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet **Rendu**: il faut cocher la case **Réaliser la simplification par le fournisseur de données lorsque c'est possible**. Cela permet de télécharger des versions allégées des données aux petites échelles. [Documentation](https://docs.qgis.org/latest/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings)
 
 **NB** Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet **Rendu** de la boîte de dialogue des propriétés de chaque couche PostGIS.
 
