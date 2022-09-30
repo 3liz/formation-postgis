@@ -424,6 +424,29 @@ SELECT pg_catalog.setval('z_formation.znieff_id_seq', 5, true);
 
 Pour chaque commune, on souhaite calculer la somme des surfaces intersectées par chaque type de zone. On doit donc utiliser toutes les tables de zonage (ici seulement 2 tables, mais c'est possible d'en ajouter)
 
+Résultat attendu:
+
+| id_commune | code_insee | nom               | surface_commune_ha | somme_surface_parcs | somme_surface_znieff |
+|------------|------------|-------------------|--------------------|---------------------|----------------------|
+| 1139       | 27042      | Barville          | 275.138028733401   | 87.2237204013011    | None                 |
+| 410        | 27057      | Bernienville      | 779.74546553394    | None                | 5.26504189468878     |
+| 1193       | 27061      | Berthouville      | 757.19696570046    | 19.9975421896336    | None                 |
+| 495        | 27074      | Boisney           | 576.995877227961   | 0.107059260396721   | None                 |
+| 432        | 27077      | Boissey-le-Châtel | 438.373848703835   | 434.510197417769    | 83.9289621127432     |
+
+
+* Méthode avec des sous-requêtes
+
+```sql
+SELECT
+    c.id_commune, c.code_insee, c.nom,
+    ST_Area(c.geom) / 10000 AS surface_commune_ha,
+    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.parc_national AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_parc_national,
+    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.znieff AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_znieff
+FROM z_formation.commune AS c
+ORDER BY c.nom
+```
+
 * Méthode avec des **jointures LEFT**
 
 ```sql
@@ -455,32 +478,17 @@ GROUP BY c.id_commune, c.code_insee, c.nom
 ORDER BY c.nom
 ```
 
-**Avantage**: on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
+**Avantages**:
 
-Résultat:
+* on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
+* On peut sortir plusieurs aggrégats pour les tables jointes. Par exemple un décompte des parcs, un décompte des znieff
 
-| id_commune | code_insee | nom               | surface_commune_ha | somme_surface_parcs | somme_surface_znieff |
-|------------|------------|-------------------|--------------------|---------------------|----------------------|
-| 1139       | 27042      | Barville          | 275.138028733401   | 87.2237204013011    | None                 |
-| 410        | 27057      | Bernienville      | 779.74546553394    | None                | 5.26504189468878     |
-| 1193       | 27061      | Berthouville      | 757.19696570046    | 19.9975421896336    | None                 |
-| 495        | 27074      | Boisney           | 576.995877227961   | 0.107059260396721   | None                 |
-| 432        | 27077      | Boissey-le-Châtel | 438.373848703835   | 434.510197417769    | 83.9289621127432     |
+ATTENTION:
+
+* on peut avoir des doublons qui vont créer des erreurs. Voir cet exemple: http://sqlfiddle.com/#!17/73485c/2/0
+* cette méthode peut poser des soucis de performance
 
 
-* Méthode avec des sous-requêtes
-
-```sql
-SELECT
-    c.id_commune, c.code_insee, c.nom,
-    ST_Area(c.geom) / 10000 AS surface_commune_ha,
-    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.parc_national AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_parc_national,
-    (SELECT sum(ST_Area(ST_Intersection(c.geom, p.geom)) / 10000 ) FROM z_formation.znieff AS p WHERE ST_Intersects(p.geom, c.geom) ) AS surface_znieff
-FROM z_formation.commune AS c
-ORDER BY c.nom
-```
-
-Avantage: plus simple à écrire, mais ne permet pas de clause WHERE simple
 
 
 **ATTENTION**:
