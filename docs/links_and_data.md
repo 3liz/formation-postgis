@@ -7,7 +7,7 @@ Documentation de PostgreSQL : https://docs.postgresql.fr/current/
 Documentation des fonctions PostGIS:
 
 * en anglais : https://postgis.net/docs/reference.html
-* en français https://postgis.net/docs/manual-2.4/postgis-fr.html notamment la référence des fonctions spatiales : https://postgis.net/docs/manual-2.4/postgis-fr.html#reference
+* en français https://postgis.net/docs/postgis-fr.html notamment la référence des fonctions spatiales : https://postgis.net/docs/postgis-fr.html#reference
 
 ## Base de données
 
