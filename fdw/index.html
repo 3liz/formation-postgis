@@ -679,7 +679,7 @@
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Ajouter l&#39;extension pour lire des fichiers SIG</span>
 <span class="c1">-- Cette commande doit être lancée par un super utilisateur (ou un utilisateur ayant le droit de le faire)</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">ogr_fdw</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">ogr_fdw</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>Créer le <strong>serveur</strong> de données:</li>
@@ -691,19 +691,19 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Créer le serveur</span>
-<span class="k">DROP</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span><span class="p">;</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="n">WRAPPER</span><span class="w"> </span><span class="n">ogr_fdw</span><span class="w"></span>
-<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">datasource</span><span class="w"> </span><span class="s1">&#39;WFS:http://ws.carmencarto.fr/WFS/119/fxx_inpn?&#39;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">format</span><span class="w"> </span><span class="s1">&#39;WFS&#39;</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="n">WRAPPER</span><span class="w"> </span><span class="n">ogr_fdw</span>
+<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">datasource</span><span class="w"> </span><span class="s1">&#39;WFS:http://ws.carmencarto.fr/WFS/119/fxx_inpn?&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">format</span><span class="w"> </span><span class="s1">&#39;WFS&#39;</span>
+<span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>Créer un <strong>schéma</strong> pour y stocker les tables étrangères:</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Créer un schéma pour la dreal</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>Créer automatiquement les <strong>tables étrangères</strong> qui "pointent" vers les couches du WFS, via la commande <code>IMPORT SCHEMA</code>:</li>
@@ -719,16 +719,16 @@
 <span class="normal"> 9</span>
 <span class="normal">10</span>
 <span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Récupérer l&#39;ensemble des couches WFS comme des tables dans le schéma ref_dreal</span>
-<span class="n">IMPORT</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">ogr_all</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span><span class="w"></span>
-<span class="k">INTO</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="w"></span>
-<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="n">IMPORT</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">ogr_all</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">fdw_ogr_inpn_metropole</span>
+<span class="k">INTO</span><span class="w"> </span><span class="n">inpn_metropole</span>
+<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="c1">-- mettre le nom des tables en minuscule et sans caractères bizares</span>
-<span class="w">    </span><span class="n">launder_table_names</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">launder_table_names</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
 <span class="w">    </span><span class="c1">-- mettre le nom des champs en minuscule</span>
-<span class="w">    </span><span class="n">launder_column_names</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="w"></span>
-<span class="p">)</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">launder_column_names</span><span class="w"> </span><span class="s1">&#39;true&#39;</span>
+<span class="p">)</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>Lister les tables récupérées</li>
@@ -736,10 +736,10 @@
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
-<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">foreign_table_name</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">foreign_tables</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;inpn_metropole&#39;</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">foreign_table_name</span><span class="p">;</span><span class="w"></span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">foreign_table_name</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">foreign_tables</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;inpn_metropole&#39;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">foreign_table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">foreign_table_name</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>ce qui montre:</p>
 <table>
@@ -863,9 +863,9 @@
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Tester</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">zico</span><span class="w"></span>
-<span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">zico</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p><strong>Attention</strong>, lorsqu'on accède depuis PostgreSQL à un serveur WFS, on est tributaire </p>
 <ul>
@@ -890,23 +890,23 @@
 <span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Pour éviter de requêter à chaque fois le WFS, on peut créer des vues matérialisées</span>
 
 <span class="c1">-- suppression de la vue si elle existe déjà</span>
-<span class="k">DROP</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="p">;</span>
 
 <span class="c1">-- création de la vue: on doit parfois forcer le type de géométrie attendue</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="w"> </span><span class="k">AS</span>
 <span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="w"> </span>
-<span class="p">(</span><span class="n">ST_multi</span><span class="p">(</span><span class="n">msgeometry</span><span class="p">))::</span><span class="n">geometry</span><span class="p">(</span><span class="n">multipolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">zico</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="p">(</span><span class="n">ST_multi</span><span class="p">(</span><span class="n">msgeometry</span><span class="p">))::</span><span class="n">geometry</span><span class="p">(</span><span class="n">multipolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">zico</span>
+<span class="p">;</span>
 
 <span class="c1">-- Ajout d&#39;un index spatial sur la géométrie</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <p>Une fois la vue créée, vous pouvez faire vos requêtes sur cette vue, avec des performances bien meilleures et un allègement de la charge sur le serveur externe.</p>
 <p>Pour <strong>rafraîchir</strong> les données à partir du serveur WFS, il suffit de rafraîchir la ou les vues matérialisées:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Rafraîchir la vue, par exemple à lancer une fois par mois</span>
-<span class="n">REFRESH</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="p">;</span><span class="w"></span>
+<span class="n">REFRESH</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">inpn_metropole</span><span class="p">.</span><span class="n">vm_zico</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql">Le FDW postgres_fdw pour accéder aux tables d'une autre base de données PostgreSQL<a class="headerlink" href="#le-fdw-postgres_fdw-pour-acceder-aux-tables-dune-autre-base-de-donnees-postgresql" title="Permanent link">#</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -933,29 +933,29 @@
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Création du serveur externe</span>
-<span class="k">DROP</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">foreign_server_test</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">foreign_server_test</span><span class="w"></span>
-<span class="k">FOREIGN</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="n">WRAPPER</span><span class="w"> </span><span class="n">postgres_fdw</span><span class="w"></span>
-<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="k">host</span><span class="w"> </span><span class="s1">&#39;mon_serveur_postgresql_externe.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="s1">&#39;5432&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="w"> </span><span class="s1">&#39;external_database&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">foreign_server_test</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">foreign_server_test</span>
+<span class="k">FOREIGN</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="n">WRAPPER</span><span class="w"> </span><span class="n">postgres_fdw</span>
+<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="k">host</span><span class="w"> </span><span class="s1">&#39;mon_serveur_postgresql_externe.com&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="s1">&#39;5432&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">dbname</span><span class="w"> </span><span class="s1">&#39;external_database&#39;</span><span class="p">)</span>
+<span class="p">;</span>
 
 <span class="c1">-- on déclare se connecter en tant qu&#39;utilisateur mon_utilisateur externe lorsqu&#39;on récupère des données</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">&quot;&quot;</span><span class="w"></span>
-<span class="n">SERVER</span><span class="w"> </span><span class="n">foreign_server_test</span><span class="w"></span>
-<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="k">user</span><span class="w"> </span><span class="s1">&#39;mon_utilisateur&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="s1">&#39;***********&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">MAPPING</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">&quot;&quot;</span>
+<span class="n">SERVER</span><span class="w"> </span><span class="n">foreign_server_test</span>
+<span class="k">OPTIONS</span><span class="w"> </span><span class="p">(</span><span class="k">user</span><span class="w"> </span><span class="s1">&#39;mon_utilisateur&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="s1">&#39;***********&#39;</span><span class="p">);</span>
 
 <span class="c1">-- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">;</span>
 
 <span class="c1">-- importer automatiquement les tables d&#39;un schéma de la base distante</span>
-<span class="n">IMPORT</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="ss">&quot;un_schema&quot;</span><span class="w"></span>
-<span class="k">LIMIT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;une_table&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;une_autre_table&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">foreign_server_test</span><span class="w"></span>
-<span class="k">INTO</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">;</span><span class="w"></span>
+<span class="n">IMPORT</span><span class="w"> </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="ss">&quot;un_schema&quot;</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;une_table&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;une_autre_table&quot;</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">SERVER</span><span class="w"> </span><span class="n">foreign_server_test</span>
+<span class="k">INTO</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">;</span>
 
 <span class="c1">-- Tester</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">.</span><span class="n">une_table</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fdw_test_schema</span><span class="p">.</span><span class="n">une_table</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>Continuer vers <a href="../tutoriel/">Tutoriels en ligne</a></p>
 

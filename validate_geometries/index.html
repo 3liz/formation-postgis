@@ -562,16 +562,16 @@
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
-<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"></span>
-<span class="n">id_parcelle</span><span class="p">,</span><span class="w"></span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span>
+<span class="n">id_parcelle</span><span class="p">,</span>
 <span class="c1">-- vérifier si la géom est valide</span>
-<span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">validite_geom</span><span class="p">,</span><span class="w"></span>
+<span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">validite_geom</span><span class="p">,</span>
 <span class="c1">-- connaitre la raison d&#39;invalidité</span>
-<span class="n">st_isvalidreason</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">validite_raison</span><span class="p">,</span><span class="w"></span>
+<span class="n">st_isvalidreason</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">validite_raison</span><span class="p">,</span>
 <span class="c1">-- sortir un point qui localise le souci de validité</span>
-<span class="n">ST_SetSRID</span><span class="p">(</span><span class="k">location</span><span class="p">(</span><span class="n">st_isvaliddetail</span><span class="p">(</span><span class="n">geom</span><span class="p">)),</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">FALSE</span><span class="w"></span>
+<span class="n">ST_SetSRID</span><span class="p">(</span><span class="k">location</span><span class="p">(</span><span class="n">st_isvaliddetail</span><span class="p">(</span><span class="n">geom</span><span class="p">)),</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_IsValid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">FALSE</span>
 </code></pre></div></td></tr></table></div>
 <p>qui renvoit 2 erreurs de polygones croisés.</p>
 <table>
@@ -610,14 +610,14 @@
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Corriger les géométries</span>
-<span class="k">UPDATE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"></span>
-<span class="k">SET</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_Multi</span><span class="p">(</span><span class="n">ST_CollectionExtract</span><span class="p">(</span><span class="n">ST_MakeValid</span><span class="p">(</span><span class="n">geom</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_isvalid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">geom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ST_Multi</span><span class="p">(</span><span class="n">ST_CollectionExtract</span><span class="p">(</span><span class="n">ST_MakeValid</span><span class="p">(</span><span class="n">geom</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">))</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_isvalid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 
 <span class="c1">-- Tester</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_isvalid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_isvalid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>Il faut aussi supprimer l'ensemble des lignes dans la table qui ne correspondent pas au type de la couche importée. Par exemple, pour les polygones, supprimer les objets dont le nombre de noeuds est inférieur à 3.</p>
 <ul>
@@ -625,18 +625,18 @@
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span>
 </code></pre></div></td></tr></table></div>
 <ul>
 <li>On les supprime:</li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
-<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">DELETE</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">DELETE</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span>
 </code></pre></div></td></tr></table></div>
 <p>Continuer vers <a href="../check_topology/">Vérifier la topologie</a></p>
 

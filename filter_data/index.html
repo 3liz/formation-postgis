@@ -604,10 +604,10 @@
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Récupérer seulement la commune du Havre</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="p">,</span><span class="w"> </span><span class="n">code_insee</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span><span class="w"></span>
-<span class="n">population</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Le Havre&#39;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="p">,</span><span class="w"> </span><span class="n">code_insee</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span>
+<span class="n">population</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Le Havre&#39;</span>
 </code></pre></div></td></tr></table></div>
 <p>On peut chercher les lignes dont le champ correspondant à <strong>plusieurs valeurs</strong></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
@@ -615,10 +615,10 @@
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Récupérer la commune du Havre et de Rouen</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="p">,</span><span class="w"> </span><span class="n">code_insee</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span><span class="w"></span>
-<span class="n">population</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Le Havre&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Rouen&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_commune</span><span class="p">,</span><span class="w"> </span><span class="n">code_insee</span><span class="p">,</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span>
+<span class="n">population</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Le Havre&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Rouen&#39;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
 <p>On peut aussi filtrer sur des champs de type <strong>entier ou nombres réels</strong>, et faire des conditions comme des inégalités.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
@@ -628,12 +628,12 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Filtrer les données, par exemple par département et population</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>On peut chercher des lignes dont un champ <strong>commence et/ou se termine</strong> par un texte</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -646,15 +646,15 @@
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Filtrer les données, par exemple par département et début et/ou fin de nom</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span>
 <span class="c1">-- commence par C</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;C%&#39;</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;C%&#39;</span>
 <span class="c1">-- se termine par ville</span>
-<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">ILIKE</span><span class="w"> </span><span class="s1">&#39;%ville&#39;</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">ILIKE</span><span class="w"> </span><span class="s1">&#39;%ville&#39;</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>On peut utiliser les <strong>calculs sur les géométries</strong> pour filtrer les données. Par exemple filtrer par longueur de lignes</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
@@ -664,10 +664,10 @@
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Les routes qui font plus que 10km</span>
 <span class="c1">-- on peut utiliser des fonctions dans la clause WHERE</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span>
 </code></pre></div></td></tr></table></div>
 <p>Continuer vers <a href="../group_data/">Regrouper des données: GROUP BY</a></p>
 <h2 id="quiz">Quiz<a class="headerlink" href="#quiz" title="Permanent link">#</a></h2>
@@ -680,11 +680,11 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Toutes les communes de Seine-Maritime qui contiennent le mot saint</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">ILIKE</span><span class="w"> </span><span class="s1">&#39;%saint%&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">nom</span><span class="w"> </span><span class="k">ILIKE</span><span class="w"> </span><span class="s1">&#39;%saint%&#39;</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 </details>
 
@@ -697,11 +697,11 @@
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Nom et centroïde des communes de Seinte-Maritime avec une population &lt;= 50</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span><span class="w"></span>
-<span class="k">AND</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">nom</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">depart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;SEINE-MARITIME&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50</span>
 </code></pre></div></td></tr></table></div>
 </details>
 

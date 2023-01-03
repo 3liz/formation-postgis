@@ -2,97 +2,97 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.3liz.org/formation-postgis/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/check_topology/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/fdw/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/filter_data/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/grant/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/group_data/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/import_data/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/join_data/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/links_and_data/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/merge_geometries/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/perform_calculation/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/postgresql_in_qgis/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/save_queries/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/sql_select/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/triggers/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/tutoriel/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/union/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/utils/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://docs.3liz.org/formation-postgis/validate_geometries/</loc>
-         <lastmod>2022-12-19</lastmod>
+         <lastmod>2023-01-03</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

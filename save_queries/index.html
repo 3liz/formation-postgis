@@ -682,7 +682,7 @@
 <h1 id="enregistrer-une-requete">Enregistrer une requête<a class="headerlink" href="#enregistrer-une-requete" title="Permanent link">#</a></h1>
 <h2 id="les-vues">Les vues<a class="headerlink" href="#les-vues" title="Permanent link">#</a></h2>
 <p>Une vue est l'enregistrement d'une requête, appelée <strong>définition de la vue</strong>, qui est stocké dans la base, et peut être <strong>utilisée comme une table</strong>.</p>
-<p>Créer une vue via <strong>CREATE VIEW</strong></p>
+<p>Créer une vue via <code>CREATE VIEW</code></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -690,12 +690,12 @@
 <span class="normal">5</span>
 <span class="normal">6</span>
 <span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- On supprime d&#39;abord la vue si elle existe</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span><span class="p">;</span>
 <span class="c1">-- On crée la vue en récupérant les routes de plus de 5 km</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5000</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5000</span>
 </code></pre></div></td></tr></table></div>
 <p>Utiliser cette vue dans une autre requête</p>
 <ul>
@@ -704,8 +704,8 @@
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Ou filtrer les données</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">longueur</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">v_voies</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">longueur</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="enregistrer-une-requete-comme-une-table">Enregistrer une requête comme une table<a class="headerlink" href="#enregistrer-une-requete-comme-une-table" title="Permanent link">#</a></h2>
 <p>C'est la même chose que pour enregistrer une vue, sauf qu'on crée une table: les données sont donc stockées en base, et n'évoluent plus en fonction des données source. Cela permet d'accéder rapidement aux données, car la requête sous-jacente n'est plus exécutée une fois la table créée.</p>
@@ -727,36 +727,36 @@
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
-<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="p">;</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"></span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span>
 <span class="c1">-- on récupère tous les champs</span>
-<span class="k">source</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"></span>
+<span class="k">source</span><span class="p">.</span><span class="o">*</span><span class="p">,</span>
 <span class="c1">-- on calcule la longueur après rassemblement des données</span>
-<span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span><span class="w"></span>
-<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span><span class="w"></span>
-<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
-<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
-<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">source</span><span class="w"></span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">longueur</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">chemin</span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+<span class="w">        </span><span class="k">UNION</span><span class="w"> </span><span class="k">ALL</span>
+<span class="w">        </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+<span class="w">        </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">source</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">longueur</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>Comme c'est une table, il est intéressant d'ajouter un index spatial.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <p>On peut aussi ajouter une clé primaire</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="nb">serial</span><span class="p">;</span><span class="w"></span>
-<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">gid</span><span class="p">);</span><span class="w"></span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">gid</span><span class="w"> </span><span class="nb">serial</span><span class="p">;</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">t_voies</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">gid</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <p><strong>Attention</strong> Les données de la table n'évoluent plus en fonction des données des tables source. Il faut donc supprimer la table puis la recréer si besoin. Pour répondre à ce besoin, il existe les <strong>vues matérialisées</strong>.</p>
 <h3 id="exemple-2-creer-une-table-de-nomenclature-a-partir-des-valeurs-distinctes-dun-champ">Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.<a class="headerlink" href="#exemple-2-creer-une-table-de-nomenclature-a-partir-des-valeurs-distinctes-dun-champ" title="Permanent link">#</a></h3>
-<p>On crée la table si besoin. On ajoutera ensuite les données via <strong>INSERT</strong></p>
+<p>On crée la table si besoin. On ajoutera ensuite les données via <code>INSERT</code></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -766,16 +766,16 @@
 <span class="normal">7</span>
 <span class="normal">8</span>
 <span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Suppression de la table</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span><span class="p">;</span>
 <span class="c1">-- Création de la table</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">code</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">libelle</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">ordre</span><span class="w"> </span><span class="nb">smallint</span><span class="w"></span>
-<span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span>
+<span class="w">    </span><span class="n">code</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">libelle</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ordre</span><span class="w"> </span><span class="nb">smallint</span>
+<span class="p">);</span>
 </code></pre></div></td></tr></table></div>
-<p>On ajoute ensuite les données. La clause <strong>WITH</strong> permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause <strong>INSERT INTO</strong> permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un <strong>serial</strong>, c'est-à-dire un entier <strong>auto-incrémenté</strong>.</p>
+<p>On ajoute ensuite les données. La clause <code>WITH</code> permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause <code>INSERT INTO</code> permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un <strong>serial</strong>, c'est-à-dire un entier <strong>auto-incrémenté</strong>.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -798,27 +798,27 @@
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Ajout des données à partir d&#39;une table via commande INSERT</span>
-<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span><span class="w"></span>
-<span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">libelle</span><span class="p">,</span><span class="w"> </span><span class="n">ordre</span><span class="p">)</span><span class="w"></span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">nomenclature</span>
+<span class="p">(</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">libelle</span><span class="p">,</span><span class="w"> </span><span class="n">ordre</span><span class="p">)</span>
 <span class="c1">-- Clause WITH pour récupérer les valeurs distinctes comme une table virtuelle</span>
-<span class="k">WITH</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"></span>
-<span class="w">    </span><span class="n">nature</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">libelle</span><span class="w"></span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span><span class="w"></span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nature</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"></span>
-<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span><span class="w"></span>
-<span class="p">)</span><span class="w"></span>
+<span class="k">WITH</span><span class="w"> </span><span class="k">source</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">    </span><span class="n">nature</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">libelle</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">lieu_dit_habite</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">nature</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span>
+<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span>
+<span class="p">)</span>
 <span class="c1">-- Sélection des données dans cette table virtuelle &quot;source&quot;</span>
-<span class="k">SELECT</span><span class="w"></span>
+<span class="k">SELECT</span>
 <span class="c1">-- on crée un code à partir de l&#39;ordre d&#39;arrive.</span>
 <span class="c1">-- row_number() OVER() permet de récupérer l&#39;identifiant de la ligne dans l&#39;ordre d&#39;arrivée</span>
 <span class="c1">-- (un_champ)::text permet de convertir un champ ou un calcul en texte</span>
 <span class="c1">-- lpad permet de compléter le chiffre avec des zéro. 1 devient 01</span>
-<span class="n">lpad</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="p">())::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"></span>
-<span class="n">libelle</span><span class="p">,</span><span class="w"></span>
-<span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ordre</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="k">source</span><span class="w"></span>
-<span class="p">;</span><span class="w"></span>
+<span class="n">lpad</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="p">())::</span><span class="nb">text</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span>
+<span class="n">libelle</span><span class="p">,</span>
+<span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">OVER</span><span class="p">()</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ordre</span>
+<span class="k">FROM</span><span class="w"> </span><span class="k">source</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>Le résultat est le suivant:</p>
 <table>
@@ -878,19 +878,19 @@
 <span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- supprimer la table si elle existe déjà</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="p">;</span>
 
 <span class="c1">-- Créer la table via filtre sur le champ commune</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="o">*</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;76351&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;76351&#39;</span><span class="p">;</span>
 
 <span class="c1">-- Ajouter la clé primaire</span>
-<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id_parcelle</span><span class="p">);</span><span class="w"></span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id_parcelle</span><span class="p">);</span>
 
 <span class="c1">-- Ajouter l&#39;index spatial</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle_havre</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="enregistrer-une-requete-comme-une-vue-materialisee">Enregistrer une requête comme une vue matérialisée<a class="headerlink" href="#enregistrer-une-requete-comme-une-vue-materialisee" title="Permanent link">#</a></h2>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -908,20 +908,20 @@
 <span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- On supprime d&#39;abord la vue matérialisée si elle existe</span>
-<span class="k">DROP</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="p">;</span><span class="w"></span>
+<span class="k">DROP</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="p">;</span>
 <span class="c1">-- On crée la vue en récupérant les routes de plus de 5 km</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="k">AS</span><span class="w"></span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span><span class="w"></span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span><span class="w"></span>
-<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">6000</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id_route</span><span class="p">,</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">longueur</span><span class="p">,</span><span class="w"> </span><span class="n">geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">route</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Length</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">6000</span>
 
 <span class="c1">-- Ajout des indexes sur le champ id_route et de géométrie</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="p">(</span><span class="n">id_route</span><span class="p">);</span><span class="w"></span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span><span class="w"></span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="p">(</span><span class="n">id_route</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 
 <span class="c1">-- On rafraîchit la vue matérialisée quand on en a besoin</span>
 <span class="c1">-- par exemple quand les données source ont été modifiées</span>
-<span class="n">REFRESH</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="p">;</span><span class="w"></span>
+<span class="n">REFRESH</span><span class="w"> </span><span class="n">MATERIALIZED</span><span class="w"> </span><span class="k">VIEW</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">vm_voies</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>Continuer vers <a href="../join_data/">Réaliser des jointures attributaires et spatiales; JOIN</a></p>
 
@@ -930,7 +930,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 12, 2021</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 3, 2023</span>
       
     
   </small>
