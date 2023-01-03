@@ -123,9 +123,66 @@ GROUP BY depart
 
 Attention, cette requête est lourde, et devra être enregistrée comme une table.
 
+## Filtrer sur les regroupements
+
+Si on souhaite **compter** les communes par département, calculer la **population totale** et aussi **filter celles qui ont plus de 500 000 habitants**, il peut paraître logique d'écrire cette requête :
+
+```sql
+SELECT depart,
+count(code_insee) AS nb_commune,
+sum(population) AS total_population
+FROM z_formation.commune
+GROUP BY depart
+WHERE sum(population) > 500000
+ORDER BY nb_commune DESC
+```
+
+ou bien encore :
+
+```sql
+SELECT depart,
+count(code_insee) AS nb_commune,
+sum(population) AS total_population
+FROM z_formation.commune
+GROUP BY depart
+WHERE total_population > 500000
+ORDER BY nb_commune DESC
+```
+
+Ces deux requêtes renvoient une erreur. La bonne requête est :
+
+```sql
+SELECT depart,
+count(code_insee) AS nb_commune,
+sum(population) AS total_population
+FROM z_formation.commune
+GROUP BY depart
+HAVING sum(population) > 500000
+ORDER BY nb_commune DESC
+```
+
+Il faut savoir que la clause `WHERE` est exécutée avant la clause `GROUP BY`, il n'est donc pas possible de filtrer sur des regroupements avec celle-ci. C'est le rôle de la clause `HAVING`.
+
+Aussi la clause `SELECT` est exécutée après les clauses `WHERE` et `HAVING`, il n'est donc pas possible d'utiliser des alias déclarés avec celle-ci.
+
+Un schéma illustrant ceci est disponible sur le site [postgresqltutorial.com](https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-having/).
+
 Continuer vers [Rassembler des données: UNION ALL](./union.md)
 
 ## Quiz
+
+<details>
+  <summary>Écrire une requête retournant, pour le/les département(s), le nom et la population moyenne des villes lorsque celle-ci est supérieure ou égale à 1500 habitants</summary>
+  
+  ```sql
+  SELECT depart,
+  avg(population) AS moyenne_population
+  FROM z_formation.commune
+  GROUP BY depart
+  HAVING avg(population) > 1500
+  ```
+</details>
+
 <details>
   <summary>Écrire une requête retournant pour les départements 'SEINE-MARITIME' et 'EURE', leur nom, le nombre de communes ainsi que la surface et la surface de l'enveloppe convexe en mètre carré sous forme d'entier.</summary>
   
