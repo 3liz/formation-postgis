@@ -1,6 +1,6 @@
 # Rassembler des données de plusieurs tables
 
-La clause **UNION** peut être utilisée pour regrouper les données de sources différentes dans une même table. Le **UNION ALL** fait la même choses, mais sans réaliser de dédoublonnement, ce qui est plus rapide.
+La clause `UNION` peut être utilisée pour regrouper les données de sources différentes dans une même table. Le `UNION ALL` fait la même choses, mais sans réaliser de dédoublonnement, ce qui est plus rapide.
 
 **Rassembler les routes et les chemins** ensemble, en ajoutant un champ "nature" pour les différencier
 

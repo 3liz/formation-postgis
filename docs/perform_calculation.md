@@ -36,7 +36,7 @@ END
 ;
 ```
 
-Dans cette requête, le **CASE WHEN condition THEN valeur ELSE autre_valeur END** permet de faire un test sur la valeur d'origine, et de proposer une valeur si la condition est remplie ( https://sql.sh/cours/case )
+Dans cette requête, le `CASE WHEN condition THEN valeur ELSE autre_valeur END` permet de faire un test sur la valeur d'origine, et de proposer une valeur si la condition est remplie ( https://sql.sh/cours/case )
 
 Une fois ce champ **population** renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple **doubler la population**:
 

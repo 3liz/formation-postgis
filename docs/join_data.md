@@ -69,7 +69,7 @@ Résultat:
 
 On ne récupère ici que 2 lignes alors qu'il y a bien 3 observations dans la table.
 
-Pour récupérer les 3 lignes, on doit faire une jointure LEFT. On peut utiliser un `CASE WHEN` pour tester si la commune est trouvée sous chaque point
+Pour récupérer les 3 lignes, on doit faire une jointure `LEFT`. On peut utiliser un `CASE WHEN` pour tester si la commune est trouvée sous chaque point
 
 ```sql
 SELECT
@@ -149,7 +149,7 @@ ORDER BY c.nom
 | Ambenay  | 27009      | 202                | Le Culoron         |
 
 
-On a plusieurs lignes par commune, autant que de lieux-dits pour cette commune. Par contre, comme ce n'est pas une jointure LEFT, on ne trouve que des résultats pour les communes qui ont des lieux-dits.
+On a plusieurs lignes par commune, autant que de lieux-dits pour cette commune. Par contre, comme ce n'est pas une jointure `LEFT`, on ne trouve que des résultats pour les communes qui ont des lieux-dits.
 
 On pourrait aussi faire des statistiques, en regroupant par les champs de la table principale, ici les communes.
 
@@ -237,9 +237,9 @@ GROUP BY c.id_commune, c.nom, c.code_insee
 
 #### Utilisation d'une jointure LEFT pour garder les communes sans chemins
 
-La requête précédente ne renvoie pas de lignes pour les communes qui n'ont pas de chemin dont le centroïde est dans une commune. C'est une jointure de type **INNER JOIN**
+La requête précédente ne renvoie pas de lignes pour les communes qui n'ont pas de chemin dont le centroïde est dans une commune. C'est une jointure de type `INNER JOIN`
 
-Si on veut quand même récupérer ces communes, on fait une jointure **LEFT JOIN**: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à NULL.
+Si on veut quand même récupérer ces communes, on fait une jointure `LEFT JOIN`: pour les lignes sans chemins, les champs liés à la table des chemins seront mis à `NULL`.
 
 
 ```sql
@@ -264,7 +264,7 @@ puis la relancer. Dans cet exemple, on passe de 100 secondes à 1 seconde, grâc
 
 #### Affiner le résultat en découpant les chemins
 
-Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction **ST_Intersection**. La requête va être plus coûteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
+Dans la requête précédente, on calculait la longueur totale de chaque chemin, pas le **morceau exacte qui est sur chaque commune**. Pour cela, on va utiliser la fonction `ST_Intersection`. La requête va être plus coûteuse, car il faut réaliser le découpage des lignes des chemins par les polygones des communes.
 
 On va découper exactement les chemins par commune et récupérer les informations
 
@@ -286,7 +286,7 @@ CREATE INDEX ON z_formation.decoupe_chemin_par_commune USING GIST (geom);
 ```
 
 
-**NB**: Attention à ne pas confondre **ST_Intersects** qui renvoie vrai ou faux, et **ST_Intersection** qui renvoie la géométrie issue du découpage d'une géométrie par une autre.
+**NB**: Attention à ne pas confondre `ST_Intersects` qui renvoie vrai ou faux, et `ST_Intersection` qui renvoie la géométrie issue du découpage d'une géométrie par une autre.
 
 ### Joindre des polygones avec des polygones
 
@@ -499,7 +499,7 @@ ATTENTION:
 
 ### Distances et tampons entre couches
 
-Pour chaque objets d'une table, on souhaite récupérer des informations sur les** objets proches d'une autre table**. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction **ST_DWithin**
+Pour chaque objets d'une table, on souhaite récupérer des informations sur les** objets proches d'une autre table**. Au lieu d'utiliser un tampon puis une intersection, on utilise la fonction `ST_DWithin`
 
 On prend comme exemple la table des bornes à incendie créée précédemment (remplie avec quelques données de test).
 
@@ -516,7 +516,7 @@ JOIN z_formation.borne_incendie AS b
 ORDER BY id_parcelle, id_borne
 ```
 
-Attention, elle peut renvoyer **plusieurs fois la même parcelle** si 2 bornes sont assez proches. Pour ne récupérer que la borne la plus proche, on peut faire la requête suivante. La clause **DISTINCT ON** permet de dire quel champ doit être **unique** (ici id_parcelle).
+Attention, elle peut renvoyer **plusieurs fois la même parcelle** si 2 bornes sont assez proches. Pour ne récupérer que la borne la plus proche, on peut faire la requête suivante. La clause `DISTINCT ON` permet de dire quel champ doit être **unique** (ici id_parcelle).
 
 On **ordonne** ensuite **par ce champ et par la distance** pour prendre seulement la ligne correspondant à la parcelle **la plus proche**
 

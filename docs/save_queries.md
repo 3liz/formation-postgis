@@ -4,7 +4,7 @@
 
 Une vue est l'enregistrement d'une requête, appelée **définition de la vue**, qui est stocké dans la base, et peut être **utilisée comme une table**.
 
-Créer une vue via **CREATE VIEW**
+Créer une vue via `CREATE VIEW`
 
 ```sql
 -- On supprime d'abord la vue si elle existe
@@ -73,7 +73,7 @@ ALTER TABLE z_formation.t_voies ADD PRIMARY KEY (gid);
 
 ### Exemple 2 - créer une table de nomenclature à partir des valeurs distinctes d'un champ.
 
-On crée la table si besoin. On ajoutera ensuite les données via **INSERT**
+On crée la table si besoin. On ajoutera ensuite les données via `INSERT`
 
 ```sql
 -- Suppression de la table
@@ -88,7 +88,7 @@ CREATE TABLE z_formation.nomenclature (
 
 ```
 
-On ajoute ensuite les données. La clause **WITH** permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause **INSERT INTO** permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier **auto-incrémenté**.
+On ajoute ensuite les données. La clause `WITH` permet de réaliser une sous-requête, et de l'utiliser ensuite comme une table. La clause `INSERT INTO` permet d'ajouter les données. On ne lui passe pas le champ id, car c'est un **serial**, c'est-à-dire un entier **auto-incrémenté**.
 
 ```sql
 -- Ajout des données à partir d'une table via commande INSERT
