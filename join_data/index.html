@@ -1277,7 +1277,7 @@
 <span class="k">JOIN</span><span class="w"> </span><span class="ss">&quot;z_formation&quot;</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span>
 <span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="n">ST_Centroid</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">geom</span><span class="p">),</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">geom</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-<p><strong>NB:</strong> Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. C'est pour cela que nous avons créé un index spatial sur ST_Centroid(geom) pour la table des chemins.</p>
+<p><strong>NB:</strong> Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. C'est pour cela que nous avons créé un index spatial sur <code>ST_Centroid(geom)</code> pour la table des chemins.</p>
 <p>A l'inverse, on peut vouloir faire des <strong>statistiques pour chaque commune</strong> via jointure spatiale. Par exemple le nombre de chemins et le total des longueurs par commune.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1611,7 +1611,7 @@
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">nom</span>
 </code></pre></div></td></tr></table></div>
 <ul>
-<li>Méthode avec des <strong>jointures LEFT</strong></li>
+<li>Méthode avec des <strong>jointures</strong> <code>LEFT</code></li>
 </ul>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1667,7 +1667,7 @@
 </code></pre></div></td></tr></table></div>
 <p><strong>Avantages</strong>:</p>
 <ul>
-<li>on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via <code>WHERE p.id IS NOT NULL OR z.id IS NOT NULL</code> (commenté ci-dessus pour le désactiver)</li>
+<li>on peut intégrer facilement dans la clause <code>WHERE</code> des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via <code>WHERE p.id IS NOT NULL OR z.id IS NOT NULL</code> (commenté ci-dessus pour le désactiver)</li>
 <li>On peut sortir plusieurs aggrégats pour les tables jointes. Par exemple un décompte des parcs, un décompte des znieff</li>
 </ul>
 <p>ATTENTION:</p>

@@ -662,7 +662,7 @@
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">nature</span>
 </code></pre></div></td></tr></table></div>
 <h2 id="regrouper-des-donnees-en-specifiant-les-champs-de-regroupement">Regrouper des données en spécifiant les champs de regroupement<a class="headerlink" href="#regrouper-des-donnees-en-specifiant-les-champs-de-regroupement" title="Permanent link">#</a></h2>
-<p>Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un <strong>regroupement</strong> via la clause <strong>GROUP BY</strong></p>
+<p>Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un <strong>regroupement</strong> via la clause <code>GROUP BY</code></p>
 <p><strong>Compter</strong> les communes par département et calculer la <strong>population totale</strong></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -725,8 +725,8 @@
 </code></pre></div></td></tr></table></div>
 <p>Les caculs sur des ensembles groupés peuvent aussi être réalisé <strong>sur les géométries.</strong>. Les plus utilisés sont</p>
 <ul>
-<li><strong>ST_Collect</strong> qui regroupe les géométries dans une multi-géométrie,</li>
-<li><strong>ST_Union</strong> qui fusionne les géométries.</li>
+<li><code>ST_Collect</code> qui regroupe les géométries dans une multi-géométrie,</li>
+<li><code>ST_Union</code> qui fusionne les géométries.</li>
 </ul>
 <p>Par exemple, on peut souhaiter trouver l'<strong>enveloppe convexe</strong> autour de points (élastique tendu autour d'un groupe de points). Ici, nous regroupons les lieux-dits par nature (ce qui n'a pas beaucoup de sens, mais c'est pour l'exemple). Dans ce cas, il faut faire une sous-requête pour filtrer seulement les résultats de type polygone (car s'il y a seulement 1 ou 2 objets par nature, alors on ne peut créer de polygone)</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -761,7 +761,7 @@
 <span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span>
 <span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pair</span>
 </code></pre></div></td></tr></table></div>
-<p>On peut réaliser l'équivalent d'un <strong>DISSOLVE</strong> de QGIS en regroupant les géométries via <strong>ST_Union</strong>. Par exemple fusionner l'ensemble des communes pour construire les géométries des départements:</p>
+<p>On peut réaliser l'équivalent d'un <code>DISSOLVE</code> de QGIS en regroupant les géométries via <code>ST_Union</code>. Par exemple fusionner l'ensemble des communes pour construire les géométries des départements:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>

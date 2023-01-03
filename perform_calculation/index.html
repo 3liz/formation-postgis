@@ -628,7 +628,7 @@
 <h1 id="faire-des-calculs">Faire des calculs<a class="headerlink" href="#faire-des-calculs" title="Permanent link">#</a></h1>
 <h2 id="calcul-sur-des-attributs">Calcul sur des attributs<a class="headerlink" href="#calcul-sur-des-attributs" title="Permanent link">#</a></h2>
 <p>Le SQL permet de réaliser des calculs ou des modifications à partir de champs. On peut donc faire des calculs sur des nombres, ou des modifications (remplacement de texte, mise en majuscule, etc.)</p>
-<p>Faire un calcul très simple, ave des opérateurs + - / et *, ainsi que des parenthèses</p>
+<p>Faire un calcul très simple, avec des opérateurs <code>+ - /</code> et <code>*</code>, ainsi que des parenthèses</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -638,13 +638,13 @@
 <span class="p">(</span><span class="mi">2</span><span class="p">.</span><span class="mi">5</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">quinze</span>
 </code></pre></div></td></tr></table></div>
 <p>Il est aussi possible de faire des calculs à partir d'un ou plusieurs champs.</p>
-<p>Nous souhaitons par exemple créer un champ qui contiendra la <strong>population</strong> des communes. Dans la donnée source, le champ <strong>popul</strong> est de type chaîne de caractère, car il contient parfois la valeur 'NC' lorsque la population n'est pas connue.</p>
+<p>Nous souhaitons par exemple créer un champ qui contiendra la <strong>population</strong> des communes. Dans la donnée source, le champ <code>popul</code> est de type chaîne de caractère, car il contient parfois la valeur <code>'NC'</code> lorsque la population n'est pas connue.</p>
 <p>Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite donc <strong>créer un nouveau champ</strong> population pour y stocker les valeurs entières.</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Ajout d&#39;un champ de type entier dans la table</span>
 <span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">population</span><span class="w"> </span><span class="nb">integer</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<p><strong>Modifier</strong> le nouveau champ population pour y mettre la valeur entière lorsqu'elle est connue. La modification d'une table se fait avec la requête <strong>UPDATE</strong>, en passant les champs à modifier et leur nouvelle valeur via <strong>SET</strong></p>
+<p><strong>Modifier</strong> le nouveau champ population pour y mettre la valeur entière lorsqu'elle est connue. La modification d'une table se fait avec la requête <code>UPDATE</code>, en passant les champs à modifier et leur nouvelle valeur via <code>SET</code></p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -660,7 +660,7 @@
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
 <p>Dans cette requête, le <code>CASE WHEN condition THEN valeur ELSE autre_valeur END</code> permet de faire un test sur la valeur d'origine, et de proposer une valeur si la condition est remplie ( <a href="https://sql.sh/cours/case">https://sql.sh/cours/case</a> )</p>
-<p>Une fois ce champ <strong>population</strong> renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple <strong>doubler la population</strong>:</p>
+<p>Une fois ce champ <code>population</code> renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple <strong>doubler la population</strong>:</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
