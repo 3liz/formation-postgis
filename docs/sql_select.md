@@ -73,7 +73,7 @@ FROM z_formation.commune
 ORDER BY nom
 ```
 
-On peut donc facilement, à partir de la clause SELECT, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.
+On peut donc facilement, à partir de la clause `SELECT`, choisir quels champs on souhaite récupérer, dans l'ordre voulu, et renommer le champ en sortie.
 
 
 ## Visualiser une requête dans QGIS

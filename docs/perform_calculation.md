@@ -4,7 +4,7 @@
 
 Le SQL permet de réaliser des calculs ou des modifications à partir de champs. On peut donc faire des calculs sur des nombres, ou des modifications (remplacement de texte, mise en majuscule, etc.)
 
-Faire un calcul très simple, ave des opérateurs + - / et *, ainsi que des parenthèses
+Faire un calcul très simple, avec des opérateurs `+ - /` et `*`, ainsi que des parenthèses
 
 ```sql
 -- On multiplie 10 par 2
@@ -15,7 +15,7 @@ SELECT
 
 Il est aussi possible de faire des calculs à partir d'un ou plusieurs champs.
 
-Nous souhaitons par exemple créer un champ qui contiendra la **population** des communes. Dans la donnée source, le champ **popul** est de type chaîne de caractère, car il contient parfois la valeur 'NC' lorsque la population n'est pas connue.
+Nous souhaitons par exemple créer un champ qui contiendra la **population** des communes. Dans la donnée source, le champ `popul` est de type chaîne de caractère, car il contient parfois la valeur `'NC'` lorsque la population n'est pas connue.
 
 Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite donc **créer un nouveau champ** population pour y stocker les valeurs entières.
 
@@ -24,7 +24,7 @@ Nous ne pouvons pas faire de calculs à partir d'un champ texte. On souhaite don
 ALTER TABLE z_formation.commune ADD COLUMN population integer;
 ```
 
-**Modifier** le nouveau champ population pour y mettre la valeur entière lorsqu'elle est connue. La modification d'une table se fait avec la requête **UPDATE**, en passant les champs à modifier et leur nouvelle valeur via **SET**
+**Modifier** le nouveau champ population pour y mettre la valeur entière lorsqu'elle est connue. La modification d'une table se fait avec la requête `UPDATE`, en passant les champs à modifier et leur nouvelle valeur via `SET`
 
 ```sql
 -- Mise à jour d'un champ à partir d'un calcul
@@ -38,7 +38,7 @@ END
 
 Dans cette requête, le `CASE WHEN condition THEN valeur ELSE autre_valeur END` permet de faire un test sur la valeur d'origine, et de proposer une valeur si la condition est remplie ( https://sql.sh/cours/case )
 
-Une fois ce champ **population** renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple **doubler la population**:
+Une fois ce champ `population` renseigné correctement, dans un type entier, on peut réaliser un calcul très simple, par exemple **doubler la population**:
 
 ```sql
 -- Calcul simple : on peut utiliser les opérateurs mathématiques

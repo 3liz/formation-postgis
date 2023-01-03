@@ -21,7 +21,7 @@ ORDER BY nature
 
 ## Regrouper des données en spécifiant les champs de regroupement
 
-Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un **regroupement** via la clause **GROUP BY**
+Certains calculs nécessitent le regroupement de lignes, comme les moyennes, les sommes ou les totaux. Pour cela, il faut réaliser un **regroupement** via la clause `GROUP BY`
 
 **Compter** les communes par département et calculer la **population totale**
 
@@ -74,8 +74,8 @@ ORDER BY nature, sens DESC
 
 Les caculs sur des ensembles groupés peuvent aussi être réalisé **sur les géométries.**. Les plus utilisés sont
 
-* **ST_Collect** qui regroupe les géométries dans une multi-géométrie,
-* **ST_Union** qui fusionne les géométries.
+* `ST_Collect` qui regroupe les géométries dans une multi-géométrie,
+* `ST_Union` qui fusionne les géométries.
 
 Par exemple, on peut souhaiter trouver l'**enveloppe convexe** autour de points (élastique tendu autour d'un groupe de points). Ici, nous regroupons les lieux-dits par nature (ce qui n'a pas beaucoup de sens, mais c'est pour l'exemple). Dans ce cas, il faut faire une sous-requête pour filtrer seulement les résultats de type polygone (car s'il y a seulement 1 ou 2 objets par nature, alors on ne peut créer de polygone)
 
@@ -107,7 +107,7 @@ GROUP BY pair
 ```
 
 
-On peut réaliser l'équivalent d'un **DISSOLVE** de QGIS en regroupant les géométries via **ST_Union**. Par exemple fusionner l'ensemble des communes pour construire les géométries des départements:
+On peut réaliser l'équivalent d'un `DISSOLVE` de QGIS en regroupant les géométries via `ST_Union`. Par exemple fusionner l'ensemble des communes pour construire les géométries des départements:
 
 ```sql
 SELECT

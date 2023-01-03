@@ -216,7 +216,7 @@ JOIN "z_formation".commune AS c
         ON ST_Intersects(ST_Centroid(v.geom), c.geom)
 ```
 
-**NB:** Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. C'est pour cela que nous avons créé un index spatial sur ST_Centroid(geom) pour la table des chemins.
+**NB:** Attention, dans ce cas, l'index spatial sur la géométrie des chemins n'est pas utilisé. C'est pour cela que nous avons créé un index spatial sur `ST_Centroid(geom)` pour la table des chemins.
 
 
 A l'inverse, on peut vouloir faire des **statistiques pour chaque commune** via jointure spatiale. Par exemple le nombre de chemins et le total des longueurs par commune.
@@ -447,7 +447,7 @@ FROM z_formation.commune AS c
 ORDER BY c.nom
 ```
 
-* Méthode avec des **jointures LEFT**
+* Méthode avec des **jointures** `LEFT`
 
 ```sql
 SELECT
@@ -480,7 +480,7 @@ ORDER BY c.nom
 
 **Avantages**:
 
-* on peut intégrer facilement dans la clause WHERE des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
+* on peut intégrer facilement dans la clause `WHERE` des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
 * On peut sortir plusieurs aggrégats pour les tables jointes. Par exemple un décompte des parcs, un décompte des znieff
 
 ATTENTION:
