@@ -179,7 +179,7 @@ Continuer vers [Rassembler des données: UNION ALL](./union.md)
   avg(population) AS moyenne_population
   FROM z_formation.commune
   GROUP BY depart
-  HAVING avg(population) > 1500
+  HAVING avg(population) >= 1500
   ```
 </details>
 
