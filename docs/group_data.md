@@ -172,7 +172,7 @@ Continuer vers [Rassembler des données: UNION ALL](./union.md)
 ## Quiz
 
 <details>
-  <summary>Écrire une requête retournant, pour le/les département(s), le nom et la population moyenne des villes lorsque celle-ci est supérieure ou égale à 1500 habitants</summary>
+  <summary>Écrire une requête retournant, pour le/les département(s) dont la population moyenne des villes est supérieure ou égale à 1500 habitants, le nom du/des département(s) ainsi que cette moyenne.</summary>
   
   ```sql
   SELECT depart,
