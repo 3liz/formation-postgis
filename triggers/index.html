@@ -911,7 +911,7 @@
 <span class="w">        </span><span class="n">row_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_jsonb</span><span class="p">(</span><span class="k">NEW</span><span class="p">);</span>
 <span class="w">    </span><span class="k">ELSE</span>
 <span class="w">        </span><span class="c1">-- for UPDATE and DELETE, we keep data before changes</span>
-<span class="w">        </span><span class="n">row_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_jsonb</span><span class="p">(</span><span class="k">OLD</span><span class="p">)</span>
+<span class="w">        </span><span class="n">row_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_jsonb</span><span class="p">(</span><span class="k">OLD</span><span class="p">);</span>
 <span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">IF</span><span class="p">;</span>
 
 <span class="w">    </span><span class="c1">-- We insert a new log item</span>
@@ -956,7 +956,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 23, 2021</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 24, 2023</span>
       
     
   </small>
