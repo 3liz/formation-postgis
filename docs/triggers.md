@@ -171,7 +171,7 @@ BEGIN
         row_data = to_jsonb(NEW);
     ELSE
         -- for UPDATE and DELETE, we keep data before changes
-        row_data = to_jsonb(OLD)
+        row_data = to_jsonb(OLD);
     END IF;
 
     -- We insert a new log item
