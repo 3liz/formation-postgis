@@ -382,5 +382,62 @@ ORDER BY table_schema, table_name
 ;
 ```
 
-Continuer vers [Gestion des droits](./grant.md)
+## Lister les fonctions installées par les extensions
 
+Il est parfois utile de lister les **fonctions des extensions**, par exemple pour :
+
+* vérifier leur nom et leurs paramètres.
+* détecter celles qui n'ont pas le bon propriétaire
+
+La requête suivante permet d'afficher les informations essentielles des fonctions créées
+par les extensions installées dans la base :
+
+```sql
+SELECT DISTINCT
+    ne.nspname AS extension_schema,
+    e.extname AS extension_name,
+    np.nspname AS function_schema,
+    p.proname AS function_name,
+    pg_get_function_identity_arguments(p.oid) AS function_params,
+    proowner::regrole AS function_owner
+FROM
+    pg_catalog.pg_extension AS e
+    INNER JOIN pg_catalog.pg_depend AS d ON (d.refobjid = e.oid)
+    INNER JOIN pg_catalog.pg_proc AS p ON (p.oid = d.objid)
+    INNER JOIN pg_catalog.pg_namespace AS ne ON (ne.oid = e.extnamespace)
+    INNER JOIN pg_catalog.pg_namespace AS np ON (np.oid = p.pronamespace)
+WHERE
+    TRUE
+    -- only extensions
+    AND d.deptype = 'e'
+    -- not in pg_catalog
+    AND ne.nspname NOT IN ('pg_catalog')
+    -- optionnally filter some extensions
+    -- AND e.extname IN ('postgis', 'postgis_raster')
+    -- optionnally filter by some owner
+    AND proowner::regrole::text IN ('postgres')
+    ORDER BY
+        extension_name,
+        function_name;
+;
+```
+
+qui renvoie une résultat comme ceci (cet exemple est un extrait de quelques lignes) :
+
+
+|  extension_schema | extension_name | function_schema |               function_name |                    function_params                   | function_owner  |
+|-------------------|----------------|-----------------|-----------------------------|------------------------------------------------------|-----------------|
+| public            | fuzzystrmatch  | public          | levenshtein_less_equal      | text, text, integer                                  | johndoe         |
+| public            | fuzzystrmatch  | public          | metaphone                   | text, integer                                        | johndoe         |
+| public            | fuzzystrmatch  | public          | soundex                     | text                                                 | johndoe         |
+| public            | fuzzystrmatch  | public          | text_soundex                | text                                                 | johndoe         |
+| public            | hstore         | public          | akeys                       | hstore                                               | johndoe         |
+| public            | hstore         | public          | avals                       | hstore                                               | johndoe         |
+| public            | hstore         | public          | defined                     | hstore, text                                         | johndoe         |
+| public            | postgis        | public          | st_buffer                   | text, double precision, integer                      | johndoe         |
+| public            | postgis        | public          | st_buffer                   | geom geometry, radius double precision, options text | johndoe         |
+| public            | postgis        | public          | st_buildarea                | geometry                                             | johndoe         |
+
+On peut bien sûr modifier la clause `WHERE` pour filtrer plus ou moins les fonctions renvoyées.
+
+Continuer vers [Gestion des droits](./grant.md)
