@@ -382,6 +382,15 @@ ORDER BY table_schema, table_name
 ;
 ```
 
+Cette requête renvoie un tableau de la forme :
+
+| table_schema |       table_name       | trigger_schema |     trigger_name     | event  | activation | condition |                      definition                      |
+|--------------|------------------------|----------------|----------------------|--------|------------|-----------|------------------------------------------------------|
+| gestion      | acteur                 | gestion        | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
+| occtax       | organisme              | occtax         | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
+| taxon        | iso_metadata_reference | taxon          | update_imr_timestamp | UPDATE | BEFORE     |           | EXECUTE FUNCTION taxon.update_imr_timestamp_column() |
+
+
 ## Lister les fonctions installées par les extensions
 
 Il est parfois utile de lister les **fonctions des extensions**, par exemple pour :
