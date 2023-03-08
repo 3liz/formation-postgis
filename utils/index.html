@@ -560,6 +560,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lister-les-fonctions-installees-par-les-extensions" class="md-nav__link">
+    Lister les fonctions installées par les extensions
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -711,6 +718,13 @@
         <li class="md-nav__item">
   <a href="#lister-les-triggers-appliques-sur-les-tables" class="md-nav__link">
     Lister les triggers appliqués sur les tables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-les-fonctions-installees-par-les-extensions" class="md-nav__link">
+    Lister les fonctions installées par les extensions
   </a>
   
 </li>
@@ -1298,6 +1312,164 @@
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span>
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+<h2 id="lister-les-fonctions-installees-par-les-extensions">Lister les fonctions installées par les extensions<a class="headerlink" href="#lister-les-fonctions-installees-par-les-extensions" title="Permanent link">#</a></h2>
+<p>Il est parfois utile de lister les <strong>fonctions des extensions</strong>, par exemple pour :</p>
+<ul>
+<li>vérifier leur nom et leurs paramètres.</li>
+<li>détecter celles qui n'ont pas le bon propriétaire</li>
+</ul>
+<p>La requête suivante permet d'afficher les informations essentielles des fonctions créées
+par les extensions installées dans la base :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span>
+<span class="w">    </span><span class="n">ne</span><span class="p">.</span><span class="n">nspname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">extension_schema</span><span class="p">,</span>
+<span class="w">    </span><span class="n">e</span><span class="p">.</span><span class="n">extname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">extension_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">np</span><span class="p">.</span><span class="n">nspname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">function_schema</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p</span><span class="p">.</span><span class="n">proname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">function_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pg_get_function_identity_arguments</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">function_params</span><span class="p">,</span>
+<span class="w">    </span><span class="n">proowner</span><span class="p">::</span><span class="n">regrole</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">function_owner</span>
+<span class="k">FROM</span>
+<span class="w">    </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_extension</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">e</span>
+<span class="w">    </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_depend</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">refobjid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">oid</span><span class="p">)</span>
+<span class="w">    </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_proc</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">objid</span><span class="p">)</span>
+<span class="w">    </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ne</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">ne</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">extnamespace</span><span class="p">)</span>
+<span class="w">    </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">np</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">pronamespace</span><span class="p">)</span>
+<span class="k">WHERE</span>
+<span class="w">    </span><span class="k">TRUE</span>
+<span class="w">    </span><span class="c1">-- only extensions</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">deptype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;e&#39;</span>
+<span class="w">    </span><span class="c1">-- not in pg_catalog</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">ne</span><span class="p">.</span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">-- optionnally filter some extensions</span>
+<span class="w">    </span><span class="c1">-- AND e.extname IN (&#39;postgis&#39;, &#39;postgis_raster&#39;)</span>
+<span class="w">    </span><span class="c1">-- optionnally filter by some owner</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">proowner</span><span class="p">::</span><span class="n">regrole</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;postgres&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span>
+<span class="w">        </span><span class="n">extension_name</span><span class="p">,</span>
+<span class="w">        </span><span class="n">function_name</span><span class="p">;</span>
+<span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>qui renvoie une résultat comme ceci (cet exemple est un extrait de quelques lignes) :</p>
+<table>
+<thead>
+<tr>
+<th>extension_schema</th>
+<th>extension_name</th>
+<th>function_schema</th>
+<th>function_name</th>
+<th>function_params</th>
+<th>function_owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public</td>
+<td>fuzzystrmatch</td>
+<td>public</td>
+<td>levenshtein_less_equal</td>
+<td>text, text, integer</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>fuzzystrmatch</td>
+<td>public</td>
+<td>metaphone</td>
+<td>text, integer</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>fuzzystrmatch</td>
+<td>public</td>
+<td>soundex</td>
+<td>text</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>fuzzystrmatch</td>
+<td>public</td>
+<td>text_soundex</td>
+<td>text</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>hstore</td>
+<td>public</td>
+<td>akeys</td>
+<td>hstore</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>hstore</td>
+<td>public</td>
+<td>avals</td>
+<td>hstore</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>hstore</td>
+<td>public</td>
+<td>defined</td>
+<td>hstore, text</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>postgis</td>
+<td>public</td>
+<td>st_buffer</td>
+<td>text, double precision, integer</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>postgis</td>
+<td>public</td>
+<td>st_buffer</td>
+<td>geom geometry, radius double precision, options text</td>
+<td>johndoe</td>
+</tr>
+<tr>
+<td>public</td>
+<td>postgis</td>
+<td>public</td>
+<td>st_buildarea</td>
+<td>geometry</td>
+<td>johndoe</td>
+</tr>
+</tbody>
+</table>
+<p>On peut bien sûr modifier la clause <code>WHERE</code> pour filtrer plus ou moins les fonctions renvoyées.</p>
 <p>Continuer vers <a href="../grant/">Gestion des droits</a></p>
 
   <hr>
@@ -1305,7 +1477,7 @@
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">May 16, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 8, 2023</span>
       
     
   </small>
