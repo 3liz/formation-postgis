@@ -1312,6 +1312,53 @@
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="w"> </span><span class="k">table_name</span>
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+<p>Cette requête renvoie un tableau de la forme :</p>
+<table>
+<thead>
+<tr>
+<th>table_schema</th>
+<th>table_name</th>
+<th>trigger_schema</th>
+<th>trigger_name</th>
+<th>event</th>
+<th>activation</th>
+<th>condition</th>
+<th>definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gestion</td>
+<td>acteur</td>
+<td>gestion</td>
+<td>tr_date_maj</td>
+<td>UPDATE</td>
+<td>BEFORE</td>
+<td></td>
+<td>EXECUTE FUNCTION occtax.maj_date()</td>
+</tr>
+<tr>
+<td>occtax</td>
+<td>organisme</td>
+<td>occtax</td>
+<td>tr_date_maj</td>
+<td>UPDATE</td>
+<td>BEFORE</td>
+<td></td>
+<td>EXECUTE FUNCTION occtax.maj_date()</td>
+</tr>
+<tr>
+<td>taxon</td>
+<td>iso_metadata_reference</td>
+<td>taxon</td>
+<td>update_imr_timestamp</td>
+<td>UPDATE</td>
+<td>BEFORE</td>
+<td></td>
+<td>EXECUTE FUNCTION taxon.update_imr_timestamp_column()</td>
+</tr>
+</tbody>
+</table>
 <h2 id="lister-les-fonctions-installees-par-les-extensions">Lister les fonctions installées par les extensions<a class="headerlink" href="#lister-les-fonctions-installees-par-les-extensions" title="Permanent link">#</a></h2>
 <p>Il est parfois utile de lister les <strong>fonctions des extensions</strong>, par exemple pour :</p>
 <ul>
