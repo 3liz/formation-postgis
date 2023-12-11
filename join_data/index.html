@@ -499,9 +499,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#exemple-1-zonages-et-communes" class="md-nav__link">
+  <a href="#exemple-1-parcelles-et-communes" class="md-nav__link">
     <span class="md-ellipsis">
-      Exemple 1: zonages et communes
+      Exemple 1: parcelles et communes
     </span>
   </a>
   
@@ -828,9 +828,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#exemple-1-zonages-et-communes" class="md-nav__link">
+  <a href="#exemple-1-parcelles-et-communes" class="md-nav__link">
     <span class="md-ellipsis">
-      Exemple 1: zonages et communes
+      Exemple 1: parcelles et communes
     </span>
   </a>
   
@@ -974,23 +974,27 @@
 <p>Les jointures permettent de récupérer des données en relation les unes par rapport aux autres.</p>
 <h2 id="les-jointures-attributaires">Les jointures attributaires<a class="headerlink" href="#les-jointures-attributaires" title="Permanent link">#</a></h2>
 <p>La condition de jointure est faite sur des champs non géométriques. Par exemple une égalité (code, identifiant).</p>
-<h3 id="exemple-1-zonages-et-communes">Exemple 1: zonages et communes<a class="headerlink" href="#exemple-1-zonages-et-communes" title="Permanent link">#</a></h3>
-<p>Récupération des informations de la commune pour chaque zonage</p>
+<h3 id="exemple-1-parcelles-et-communes">Exemple 1: parcelles et communes<a class="headerlink" href="#exemple-1-parcelles-et-communes" title="Permanent link">#</a></h3>
+<p>Récupération des informations de la commune pour un ensemble de parcelles</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
 <span class="normal">4</span>
 <span class="normal">5</span>
 <span class="normal">6</span>
-<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Jointure attributaire: récupération du nom de la commune pour chacun des zonages</span>
-<span class="k">SELECT</span><span class="w"> </span><span class="n">z</span><span class="p">.</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">nom</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">zone_urba</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">z</span>
-<span class="k">JOIN</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z</span><span class="p">.</span><span class="n">insee</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">code_insee</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Jointure attributaire: récupération du nom de la commune pour un ensemble de parcelles</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">nom</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">parcelle</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">p</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">c</span>
+<span class="k">ON</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">commune</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">code_insee</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span>
 <span class="c1">-- IMPORTANT: ne pas oublier le ON cad le critère de jointure,</span>
 <span class="c1">-- sous peine de &quot;produit cartésien&quot; (calcul coûteux de tous les possibles)</span>
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<p>Il est souvent intéressant, pour des données volumineuses, de <strong>créer un index sur le champ de jointure</strong> (par exemple ici sur les champs <code>insee</code> et <code>ccocom</code>.</p>
+<p>Il est souvent intéressant, pour des données volumineuses, de <strong>créer un index sur le champ de jointure</strong> (par exemple ici sur les champs <code>commune</code> et <code>code_insee</code>.</p>
 <h3 id="exemple-2-observations-et-communes">Exemple 2: observations et communes<a class="headerlink" href="#exemple-2-observations-et-communes" title="Permanent link">#</a></h3>
 <ul>
 <li>On crée une table de points qui contiendra des observations</li>
@@ -1924,7 +1928,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 3, 2023</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 11, 2023</span>
   </span>
 
     
