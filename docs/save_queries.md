@@ -104,7 +104,7 @@ WITH source AS (
 )
 -- Sélection des données dans cette table virtuelle "source"
 SELECT
--- on crée un code à partir de l'ordre d'arrive.
+-- on crée un code à partir de l'ordre d'arrivée.
 -- row_number() OVER() permet de récupérer l'identifiant de la ligne dans l'ordre d'arrivée
 -- (un_champ)::text permet de convertir un champ ou un calcul en texte
 -- lpad permet de compléter le chiffre avec des zéro. 1 devient 01

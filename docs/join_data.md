@@ -6,21 +6,23 @@ Les jointures permettent de récupérer des données en relation les unes par ra
 
 La condition de jointure est faite sur des champs non géométriques. Par exemple une égalité (code, identifiant).
 
-### Exemple 1: zonages et communes
+### Exemple 1: parcelles et communes
 
-Récupération des informations de la commune pour chaque zonage
+Récupération des informations de la commune pour un ensemble de parcelles
 
 ```sql
--- Jointure attributaire: récupération du nom de la commune pour chacun des zonages
-SELECT z.*, c.nom
-FROM z_formation.zone_urba AS z
-JOIN z_formation.commune AS c ON z.insee = c.code_insee
+-- Jointure attributaire: récupération du nom de la commune pour un ensemble de parcelles
+SELECT c.nom, p.*
+FROM z_formation.parcelle as p
+JOIN z_formation.commune as c
+ON p.commune = c.code_insee
+LIMIT 100
 -- IMPORTANT: ne pas oublier le ON cad le critère de jointure,
 -- sous peine de "produit cartésien" (calcul coûteux de tous les possibles)
 ;
 ```
 
-Il est souvent intéressant, pour des données volumineuses, de **créer un index sur le champ de jointure** (par exemple ici sur les champs `insee` et `ccocom`.
+Il est souvent intéressant, pour des données volumineuses, de **créer un index sur le champ de jointure** (par exemple ici sur les champs `commune` et `code_insee`.
 
 
 ### Exemple 2: observations et communes
