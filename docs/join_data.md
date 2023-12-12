@@ -474,7 +474,7 @@ LEFT JOIN z_formation.znieff AS z
 -- WHERE p.id IS NOT NULL OR z.id IS NOT NULL
 
 -- on regroupe sur les champs des communes
-GROUP BY c.id_commune, c.code_insee, c.nom
+GROUP BY c.id_commune, c.code_insee, c.nom, c.geom
 
 -- on ordonne par nom
 ORDER BY c.nom
