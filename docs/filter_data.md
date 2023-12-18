@@ -62,7 +62,7 @@ Continuer vers [Regrouper des données: GROUP BY](./group_data.md)
 
 ## Quiz
 <details>
-  <summary>Écrire une requête retournant toutes les communes de Seine-Maritime qui contiennent la chaine de caractères 'saint'</summary>
+  <summary>Écrire une requête retournant toutes les communes de Seine-Maritime qui contiennent la chaîne de caractères 'saint'</summary>
   
   ```sql
   -- Toutes les communes de Seine-Maritime qui contiennent le mot saint
@@ -78,7 +78,7 @@ Continuer vers [Regrouper des données: GROUP BY](./group_data.md)
   <summary>Écrire une requête retournant les nom et centroïde des communes de Seine-Maritime avec une population inférieure ou égale à 50</summary>
   
   ```sql
-  -- Nom et centroïde des communes de Seinte-Maritime avec une population <= 50
+  -- Nom et centroïde des communes de Seine-Maritime avec une population <= 50
   SELECT nom, ST_Centroid(geom) as geom
   FROM z_formation.commune
   WHERE True

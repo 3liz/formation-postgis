@@ -52,7 +52,7 @@ AS $limite$
 DECLARE newjsonb jsonb;
 BEGIN
 
-    -- on transforme l'enregistrement NEW (la ligne modifie ou ajouée) en JSON
+    -- on transforme l'enregistrement NEW (la ligne modifiée ou ajoutée) en JSON
     -- pour connaître la liste des champs
     newjsonb = to_jsonb(NEW);
 
@@ -122,7 +122,7 @@ Il est aussi possible d'utiliser les triggers pour lancer des contrôles sur les
 CREATE OR REPLACE FUNCTION z_formation.validation_geometrie_dans_zone_interet()
 RETURNS TRIGGER  AS $limite$
 BEGIN
-    -- On vérifie l'intersection avec les communes, on renvoit une erreur si souci
+    -- On vérifie l'intersection avec les communes, on renvoie une erreur si souci
     IF NOT ST_Intersects(
         NEW.geom,
         st_collectionextract((SELECT ST_Collect(geom) FROM z_formation.commune), 3)::geometry(multipolygon, 2154)

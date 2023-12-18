@@ -31,7 +31,7 @@ Nous allons utiliser le FDW pour récupérer des données mises à disposition s
 
 Vous pouvez d'abord tester dans QGIS quelles données sont disponibles sur ce serveur en créant une nouvelle connexion WFS avec l'URL `http://ws.carmencarto.fr/WFS/119/fxx_inpn?`
 
-Via QGIS ou un autre client à la base de données, nous pouvons maintenant montrer comment récuperer ces données:
+Via QGIS ou un autre client à la base de données, nous pouvons maintenant montrer comment récupérer ces données:
 
 * Ajouter l'**extension** `ogr_fdw`:
 
@@ -68,7 +68,7 @@ IMPORT FOREIGN SCHEMA ogr_all
 FROM SERVER fdw_ogr_inpn_metropole
 INTO inpn_metropole
 OPTIONS (
-    -- mettre le nom des tables en minuscule et sans caractères bizares
+    -- mettre le nom des tables en minuscule et sans caractères bizarres
     launder_table_names 'true',
     -- mettre le nom des champs en minuscule
     launder_column_names 'true'

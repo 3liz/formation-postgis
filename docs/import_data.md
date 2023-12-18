@@ -18,7 +18,7 @@ Pour importer, on utilise le bouton **Import de couche/fichier** du gestionnaire
 
 Après l'import, on peut cliquer, dans le panneau de gauche, sur le nom de la couche créée et parcourir les données avec l'onglet **Table**. Si on souhaite comparer avec la couche d'origine, il suffit de charger la table, en double-cliquant dessus dans l'arbre (ou via les autres outils de QGIS)
 
-**NB**: si un champ s'appelle déjà id dans la donnée source, et qu'il contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case **Clé primaire** dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier autoincrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune
+**NB**: si un champ s'appelle déjà id dans la donnée source, et qu'il contient des valeurs dupliquées, ou des valeurs textuelles, alors il faut cocher la case **Clé primaire** dans l'outil d'import, puis choisir un nom différent pour que QGIS crée ce nouvel identifiant dans le bon format (entier auto-incrémenté via une séquence, qu'on appelle aussi serial). Par ex: id_commune
 
 ## Réimporter une donnée dans une table existante.
 
@@ -40,11 +40,11 @@ GRANT ALL ON SCHEMA z_formation TO "unepersonne";
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA z_formation TO "unepersonne";
 ```
 
-Ensuite, on souhaite réimporter le SHP, **sans perdre les droits**: on doit d'abord **vider la table** puis **reimporter les données**, sans cocher la case *Remplacer la table de destination si existante*
+Ensuite, on souhaite réimporter le SHP, **sans perdre les droits**: on doit d'abord **vider la table** puis **réimporter les données**, sans cocher la case *Remplacer la table de destination si existante*
 
 ```sql
 -- Vider une table en remettant à zéro la séquence
--- qui permet d'autoincrémenter le champ id (la clé primaire)
+-- qui permet d'auto-incrémenter le champ id (la clé primaire)
 TRUNCATE TABLE z_formation.commune RESTART IDENTITY;
 ```
 

@@ -95,7 +95,7 @@ Forcer le **centroïde à l'intérieur du polygone**. Attention, ce calcul est p
 [Si vous souhaitez mieux comprendre l'algorithme derrière cette fonction](https://gis.stackexchange.com/questions/76498/how-is-st-pointonsurface-calculated)
 
 ```sql
--- Centroides à l'intérieur des communes
+-- Centroïdes à l'intérieur des communes
 -- Attention, c'est plus long à calculer
 SELECT id_commune, code_insee, nom,
 ST_PointOnSurface(geom) AS geom

@@ -340,7 +340,7 @@ WHERE True
 ORDER BY p.id_parcelle
 ```
 
-Il renvoit l'erreur
+Il renvoie l'erreur
 
 ```
 ERREUR:  Error performing intersection: TopologyException: Input geom 1 is invalid: Self-intersection at or near point 492016.26000489673 6938870.663846286 at 492016.26000489673 6938870.663846286
@@ -483,7 +483,7 @@ ORDER BY c.nom
 **Avantages**:
 
 * on peut intégrer facilement dans la clause `WHERE` des conditions sur les champs des tables jointes. Par exemple ne récupérer que les lignes qui sont concernées par un parc ou une znieff, via `WHERE p.id IS NOT NULL OR z.id IS NOT NULL` (commenté ci-dessus pour le désactiver)
-* On peut sortir plusieurs aggrégats pour les tables jointes. Par exemple un décompte des parcs, un décompte des znieff
+* On peut sortir plusieurs agrégats pour les tables jointes. Par exemple un décompte des parcs, un décompte des znieff
 
 ATTENTION:
 

@@ -16,7 +16,7 @@ FROM z_formation.parcelle_havre
 WHERE ST_IsValid(geom) IS FALSE
 ```
 
-qui renvoit 2 erreurs de polygones croisés.
+qui renvoie 2 erreurs de polygones croisés.
 
 | id_parcelle | validite_geom | validite_raison                                      | point_invalide                             |
 |-------------|---------------|------------------------------------------------------|--------------------------------------------|
@@ -41,7 +41,7 @@ FROM z_formation.parcelle_havre
 WHERE NOT ST_isvalid(geom)
 ```
 
-Il faut aussi supprimer l'ensemble des lignes dans la table qui ne correspondent pas au type de la couche importée. Par exemple, pour les polygones, supprimer les objets dont le nombre de noeuds est inférieur à 3.
+Il faut aussi supprimer l'ensemble des lignes dans la table qui ne correspondent pas au type de la couche importée. Par exemple, pour les polygones, supprimer les objets dont le nombre de nœuds est inférieur à 3.
 
 * On les trouve:
 

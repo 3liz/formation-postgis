@@ -14,7 +14,7 @@ La base de données fournit donc un lieu de stockage des données centralisé. O
 
 ## Créer une connexion QGIS à la base de données
 
-Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil "Eléphant" : menu **Couches / Ajouter une couche / Ajouter une couche PostgreSQL** . Configurer les options suivantes:
+Dans QGIS, il faut **créer une nouvelle connexion** à PostgreSQL, via l'outil "Éléphant" : menu **Couches / Ajouter une couche / Ajouter une couche PostgreSQL** . Configurer les options suivantes:
 
 * laisser le champ **Service** vide
 * cocher les cases **Enregistrer** à côté de l'utilisateur et du mot de passe, après avoir **Tester la connexion** (via le bouton dédié)

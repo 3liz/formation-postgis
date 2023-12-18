@@ -1,6 +1,6 @@
 # Tutoriel
 
-Afin de vous entrainer il existe différentes tutoriels en ligne vous permettant de vous exercer.
+Afin de vous entraîner il existe différentes tutoriels en ligne vous permettant de vous exercer.
 
 - https://sql.sh/exercices-sql
 - https://sqlzoo.net/wiki/SQL_Tutorial

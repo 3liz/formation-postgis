@@ -50,7 +50,7 @@ GRANT SELECT ON ALL TABLES IN SCHEMA nouveau_schema TO "invite";
 GRANT INSERT OR UPDATE ON TABLE nouveau_schema.observation TO "invite";
 
 -- On peut aussi enlever des droits avec REVOKE.
--- Ex: on enlève la possibilité de faire des suppresions
+-- Ex: on enlève la possibilité de faire des suppressions
 REVOKE DELETE ON TABLE nouveau_schema.observation FROM "invite";
 
 -- On enlève tous les privilèges sur les tables du schéma public

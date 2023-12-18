@@ -1,6 +1,6 @@
 # Vérifier la topologie
 
-## Déplacer les noeuds sur une grille
+## Déplacer les nœuds sur une grille
 
 Avant de vérifier la topologie, il faut au préalable avoir des géométries valides (cf. chapitre précédent).
 
@@ -130,7 +130,7 @@ Une fois les parcelles sélectionnées, on peut utiliser certains outils de QGIS
 
 ## Accrocher les géométries sur d'autres géométries
 
-Dans PostGIS, on peut utiliser la fonction **ST_Snap** dans une requête SQL pour déplacer les noeuds d'une géométrie et les coller sur ceux d'une autre.
+Dans PostGIS, on peut utiliser la fonction **ST_Snap** dans une requête SQL pour déplacer les nœuds d'une géométrie et les coller sur ceux d'une autre.
 
 Par exemple, coller les géométries choisies (via identifiants dans le WHERE) de la table de zonage sur les parcelles choisies (via identifiants dans le WHERE):
 
@@ -160,7 +160,7 @@ FROM a
 WHERE pz.id_zone_urba = a.id_zone_urba
 ```
 
-**Attention:** Cette fonction ne sait coller qu'**aux noeuds** de la table de référence, pas aux segments. Il serait néanmoins possible de créer automatiquement les noeuds situés sur la projection du noeud à déplacer sur la géométrie de référence.
+**Attention:** Cette fonction ne sait coller qu'**aux nœuds** de la table de référence, pas aux segments. Il serait néanmoins possible de créer automatiquement les nœuds situés sur la projection du nœud à déplacer sur la géométrie de référence.
 
 Dans la pratique, il est très souvent fastidieux de corriger les erreurs de topologie d'une couche. Les outils automatiques ( Vérifier les géométries de QGIS ou outil v.clean de Grass) ne permettent pas toujours de bien voir ce qui a été modifié.
 

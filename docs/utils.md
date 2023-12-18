@@ -151,7 +151,7 @@ ORDER BY f_table_schema, f_table_name
 
 ### Connaître la taille des bases de données
 
-On peut lancer la requête suivante, qui renvoit les bases de données ordonnées par taille descendante.
+On peut lancer la requête suivante, qui renvoie les bases de données ordonnées par taille descendante.
 
 ```sql
 SELECT
@@ -223,7 +223,7 @@ SELECT * FROM get_table_info() ORDER BY total_size DESC;
 
 ### Calculer la taille des schémas
 
-On crée une simple fonction qui renvoit la somme des tailles des tables d'un schéma
+On crée une simple fonction qui renvoie la somme des tailles des tables d'un schéma
 
 ```sql
 -- Fonction pour calculer la taille d'un schéma
