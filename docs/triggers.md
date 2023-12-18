@@ -127,7 +127,7 @@ BEGIN
         NEW.geom,
         st_collectionextract((SELECT ST_Collect(geom) FROM z_formation.commune), 3)::geometry(multipolygon, 2154)
     ) THEN
-        -- On renvoit une erreur
+        -- On renvoie une erreur
         RAISE EXCEPTION 'La géométrie doit se trouver dans les communes';
     END IF;
 
