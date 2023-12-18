@@ -8,6 +8,10 @@ Les triggers peuvent par exemple être utilisés
 * pour contrôler certaines données avant enregistrement
 * pour lancer des requêtes après certaines actions (historiques de modifications)
 
+Des **fonctions trigger** sont associées aux triggers. Elles peuvent être écrites en **PL/pgSQL** ou d'autres languages (p. ex. PL/Python).
+Une fonction trigger doit renvoyer soit NULL soit une valeur record ayant exactement la structure de la table pour laquelle le trigger a été lancé.
+Lire les derniers paragraphes [ici pour en savoir plus](https://docs.postgresql.fr/16/plpgsql-trigger.html#PLPGSQL-DML-TRIGGER).
+
 ## Calcul automatique de certains champs
 
 On crée une table `borne_incendie` pour pouvoir tester cette fonctionnalité:
