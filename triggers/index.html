@@ -862,7 +862,7 @@ Lire les derniers paragraphes <a href="https://docs.postgresql.fr/16/plpgsql-tri
 <span class="k">DECLARE</span><span class="w"> </span><span class="n">newjsonb</span><span class="w"> </span><span class="n">jsonb</span><span class="p">;</span>
 <span class="k">BEGIN</span>
 
-<span class="w">    </span><span class="c1">-- on transforme l&#39;enregistrement NEW (la ligne modifie ou ajouée) en JSON</span>
+<span class="w">    </span><span class="c1">-- on transforme l&#39;enregistrement NEW (la ligne modifiée ou ajoutée) en JSON</span>
 <span class="w">    </span><span class="c1">-- pour connaître la liste des champs</span>
 <span class="w">    </span><span class="n">newjsonb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">to_jsonb</span><span class="p">(</span><span class="k">NEW</span><span class="p">);</span>
 
@@ -952,7 +952,7 @@ Lire les derniers paragraphes <a href="https://docs.postgresql.fr/16/plpgsql-tri
 <span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">validation_geometrie_dans_zone_interet</span><span class="p">()</span>
 <span class="k">RETURNS</span><span class="w"> </span><span class="k">TRIGGER</span><span class="w">  </span><span class="k">AS</span><span class="w"> </span><span class="err">$</span><span class="n">limite$</span>
 <span class="k">BEGIN</span>
-<span class="w">    </span><span class="c1">-- On vérifie l&#39;intersection avec les communes, on renvoit une erreur si souci</span>
+<span class="w">    </span><span class="c1">-- On vérifie l&#39;intersection avec les communes, on renvoie une erreur si souci</span>
 <span class="w">    </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span>
 <span class="w">        </span><span class="k">NEW</span><span class="p">.</span><span class="n">geom</span><span class="p">,</span>
 <span class="w">        </span><span class="n">st_collectionextract</span><span class="p">((</span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">commune</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">multipolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span>

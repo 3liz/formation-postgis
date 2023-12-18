@@ -569,9 +569,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deplacer-les-noeuds-sur-une-grille" class="md-nav__link">
+  <a href="#deplacer-les-nuds-sur-une-grille" class="md-nav__link">
     <span class="md-ellipsis">
-      Déplacer les noeuds sur une grille
+      Déplacer les nœuds sur une grille
     </span>
   </a>
   
@@ -710,9 +710,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deplacer-les-noeuds-sur-une-grille" class="md-nav__link">
+  <a href="#deplacer-les-nuds-sur-une-grille" class="md-nav__link">
     <span class="md-ellipsis">
-      Déplacer les noeuds sur une grille
+      Déplacer les nœuds sur une grille
     </span>
   </a>
   
@@ -755,7 +755,7 @@
 
 
 <h1 id="verifier-la-topologie">Vérifier la topologie<a class="headerlink" href="#verifier-la-topologie" title="Permanent link">#</a></h1>
-<h2 id="deplacer-les-noeuds-sur-une-grille">Déplacer les noeuds sur une grille<a class="headerlink" href="#deplacer-les-noeuds-sur-une-grille" title="Permanent link">#</a></h2>
+<h2 id="deplacer-les-nuds-sur-une-grille">Déplacer les nœuds sur une grille<a class="headerlink" href="#deplacer-les-nuds-sur-une-grille" title="Permanent link">#</a></h2>
 <p>Avant de vérifier la topologie, il faut au préalable avoir des géométries valides (cf. chapitre précédent).</p>
 <p>Certaines micro-erreurs de topologie peuvent peuvent être corrigées en réalisant une simplification des données à l'aide d'une grille, par exemple pour corriger des soucis d'arrondis. Pour cela, PostGIS a une fonction <strong>ST_SnapToGrid</strong>.</p>
 <p>On peut utiliser conjointement <strong>ST_Simplify</strong> et <strong>ST_SnapToGrid</strong> pour effectuer une première correction sur les données. Attention, ces fonctions modifient la donnée. A vous de choisir la bonne tolérance, par exemple 5 cm, qui dépend de votre donnée et de votre cas d'utilisation.</p>
@@ -923,7 +923,7 @@
 <li>plugin <strong>Go 2 next feature</strong> pour facilement zoomer d'objets en objets</li>
 </ul>
 <h2 id="accrocher-les-geometries-sur-dautres-geometries">Accrocher les géométries sur d'autres géométries<a class="headerlink" href="#accrocher-les-geometries-sur-dautres-geometries" title="Permanent link">#</a></h2>
-<p>Dans PostGIS, on peut utiliser la fonction <strong>ST_Snap</strong> dans une requête SQL pour déplacer les noeuds d'une géométrie et les coller sur ceux d'une autre.</p>
+<p>Dans PostGIS, on peut utiliser la fonction <strong>ST_Snap</strong> dans une requête SQL pour déplacer les nœuds d'une géométrie et les coller sur ceux d'une autre.</p>
 <p>Par exemple, coller les géométries choisies (via identifiants dans le WHERE) de la table de zonage sur les parcelles choisies (via identifiants dans le WHERE):</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -971,7 +971,7 @@
 <span class="k">FROM</span><span class="w"> </span><span class="n">a</span>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">pz</span><span class="p">.</span><span class="n">id_zone_urba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">id_zone_urba</span>
 </code></pre></div></td></tr></table></div>
-<p><strong>Attention:</strong> Cette fonction ne sait coller qu'<strong>aux noeuds</strong> de la table de référence, pas aux segments. Il serait néanmoins possible de créer automatiquement les noeuds situés sur la projection du noeud à déplacer sur la géométrie de référence.</p>
+<p><strong>Attention:</strong> Cette fonction ne sait coller qu'<strong>aux nœuds</strong> de la table de référence, pas aux segments. Il serait néanmoins possible de créer automatiquement les nœuds situés sur la projection du nœud à déplacer sur la géométrie de référence.</p>
 <p>Dans la pratique, il est très souvent fastidieux de corriger les erreurs de topologie d'une couche. Les outils automatiques ( Vérifier les géométries de QGIS ou outil v.clean de Grass) ne permettent pas toujours de bien voir ce qui a été modifié.</p>
 <p>Au contraire, une modification manuelle est plus précise, mais prend beaucoup de temps.</p>
 <p>Le Ministère du Développement Durable a mis en ligne un document intéressant sur les outils disponibles dans QGIS, OpenJump et PostgreSQL pour valider et corriger les géométries: <a href="http://www.geoinformations.developpement-durable.gouv.fr/verification-et-corrections-des-geometries-a3522.html">http://www.geoinformations.developpement-durable.gouv.fr/verification-et-corrections-des-geometries-a3522.html</a></p>
@@ -995,7 +995,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 6, 2021</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 18, 2023</span>
   </span>
 
     
