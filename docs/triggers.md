@@ -217,3 +217,47 @@ NB:
 
 
 Continuer vers [Correction des géométries invalides](./validate_geometries.md)
+
+## Quiz
+
+<details>
+  <summary>Créer une table avec un champ id de type 'serial' et une géométrie de type polygone en 2154.
+  Puis créer un trigger s'assurant que les géométries aient au minimum **4** points dessinés.
+  </summary>
+  
+  ```sql
+    -- Table: z_formation.polygone_mini_quatre_points
+    -- DROP TABLE IF EXISTS z_formation.polygone_mini_quatre_points;
+    CREATE TABLE IF NOT EXISTS z_formation.polygone_mini_quatre_points
+    (
+        id serial NOT NULL PRIMARY KEY,
+        geom geometry(Polygon,2154)
+    )
+
+    -- FUNCTION: z_formation.contrainte_mini_quatre_points()
+    -- DROP FUNCTION IF EXISTS z_formation.contrainte_mini_quatre_points();
+    CREATE OR REPLACE FUNCTION z_formation.contrainte_mini_quatre_points()
+        RETURNS trigger AS $limite$
+    BEGIN
+        -- On vérifie que le polygone a au moins 4 points dessinés
+        -- => soit 5 points en comptant le dernier point qui ferme le polygone !
+        IF ST_NPoints(NEW.geom) < 5
+        THEN
+            -- On renvoie une erreur
+            RAISE EXCEPTION 'Le polygone doit avoir au moins 4 points dessinés';
+        END IF;
+
+        RETURN NEW;
+    END;
+    $limite$
+    LANGUAGE plpgsql;
+
+    -- Trigger: trg_contrainte_mini_quatre_points
+    -- DROP TRIGGER IF EXISTS trg_contrainte_mini_quatre_points ON z_formation.polygone_mini_quatre_points;
+    CREATE OR REPLACE TRIGGER trg_contrainte_mini_quatre_points
+        BEFORE INSERT OR UPDATE 
+        ON z_formation.polygone_mini_quatre_points
+        FOR EACH ROW
+        EXECUTE FUNCTION z_formation.contrainte_mini_quatre_points();
+  ```
+</details>
