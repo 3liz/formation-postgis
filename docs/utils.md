@@ -449,4 +449,116 @@ qui renvoie une résultat comme ceci (cet exemple est un extrait de quelques lig
 
 On peut bien sûr modifier la clause `WHERE` pour filtrer plus ou moins les fonctions renvoyées.
 
+
+## Lister les vues contenant `row_number() over()` non typé en `integer`
+
+Si on utilise des vues dans QGIS qui créent un identifiant unique via le numéro de ligne, il est important :
+
+* que le type de cet identifiant soit entier `integer` et pas entier long `bigint`
+* avoir une clause `ORDER BY` pour essayer au maximum que QGIS récupère les objets toujours dans le même ordre.
+
+Quand une requête d'une vue utilise `row_number() OVER()` , depuis des versions récentes de PostgreSQL, cela renvoie un entier long `bigint` ce qui n'est pas conseillé.
+
+On peut trouver ces vues ou vues matérialisées via cette requête :
+
+```sql
+-- vues
+SELECT
+    concat('"', schemaname, '"."', viewname, '"') AS row_number_view
+FROM pg_views
+WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
+;
+ORDER BY schemaname, viewname
+
+-- vues matérialisées
+SELECT
+    concat('"', schemaname, '"."', matviewname, '"') AS row_number_view
+FROM pg_views
+WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
+;
+ORDER BY schemaname, matviewname
+```
+
+## Lister les tables qui ont une clé primaire non entière
+
+Pour éviter des soucis de performances sur les gros jeux de données, il faut éviter d'avoir des tables avec des clés primaires sur des champs qui ne sont pas de type entier `integer`.
+
+En effet, dans QGIS, l'ouverture de ce type de table avec une clé primaire de type `text`, ou même `bigint`, cela entraîne la création et le stockage en mémoire d'une table de correspondance entre chaque objet de la couche et le numéro d'arrivée de la ligne. Sur les tables volumineuses, cela peut être sensible.
+
+Pour trouver toutes les tables, on peut faire cette requête:
+
+```sql
+SELECT
+    nspname AS table_schema, relname AS table_name,
+    a.attname AS column_name,
+    format_type(a.atttypid, a.atttypmod) AS column_type
+FROM pg_index AS i
+JOIN pg_class AS c
+    ON i.indrelid = c.oid
+JOIN pg_attribute AS a
+    ON a.attrelid = c.oid
+    AND a.attnum = any(i.indkey)
+JOIN pg_namespace AS n
+    ON n.oid = c.relnamespace
+WHERE indisprimary AND nspname NOT LIKE 'pg_%' AND nspname NOT LIKE 'lizmap_%'
+AND format_type(a.atttypid, a.atttypmod) != 'integer';
+```
+
+## Trouver les tables spatiales avec une géométrie non typée
+
+Il est important lorsqu'on crée des champs de type géométrie `geometry` de préciser le type des objets (point, ligne, polygone, etc.) et la projection.
+
+On doit donc créer les champs comme ceci :
+
+```sql
+CREATE TABLE test (
+    id serial primary key,
+    geom geometry(Point, 2154)
+);
+```
+
+et non comme ceci :
+
+```sql
+CREATE TABLE test (
+    id serial primary key,
+    geom geometry
+);
+```
+
+C'est donc important lorsqu'on crée des tables à partir de requêtes SQL de toujours bien typer les géométries. Par exemple :
+
+```sql
+CREATE TABLE test AS
+SELECT id,
+ST_Centroid(geom)::geometry(Point, 2154) AS geom
+-- ne pas faire :
+-- ST_Centroid(geom) AS geom
+FROM autre_table
+```
+
+On peut trouver toutes les tables qui auraient été créée avec des champ de géométrie non typés via la requête suivante :
+
+```sql
+SELECT *
+FROM geometry_columns
+WHERE srid = 0 OR lower(type) = 'geometry'
+;
+```
+
+Il faut corriger ces vues ou tables.
+
+## Trouver les objets avec des géométries trop complexes
+
+```sql
+SELECT count(*)
+FROM ma_table
+WHERE ST_NPoints(geom) > 10000
+;
+```
+
+Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opération d'intersection avec les objets d'autres couches via `ST_Intersects`.
+
+On peut corriger cela via la fonction `ST_Subdivide`. Voir [Documentation de ST_Subdivide](https://postgis.net/docs/ST_Subdivide.html)
+
 Continuer vers [Gestion des droits](./grant.md)
