@@ -667,15 +667,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tester les différences entre 2 tables de même structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#lister-les-triggers-appliques-sur-les-tables" class="md-nav__link">
     <span class="md-ellipsis">
       Lister les triggers appliqués sur les tables
@@ -724,6 +715,15 @@
   <a href="#trouver-les-objets-avec-des-geometries-trop-complexes" class="md-nav__link">
     <span class="md-ellipsis">
       Trouver les objets avec des géométries trop complexes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tester les différences entre 2 tables de même structure
     </span>
   </a>
   
@@ -902,15 +902,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tester les différences entre 2 tables de même structure
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#lister-les-triggers-appliques-sur-les-tables" class="md-nav__link">
     <span class="md-ellipsis">
       Lister les triggers appliqués sur les tables
@@ -959,6 +950,15 @@
   <a href="#trouver-les-objets-avec-des-geometries-trop-complexes" class="md-nav__link">
     <span class="md-ellipsis">
       Trouver les objets avec des géométries trop complexes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tester-les-differences-entre-2-tables-de-meme-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tester les différences entre 2 tables de même structure
     </span>
   </a>
   
@@ -1327,196 +1327,6 @@
 <span class="k">WHERE</span><span class="w"> </span><span class="k">schema_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
 <span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">pg_schema_size</span><span class="p">(</span><span class="k">schema_name</span><span class="p">)</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<h2 id="tester-les-differences-entre-2-tables-de-meme-structure">Tester les différences entre 2 tables de même structure<a class="headerlink" href="#tester-les-differences-entre-2-tables-de-meme-structure" title="Permanent link">#</a></h2>
-<p>Nous souhaitons <strong>comparer deux tables de la base</strong>, par exemple une table de communes en 2021 <code>communes_2021</code> et une table de communes en 2022 <code>communes_2022</code>.</p>
-<p>On peut utiliser une fonction qui utilise les possibilités du format hstore pour comparer les données entre elles.</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span>
-<span class="normal">61</span>
-<span class="normal">62</span>
-<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- On ajoute le support du format hstore</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">hstore</span><span class="p">;</span>
-
-<span class="c1">-- On crée la fonction de comparaison</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">[]);</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span>
-<span class="w">    </span><span class="n">p_schema_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">p_table_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">p_schema_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">p_table_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">p_common_identifier_field</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">p_excluded_fields</span><span class="w"> </span><span class="nb">text</span><span class="p">[]</span>
-
-<span class="p">)</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">TABLE</span><span class="p">(</span>
-<span class="w">    </span><span class="n">uid</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
-<span class="w">    </span><span class="n">table_a_values</span><span class="w"> </span><span class="n">hstore</span><span class="p">,</span>
-<span class="w">    </span><span class="n">table_b_values</span><span class="w"> </span><span class="n">hstore</span>
-<span class="p">)</span>
-<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span>
-<span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="err">$</span><span class="n">_$</span>
-<span class="k">DECLARE</span>
-<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="nb">text</span><span class="p">;</span>
-<span class="k">BEGIN</span>
-
-<span class="w">    </span><span class="c1">-- Compare data</span>
-<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">    SELECT</span>
-<span class="s1">        coalesce(ta.&quot;%1$s&quot;, tb.&quot;%1$s&quot;) AS &quot;%1$s&quot;,</span>
-<span class="s1">        CASE</span>
-<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table A&#39;&#39;</span>
-<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table B&#39;&#39;</span>
-<span class="s1">            ELSE &#39;&#39;table A != table B&#39;&#39;</span>
-<span class="s1">        END AS status,</span>
-<span class="s1">        CASE</span>
-<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN NULL</span>
-<span class="s1">            ELSE (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(tb) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
-<span class="s1">        END AS values_in_table_a,</span>
-<span class="s1">        CASE</span>
-<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN NULL</span>
-<span class="s1">            ELSE (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(ta) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
-<span class="s1">        END AS values_in_table_b</span>
-<span class="s1">    FROM &quot;%2$s&quot;.&quot;%3$s&quot; AS ta</span>
-<span class="s1">    FULL JOIN &quot;%4$s&quot;.&quot;%5$s&quot; AS tb</span>
-<span class="s1">        ON ta.&quot;%1$s&quot; = tb.&quot;%1$s&quot;</span>
-<span class="s1">    WHERE</span>
-<span class="s1">        (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) != (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
-<span class="s1">        OR (ta.&quot;%1$s&quot; IS NULL)</span>
-<span class="s1">        OR (tb.&quot;%1$s&quot; IS NULL)</span>
-<span class="s1">    &#39;</span><span class="p">;</span>
-
-<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">QUERY</span>
-<span class="w">    </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">format</span><span class="p">(</span><span class="n">sqltemplate</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_common_identifier_field</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_schema_name_a</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_table_name_a</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_schema_name_b</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_table_name_b</span><span class="p">,</span>
-<span class="w">        </span><span class="n">p_excluded_fields</span>
-<span class="w">    </span><span class="p">);</span>
-
-<span class="k">END</span><span class="p">;</span>
-<span class="err">$</span><span class="n">_$</span><span class="p">;</span>
-</code></pre></div></td></tr></table></div>
-<p>Cette fonction attend en paramètres</p>
-<ul>
-<li>le schéma de la <strong>table A</strong>. Ex: <code>referentiels</code></li>
-<li>le nom de la <strong>table A</strong>. Ex: <code>communes_2021</code></li>
-<li>le schéma de la <strong>table B</strong>. Ex: <code>referentiels</code></li>
-<li>le nom de la <strong>table B</strong>. Ex: <code>communes_2022</code></li>
-<li>le nom du champ qui identifie de manière unique la donnée. Ce n'est pas forcément la clé primaire. Ex <code>code_commune</code></li>
-<li>un tableau de champs pour lesquels ne pas vérifier les différences. Ex: <code>array['region', 'departement']</code></li>
-</ul>
-<p>La requête à lancer est la suivantes
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span>
-<span class="normal">6</span>
-<span class="normal">7</span>
-<span class="normal">8</span>
-<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="ss">&quot;uid&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;status&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_a_values&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_b_values&quot;</span>
-<span class="k">FROM</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span>
-<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2021&#39;</span><span class="p">,</span>
-<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2022&#39;</span><span class="p">,</span>
-<span class="w">    </span><span class="s1">&#39;code_commune&#39;</span><span class="p">,</span>
-<span class="w">    </span><span class="nb">array</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;departement&#39;</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">uid</span>
-<span class="p">;</span>
-</code></pre></div></td></tr></table></div></p>
-<p>Exemple de données renvoyées:</p>
-<table>
-<thead>
-<tr>
-<th>uid</th>
-<th>status</th>
-<th>table_a_values</th>
-<th>table_b_values</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>12345</td>
-<td>not in table A</td>
-<td>NULL</td>
-<td>"annee_ref"=&gt;"2022", "nom_commune"=&gt;"Nouvelle commune", "population"=&gt;"5723"</td>
-</tr>
-<tr>
-<td>97612</td>
-<td>not in table B</td>
-<td>"annee_ref"=&gt;"2021", "nom_commune"=&gt;"Ancienne commune", "population"=&gt;"840"</td>
-<td>NULL</td>
-</tr>
-<tr>
-<td>97602</td>
-<td>table A != table B</td>
-<td>"annee_ref"=&gt;"2021", "population"=&gt;"1245"</td>
-<td>"annee_ref"=&gt;"2022", "population"=&gt;"1322"</td>
-</tr>
-</tbody>
-</table>
-<p>Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais la fonction teste aussi les différences de géométries.</p>
-<p><em>Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.</em></p>
 <h2 id="lister-les-triggers-appliques-sur-les-tables">Lister les triggers appliqués sur les tables<a class="headerlink" href="#lister-les-triggers-appliques-sur-les-tables" title="Permanent link">#</a></h2>
 <p>On peut utiliser la requête suivante pour lister l'ensemble des triggers activés sur les tables</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
@@ -1756,7 +1566,7 @@ par les extensions installées dans la base :</p>
 <li>que le type de cet identifiant soit entier <code>integer</code> et pas entier long <code>bigint</code></li>
 <li>avoir une clause <code>ORDER BY</code> pour essayer au maximum que QGIS récupère les objets toujours dans le même ordre.</li>
 </ul>
-<p>Quand une requête d'une vue utilise <code>row_number() OVER()</code> , depuis des versions récentes de PostgreSQL, cela renvoie un entier long <code>bigint</code> ce qui n'est pas conseillé.</p>
+<p>Quand une requête d'une vue utilise <code>row_number() OVER()</code>, depuis des versions récentes de PostgreSQL, cela renvoie un entier long <code>bigint</code> ce qui n'est pas conseillé.</p>
 <p>On peut trouver ces vues ou vues matérialisées via cette requête :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
@@ -1791,7 +1601,7 @@ par les extensions installées dans la base :</p>
 <h2 id="lister-les-tables-qui-ont-une-cle-primaire-non-entiere">Lister les tables qui ont une clé primaire non entière<a class="headerlink" href="#lister-les-tables-qui-ont-une-cle-primaire-non-entiere" title="Permanent link">#</a></h2>
 <p>Pour éviter des soucis de performances sur les gros jeux de données, il faut éviter d'avoir des tables avec des clés primaires sur des champs qui ne sont pas de type entier <code>integer</code>.</p>
 <p>En effet, dans QGIS, l'ouverture de ce type de table avec une clé primaire de type <code>text</code>, ou même <code>bigint</code>, cela entraîne la création et le stockage en mémoire d'une table de correspondance entre chaque objet de la couche et le numéro d'arrivée de la ligne. Sur les tables volumineuses, cela peut être sensible.</p>
-<p>Pour trouver toutes les tables, on peut faire cette requête:</p>
+<p>Pour trouver toutes les tables, on peut faire cette requête :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -1820,6 +1630,43 @@ par les extensions installées dans la base :</p>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">indisprimary</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;pg_%&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;lizmap_%&#39;</span>
 <span class="k">AND</span><span class="w"> </span><span class="n">format_type</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">atttypid</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">atttypmod</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;integer&#39;</span><span class="p">;</span>
 </code></pre></div></td></tr></table></div>
+<p>Ce qui donne par exemple :</p>
+<table>
+<thead>
+<tr>
+<th>table_schema</th>
+<th>table_name</th>
+<th>column_name</th>
+<th>column_type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>un_schema</td>
+<td>une_table_a</td>
+<td>id</td>
+<td>bigint</td>
+</tr>
+<tr>
+<td>un_schema</td>
+<td>une_table_b</td>
+<td>id</td>
+<td>bigint</td>
+</tr>
+<tr>
+<td>un_autre_schema</td>
+<td>autre_table_c</td>
+<td>id</td>
+<td>character varying</td>
+</tr>
+<tr>
+<td>un_autre_schema</td>
+<td>autre_table_d</td>
+<td>id</td>
+<td>character varying</td>
+</tr>
+</tbody>
+</table>
 <h2 id="trouver-les-tables-spatiales-avec-une-geometrie-non-typee">Trouver les tables spatiales avec une géométrie non typée<a class="headerlink" href="#trouver-les-tables-spatiales-avec-une-geometrie-non-typee" title="Permanent link">#</a></h2>
 <p>Il est important lorsqu'on crée des champs de type géométrie <code>geometry</code> de préciser le type des objets (point, ligne, polygone, etc.) et la projection.</p>
 <p>On doit donc créer les champs comme ceci :</p>
@@ -1853,7 +1700,7 @@ par les extensions installées dans la base :</p>
 <span class="c1">-- ST_Centroid(geom) AS geom</span>
 <span class="k">FROM</span><span class="w"> </span><span class="n">autre_table</span>
 </code></pre></div></td></tr></table></div>
-<p>On peut trouver toutes les tables qui auraient été créée avec des champ de géométrie non typés via la requête suivante :</p>
+<p>On peut trouver toutes les tables qui auraient été créées avec des champs de géométrie non typés via la requête suivante :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -1872,8 +1719,198 @@ par les extensions installées dans la base :</p>
 <span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span>
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<p>Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opération d'intersection avec les objets d'autres couches via <code>ST_Intersects</code>.</p>
+<p>Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opérations d'intersection avec les objets d'autres couches via <code>ST_Intersects</code>.</p>
 <p>On peut corriger cela via la fonction <code>ST_Subdivide</code>. Voir <a href="https://postgis.net/docs/ST_Subdivide.html">Documentation de ST_Subdivide</a></p>
+<h2 id="tester-les-differences-entre-2-tables-de-meme-structure">Tester les différences entre 2 tables de même structure<a class="headerlink" href="#tester-les-differences-entre-2-tables-de-meme-structure" title="Permanent link">#</a></h2>
+<p>Nous souhaitons <strong>comparer deux tables de la base</strong>, par exemple une table de communes en 2021 <code>communes_2021</code> et une table de communes en 2022 <code>communes_2022</code>.</p>
+<p>On peut utiliser une fonction qui utilise les possibilités du format hstore pour comparer les données entre elles.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- On ajoute le support du format hstore</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">hstore</span><span class="p">;</span>
+
+<span class="c1">-- On crée la fonction de comparaison</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">,</span><span class="nb">text</span><span class="p">[]);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="k">FUNCTION</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span>
+<span class="w">    </span><span class="n">p_schema_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p_table_name_a</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p_schema_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p_table_name_b</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p_common_identifier_field</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">p_excluded_fields</span><span class="w"> </span><span class="nb">text</span><span class="p">[]</span>
+
+<span class="p">)</span><span class="w"> </span><span class="k">RETURNS</span><span class="w"> </span><span class="k">TABLE</span><span class="p">(</span>
+<span class="w">    </span><span class="n">uid</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">text</span><span class="p">,</span>
+<span class="w">    </span><span class="n">table_a_values</span><span class="w"> </span><span class="n">hstore</span><span class="p">,</span>
+<span class="w">    </span><span class="n">table_b_values</span><span class="w"> </span><span class="n">hstore</span>
+<span class="p">)</span>
+<span class="w">    </span><span class="k">LANGUAGE</span><span class="w"> </span><span class="n">plpgsql</span>
+<span class="w">    </span><span class="k">AS</span><span class="w"> </span><span class="err">$</span><span class="n">_$</span>
+<span class="k">DECLARE</span>
+<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="nb">text</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+
+<span class="w">    </span><span class="c1">-- Compare data</span>
+<span class="w">    </span><span class="n">sqltemplate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">    SELECT</span>
+<span class="s1">        coalesce(ta.&quot;%1$s&quot;, tb.&quot;%1$s&quot;) AS &quot;%1$s&quot;,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table A&#39;&#39;</span>
+<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN &#39;&#39;not in table B&#39;&#39;</span>
+<span class="s1">            ELSE &#39;&#39;table A != table B&#39;&#39;</span>
+<span class="s1">        END AS status,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN ta.&quot;%1$s&quot; IS NULL THEN NULL</span>
+<span class="s1">            ELSE (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(tb) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        END AS values_in_table_a,</span>
+<span class="s1">        CASE</span>
+<span class="s1">            WHEN tb.&quot;%1$s&quot; IS NULL THEN NULL</span>
+<span class="s1">            ELSE (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[]) - (hstore(ta) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        END AS values_in_table_b</span>
+<span class="s1">    FROM &quot;%2$s&quot;.&quot;%3$s&quot; AS ta</span>
+<span class="s1">    FULL JOIN &quot;%4$s&quot;.&quot;%5$s&quot; AS tb</span>
+<span class="s1">        ON ta.&quot;%1$s&quot; = tb.&quot;%1$s&quot;</span>
+<span class="s1">    WHERE</span>
+<span class="s1">        (hstore(ta.*) - &#39;&#39;%6$s&#39;&#39;::text[]) != (hstore(tb.*) - &#39;&#39;%6$s&#39;&#39;::text[])</span>
+<span class="s1">        OR (ta.&quot;%1$s&quot; IS NULL)</span>
+<span class="s1">        OR (tb.&quot;%1$s&quot; IS NULL)</span>
+<span class="s1">    &#39;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">QUERY</span>
+<span class="w">    </span><span class="k">EXECUTE</span><span class="w"> </span><span class="n">format</span><span class="p">(</span><span class="n">sqltemplate</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_common_identifier_field</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_schema_name_a</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_table_name_a</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_schema_name_b</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_table_name_b</span><span class="p">,</span>
+<span class="w">        </span><span class="n">p_excluded_fields</span>
+<span class="w">    </span><span class="p">);</span>
+
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$</span><span class="n">_$</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>Cette fonction attend en paramètres</p>
+<ul>
+<li>le schéma de la <strong>table A</strong>. Ex: <code>referentiels</code></li>
+<li>le nom de la <strong>table A</strong>. Ex: <code>communes_2021</code></li>
+<li>le schéma de la <strong>table B</strong>. Ex: <code>referentiels</code></li>
+<li>le nom de la <strong>table B</strong>. Ex: <code>communes_2022</code></li>
+<li>le nom du champ qui identifie de manière unique la donnée. Ce n'est pas forcément la clé primaire. Ex <code>code_commune</code></li>
+<li>un tableau de champs pour lesquels ne pas vérifier les différences. Ex: <code>array['region', 'departement']</code></li>
+</ul>
+<p>La requête à lancer est la suivantes
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="ss">&quot;uid&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;status&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_a_values&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;table_b_values&quot;</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">compare_tables</span><span class="p">(</span>
+<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2021&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;referentiels&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;commune_2022&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">&#39;code_commune&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">array</span><span class="p">[</span><span class="s1">&#39;region&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;departement&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">uid</span>
+<span class="p">;</span>
+</code></pre></div></td></tr></table></div></p>
+<p>Exemple de données renvoyées:</p>
+<table>
+<thead>
+<tr>
+<th>uid</th>
+<th>status</th>
+<th>table_a_values</th>
+<th>table_b_values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12345</td>
+<td>not in table A</td>
+<td>NULL</td>
+<td>"annee_ref"=&gt;"2022", "nom_commune"=&gt;"Nouvelle commune", "population"=&gt;"5723"</td>
+</tr>
+<tr>
+<td>97612</td>
+<td>not in table B</td>
+<td>"annee_ref"=&gt;"2021", "nom_commune"=&gt;"Ancienne commune", "population"=&gt;"840"</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>97602</td>
+<td>table A != table B</td>
+<td>"annee_ref"=&gt;"2021", "population"=&gt;"1245"</td>
+<td>"annee_ref"=&gt;"2022", "population"=&gt;"1322"</td>
+</tr>
+</tbody>
+</table>
+<p>Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais la fonction teste aussi les différences de géométries.</p>
+<p><em>Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.</em></p>
 <p>Continuer vers <a href="../grant/">Gestion des droits</a></p>
 
 
