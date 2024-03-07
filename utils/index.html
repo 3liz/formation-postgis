@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.13">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.50c56a3b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -693,6 +693,42 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#lister-les-vues-contenant-row_number-over-non-type-en-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister les vues contenant row_number() over() non typé en integer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-les-tables-qui-ont-une-cle-primaire-non-entiere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister les tables qui ont une clé primaire non entière
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-les-tables-spatiales-avec-une-geometrie-non-typee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trouver les tables spatiales avec une géométrie non typée
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-les-objets-avec-des-geometries-trop-complexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trouver les objets avec des géométries trop complexes
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -887,6 +923,42 @@
   <a href="#lister-les-fonctions-installees-par-les-extensions" class="md-nav__link">
     <span class="md-ellipsis">
       Lister les fonctions installées par les extensions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-les-vues-contenant-row_number-over-non-type-en-integer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister les vues contenant row_number() over() non typé en integer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-les-tables-qui-ont-une-cle-primaire-non-entiere" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister les tables qui ont une clé primaire non entière
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-les-tables-spatiales-avec-une-geometrie-non-typee" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trouver les tables spatiales avec une géométrie non typée
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-les-objets-avec-des-geometries-trop-complexes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trouver les objets avec des géométries trop complexes
     </span>
   </a>
   
@@ -1678,6 +1750,130 @@ par les extensions installées dans la base :</p>
 </tbody>
 </table>
 <p>On peut bien sûr modifier la clause <code>WHERE</code> pour filtrer plus ou moins les fonctions renvoyées.</p>
+<h2 id="lister-les-vues-contenant-row_number-over-non-type-en-integer">Lister les vues contenant <code>row_number() over()</code> non typé en <code>integer</code><a class="headerlink" href="#lister-les-vues-contenant-row_number-over-non-type-en-integer" title="Permanent link">#</a></h2>
+<p>Si on utilise des vues dans QGIS qui créent un identifiant unique via le numéro de ligne, il est important :</p>
+<ul>
+<li>que le type de cet identifiant soit entier <code>integer</code> et pas entier long <code>bigint</code></li>
+<li>avoir une clause <code>ORDER BY</code> pour essayer au maximum que QGIS récupère les objets toujours dans le même ordre.</li>
+</ul>
+<p>Quand une requête d'une vue utilise <code>row_number() OVER()</code> , depuis des versions récentes de PostgreSQL, cela renvoie un entier long <code>bigint</code> ce qui n'est pas conseillé.</p>
+<p>On peut trouver ces vues ou vues matérialisées via cette requête :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- vues</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">concat</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">schemaname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;.&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">viewname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">row_number_view</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_views</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="ss">&quot;definition&quot;</span><span class="w"> </span><span class="o">~*</span><span class="w"> </span><span class="s1">&#39;(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+&#39;</span>
+<span class="p">;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">schemaname</span><span class="p">,</span><span class="w"> </span><span class="n">viewname</span>
+
+<span class="c1">-- vues matérialisées</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">concat</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">schemaname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;.&quot;&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">matviewname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">row_number_view</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_views</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="ss">&quot;definition&quot;</span><span class="w"> </span><span class="o">~*</span><span class="w"> </span><span class="s1">&#39;(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+&#39;</span>
+<span class="p">;</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">schemaname</span><span class="p">,</span><span class="w"> </span><span class="n">matviewname</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="lister-les-tables-qui-ont-une-cle-primaire-non-entiere">Lister les tables qui ont une clé primaire non entière<a class="headerlink" href="#lister-les-tables-qui-ont-une-cle-primaire-non-entiere" title="Permanent link">#</a></h2>
+<p>Pour éviter des soucis de performances sur les gros jeux de données, il faut éviter d'avoir des tables avec des clés primaires sur des champs qui ne sont pas de type entier <code>integer</code>.</p>
+<p>En effet, dans QGIS, l'ouverture de ce type de table avec une clé primaire de type <code>text</code>, ou même <code>bigint</code>, cela entraîne la création et le stockage en mémoire d'une table de correspondance entre chaque objet de la couche et le numéro d'arrivée de la ligne. Sur les tables volumineuses, cela peut être sensible.</p>
+<p>Pour trouver toutes les tables, on peut faire cette requête:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">nspname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="w"> </span><span class="n">relname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">table_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">a</span><span class="p">.</span><span class="n">attname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">column_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">format_type</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">atttypid</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">atttypmod</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">column_type</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">pg_index</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">i</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">c</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">i</span><span class="p">.</span><span class="n">indrelid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_attribute</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">a</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attrelid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span>
+<span class="w">    </span><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attnum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">any</span><span class="p">(</span><span class="n">i</span><span class="p">.</span><span class="n">indkey</span><span class="p">)</span>
+<span class="k">JOIN</span><span class="w"> </span><span class="n">pg_namespace</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">n</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relnamespace</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">indisprimary</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;pg_%&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;lizmap_%&#39;</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">format_type</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">atttypid</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">atttypmod</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">&#39;integer&#39;</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="trouver-les-tables-spatiales-avec-une-geometrie-non-typee">Trouver les tables spatiales avec une géométrie non typée<a class="headerlink" href="#trouver-les-tables-spatiales-avec-une-geometrie-non-typee" title="Permanent link">#</a></h2>
+<p>Il est important lorsqu'on crée des champs de type géométrie <code>geometry</code> de préciser le type des objets (point, ligne, polygone, etc.) et la projection.</p>
+<p>On doit donc créer les champs comme ceci :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>et non comme ceci :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">,</span>
+<span class="w">    </span><span class="n">geom</span><span class="w"> </span><span class="n">geometry</span>
+<span class="p">);</span>
+</code></pre></div></td></tr></table></div>
+<p>C'est donc important lorsqu'on crée des tables à partir de requêtes SQL de toujours bien typer les géométries. Par exemple :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="k">AS</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="n">ST_Centroid</span><span class="p">(</span><span class="n">geom</span><span class="p">)::</span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="w"> </span><span class="mi">2154</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">geom</span>
+<span class="c1">-- ne pas faire :</span>
+<span class="c1">-- ST_Centroid(geom) AS geom</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">autre_table</span>
+</code></pre></div></td></tr></table></div>
+<p>On peut trouver toutes les tables qui auraient été créée avec des champ de géométrie non typés via la requête suivante :</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">geometry_columns</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">srid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">lower</span><span class="p">(</span><span class="k">type</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;geometry&#39;</span>
+<span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>Il faut corriger ces vues ou tables.</p>
+<h2 id="trouver-les-objets-avec-des-geometries-trop-complexes">Trouver les objets avec des géométries trop complexes<a class="headerlink" href="#trouver-les-objets-avec-des-geometries-trop-complexes" title="Permanent link">#</a></h2>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">ma_table</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">ST_NPoints</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10000</span>
+<span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<p>Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opération d'intersection avec les objets d'autres couches via <code>ST_Intersects</code>.</p>
+<p>On peut corriger cela via la fonction <code>ST_Subdivide</code>. Voir <a href="https://postgis.net/docs/ST_Subdivide.html">Documentation de ST_Subdivide</a></p>
 <p>Continuer vers <a href="../grant/">Gestion des droits</a></p>
 
 
@@ -1699,7 +1895,7 @@ par les extensions installées dans la base :</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 18, 2023</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 7, 2024</span>
   </span>
 
     
@@ -1804,10 +2000,10 @@ par les extensions installées dans la base :</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       
