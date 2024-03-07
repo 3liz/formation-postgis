@@ -255,6 +255,216 @@ WHERE schema_name NOT IN ('pg_catalog', 'information_schema')
 ORDER BY pg_schema_size(schema_name) DESC;
 ```
 
+## Lister les triggers appliqués sur les tables
+
+On peut utiliser la requête suivante pour lister l'ensemble des triggers activés sur les tables
+
+```sql
+SELECT
+    event_object_schema AS table_schema,
+    event_object_table AS table_name,
+    trigger_schema,
+    trigger_name,
+    string_agg(event_manipulation, ',') AS event,
+    action_timing AS activation,
+    action_condition AS condition,
+    action_statement AS definition
+FROM information_schema.triggers
+GROUP BY 1,2,3,4,6,7,8
+ORDER BY table_schema, table_name
+;
+```
+
+Cette requête renvoie un tableau de la forme :
+
+| table_schema |       table_name       | trigger_schema |     trigger_name     | event  | activation | condition |                      definition                      |
+|--------------|------------------------|----------------|----------------------|--------|------------|-----------|------------------------------------------------------|
+| gestion      | acteur                 | gestion        | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
+| occtax       | organisme              | occtax         | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
+| taxon        | iso_metadata_reference | taxon          | update_imr_timestamp | UPDATE | BEFORE     |           | EXECUTE FUNCTION taxon.update_imr_timestamp_column() |
+
+
+## Lister les fonctions installées par les extensions
+
+Il est parfois utile de lister les **fonctions des extensions**, par exemple pour :
+
+* vérifier leur nom et leurs paramètres.
+* détecter celles qui n'ont pas le bon propriétaire
+
+La requête suivante permet d'afficher les informations essentielles des fonctions créées
+par les extensions installées dans la base :
+
+```sql
+SELECT DISTINCT
+    ne.nspname AS extension_schema,
+    e.extname AS extension_name,
+    np.nspname AS function_schema,
+    p.proname AS function_name,
+    pg_get_function_identity_arguments(p.oid) AS function_params,
+    proowner::regrole AS function_owner
+FROM
+    pg_catalog.pg_extension AS e
+    INNER JOIN pg_catalog.pg_depend AS d ON (d.refobjid = e.oid)
+    INNER JOIN pg_catalog.pg_proc AS p ON (p.oid = d.objid)
+    INNER JOIN pg_catalog.pg_namespace AS ne ON (ne.oid = e.extnamespace)
+    INNER JOIN pg_catalog.pg_namespace AS np ON (np.oid = p.pronamespace)
+WHERE
+    TRUE
+    -- only extensions
+    AND d.deptype = 'e'
+    -- not in pg_catalog
+    AND ne.nspname NOT IN ('pg_catalog')
+    -- optionnally filter some extensions
+    -- AND e.extname IN ('postgis', 'postgis_raster')
+    -- optionnally filter by some owner
+    AND proowner::regrole::text IN ('postgres')
+    ORDER BY
+        extension_name,
+        function_name;
+;
+```
+
+qui renvoie une résultat comme ceci (cet exemple est un extrait de quelques lignes) :
+
+
+|  extension_schema | extension_name | function_schema |               function_name |                    function_params                   | function_owner  |
+|-------------------|----------------|-----------------|-----------------------------|------------------------------------------------------|-----------------|
+| public            | fuzzystrmatch  | public          | levenshtein_less_equal      | text, text, integer                                  | johndoe         |
+| public            | fuzzystrmatch  | public          | metaphone                   | text, integer                                        | johndoe         |
+| public            | fuzzystrmatch  | public          | soundex                     | text                                                 | johndoe         |
+| public            | fuzzystrmatch  | public          | text_soundex                | text                                                 | johndoe         |
+| public            | hstore         | public          | akeys                       | hstore                                               | johndoe         |
+| public            | hstore         | public          | avals                       | hstore                                               | johndoe         |
+| public            | hstore         | public          | defined                     | hstore, text                                         | johndoe         |
+| public            | postgis        | public          | st_buffer                   | text, double precision, integer                      | johndoe         |
+| public            | postgis        | public          | st_buffer                   | geom geometry, radius double precision, options text | johndoe         |
+| public            | postgis        | public          | st_buildarea                | geometry                                             | johndoe         |
+
+On peut bien sûr modifier la clause `WHERE` pour filtrer plus ou moins les fonctions renvoyées.
+
+
+## Lister les vues contenant `row_number() over()` non typé en `integer`
+
+Si on utilise des vues dans QGIS qui créent un identifiant unique via le numéro de ligne, il est important :
+
+* que le type de cet identifiant soit entier `integer` et pas entier long `bigint`
+* avoir une clause `ORDER BY` pour essayer au maximum que QGIS récupère les objets toujours dans le même ordre.
+
+Quand une requête d'une vue utilise `row_number() OVER()`, depuis des versions récentes de PostgreSQL, cela renvoie un entier long `bigint` ce qui n'est pas conseillé.
+
+On peut trouver ces vues ou vues matérialisées via cette requête :
+
+```sql
+-- vues
+SELECT
+    concat('"', schemaname, '"."', viewname, '"') AS row_number_view
+FROM pg_views
+WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
+;
+ORDER BY schemaname, viewname
+
+-- vues matérialisées
+SELECT
+    concat('"', schemaname, '"."', matviewname, '"') AS row_number_view
+FROM pg_views
+WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
+;
+ORDER BY schemaname, matviewname
+```
+
+## Lister les tables qui ont une clé primaire non entière
+
+Pour éviter des soucis de performances sur les gros jeux de données, il faut éviter d'avoir des tables avec des clés primaires sur des champs qui ne sont pas de type entier `integer`.
+
+En effet, dans QGIS, l'ouverture de ce type de table avec une clé primaire de type `text`, ou même `bigint`, cela entraîne la création et le stockage en mémoire d'une table de correspondance entre chaque objet de la couche et le numéro d'arrivée de la ligne. Sur les tables volumineuses, cela peut être sensible.
+
+Pour trouver toutes les tables, on peut faire cette requête :
+
+```sql
+SELECT
+    nspname AS table_schema, relname AS table_name,
+    a.attname AS column_name,
+    format_type(a.atttypid, a.atttypmod) AS column_type
+FROM pg_index AS i
+JOIN pg_class AS c
+    ON i.indrelid = c.oid
+JOIN pg_attribute AS a
+    ON a.attrelid = c.oid
+    AND a.attnum = any(i.indkey)
+JOIN pg_namespace AS n
+    ON n.oid = c.relnamespace
+WHERE indisprimary AND nspname NOT LIKE 'pg_%' AND nspname NOT LIKE 'lizmap_%'
+AND format_type(a.atttypid, a.atttypmod) != 'integer';
+```
+
+Ce qui donne par exemple :
+
+   table_schema    |            table_name            | column_name |    column_type
+-------------------|----------------------------------|-------------|-------------------
+ un_schema         | une_table_a                      | id          | bigint
+ un_schema         | une_table_b                      | id          | bigint
+ un_autre_schema   | autre_table_c                    | id          | character varying
+ un_autre_schema   | autre_table_d                    | id          | character varying
+
+
+## Trouver les tables spatiales avec une géométrie non typée
+
+Il est important lorsqu'on crée des champs de type géométrie `geometry` de préciser le type des objets (point, ligne, polygone, etc.) et la projection.
+
+On doit donc créer les champs comme ceci :
+
+```sql
+CREATE TABLE test (
+    id serial primary key,
+    geom geometry(Point, 2154)
+);
+```
+
+et non comme ceci :
+
+```sql
+CREATE TABLE test (
+    id serial primary key,
+    geom geometry
+);
+```
+
+C'est donc important lorsqu'on crée des tables à partir de requêtes SQL de toujours bien typer les géométries. Par exemple :
+
+```sql
+CREATE TABLE test AS
+SELECT id,
+ST_Centroid(geom)::geometry(Point, 2154) AS geom
+-- ne pas faire :
+-- ST_Centroid(geom) AS geom
+FROM autre_table
+```
+
+On peut trouver toutes les tables qui auraient été créées avec des champs de géométrie non typés via la requête suivante :
+
+```sql
+SELECT *
+FROM geometry_columns
+WHERE srid = 0 OR lower(type) = 'geometry'
+;
+```
+
+Il faut corriger ces vues ou tables.
+
+## Trouver les objets avec des géométries trop complexes
+
+```sql
+SELECT count(*)
+FROM ma_table
+WHERE ST_NPoints(geom) > 10000
+;
+```
+
+Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opérations d'intersection avec les objets d'autres couches via `ST_Intersects`.
+
+On peut corriger cela via la fonction `ST_Subdivide`. Voir [Documentation de ST_Subdivide](https://postgis.net/docs/ST_Subdivide.html)
+
+
 ## Tester les différences entre 2 tables de même structure
 
 Nous souhaitons **comparer deux tables de la base**, par exemple une table de communes en 2021 `communes_2021` et une table de communes en 2022 `communes_2022`.
@@ -362,203 +572,5 @@ Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais l
 *Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.*
 
 
-## Lister les triggers appliqués sur les tables
-
-On peut utiliser la requête suivante pour lister l'ensemble des triggers activés sur les tables
-
-```sql
-SELECT
-    event_object_schema AS table_schema,
-    event_object_table AS table_name,
-    trigger_schema,
-    trigger_name,
-    string_agg(event_manipulation, ',') AS event,
-    action_timing AS activation,
-    action_condition AS condition,
-    action_statement AS definition
-FROM information_schema.triggers
-GROUP BY 1,2,3,4,6,7,8
-ORDER BY table_schema, table_name
-;
-```
-
-Cette requête renvoie un tableau de la forme :
-
-| table_schema |       table_name       | trigger_schema |     trigger_name     | event  | activation | condition |                      definition                      |
-|--------------|------------------------|----------------|----------------------|--------|------------|-----------|------------------------------------------------------|
-| gestion      | acteur                 | gestion        | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
-| occtax       | organisme              | occtax         | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
-| taxon        | iso_metadata_reference | taxon          | update_imr_timestamp | UPDATE | BEFORE     |           | EXECUTE FUNCTION taxon.update_imr_timestamp_column() |
-
-
-## Lister les fonctions installées par les extensions
-
-Il est parfois utile de lister les **fonctions des extensions**, par exemple pour :
-
-* vérifier leur nom et leurs paramètres.
-* détecter celles qui n'ont pas le bon propriétaire
-
-La requête suivante permet d'afficher les informations essentielles des fonctions créées
-par les extensions installées dans la base :
-
-```sql
-SELECT DISTINCT
-    ne.nspname AS extension_schema,
-    e.extname AS extension_name,
-    np.nspname AS function_schema,
-    p.proname AS function_name,
-    pg_get_function_identity_arguments(p.oid) AS function_params,
-    proowner::regrole AS function_owner
-FROM
-    pg_catalog.pg_extension AS e
-    INNER JOIN pg_catalog.pg_depend AS d ON (d.refobjid = e.oid)
-    INNER JOIN pg_catalog.pg_proc AS p ON (p.oid = d.objid)
-    INNER JOIN pg_catalog.pg_namespace AS ne ON (ne.oid = e.extnamespace)
-    INNER JOIN pg_catalog.pg_namespace AS np ON (np.oid = p.pronamespace)
-WHERE
-    TRUE
-    -- only extensions
-    AND d.deptype = 'e'
-    -- not in pg_catalog
-    AND ne.nspname NOT IN ('pg_catalog')
-    -- optionnally filter some extensions
-    -- AND e.extname IN ('postgis', 'postgis_raster')
-    -- optionnally filter by some owner
-    AND proowner::regrole::text IN ('postgres')
-    ORDER BY
-        extension_name,
-        function_name;
-;
-```
-
-qui renvoie une résultat comme ceci (cet exemple est un extrait de quelques lignes) :
-
-
-|  extension_schema | extension_name | function_schema |               function_name |                    function_params                   | function_owner  |
-|-------------------|----------------|-----------------|-----------------------------|------------------------------------------------------|-----------------|
-| public            | fuzzystrmatch  | public          | levenshtein_less_equal      | text, text, integer                                  | johndoe         |
-| public            | fuzzystrmatch  | public          | metaphone                   | text, integer                                        | johndoe         |
-| public            | fuzzystrmatch  | public          | soundex                     | text                                                 | johndoe         |
-| public            | fuzzystrmatch  | public          | text_soundex                | text                                                 | johndoe         |
-| public            | hstore         | public          | akeys                       | hstore                                               | johndoe         |
-| public            | hstore         | public          | avals                       | hstore                                               | johndoe         |
-| public            | hstore         | public          | defined                     | hstore, text                                         | johndoe         |
-| public            | postgis        | public          | st_buffer                   | text, double precision, integer                      | johndoe         |
-| public            | postgis        | public          | st_buffer                   | geom geometry, radius double precision, options text | johndoe         |
-| public            | postgis        | public          | st_buildarea                | geometry                                             | johndoe         |
-
-On peut bien sûr modifier la clause `WHERE` pour filtrer plus ou moins les fonctions renvoyées.
-
-
-## Lister les vues contenant `row_number() over()` non typé en `integer`
-
-Si on utilise des vues dans QGIS qui créent un identifiant unique via le numéro de ligne, il est important :
-
-* que le type de cet identifiant soit entier `integer` et pas entier long `bigint`
-* avoir une clause `ORDER BY` pour essayer au maximum que QGIS récupère les objets toujours dans le même ordre.
-
-Quand une requête d'une vue utilise `row_number() OVER()` , depuis des versions récentes de PostgreSQL, cela renvoie un entier long `bigint` ce qui n'est pas conseillé.
-
-On peut trouver ces vues ou vues matérialisées via cette requête :
-
-```sql
--- vues
-SELECT
-    concat('"', schemaname, '"."', viewname, '"') AS row_number_view
-FROM pg_views
-WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
-;
-ORDER BY schemaname, viewname
-
--- vues matérialisées
-SELECT
-    concat('"', schemaname, '"."', matviewname, '"') AS row_number_view
-FROM pg_views
-WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
-;
-ORDER BY schemaname, matviewname
-```
-
-## Lister les tables qui ont une clé primaire non entière
-
-Pour éviter des soucis de performances sur les gros jeux de données, il faut éviter d'avoir des tables avec des clés primaires sur des champs qui ne sont pas de type entier `integer`.
-
-En effet, dans QGIS, l'ouverture de ce type de table avec une clé primaire de type `text`, ou même `bigint`, cela entraîne la création et le stockage en mémoire d'une table de correspondance entre chaque objet de la couche et le numéro d'arrivée de la ligne. Sur les tables volumineuses, cela peut être sensible.
-
-Pour trouver toutes les tables, on peut faire cette requête:
-
-```sql
-SELECT
-    nspname AS table_schema, relname AS table_name,
-    a.attname AS column_name,
-    format_type(a.atttypid, a.atttypmod) AS column_type
-FROM pg_index AS i
-JOIN pg_class AS c
-    ON i.indrelid = c.oid
-JOIN pg_attribute AS a
-    ON a.attrelid = c.oid
-    AND a.attnum = any(i.indkey)
-JOIN pg_namespace AS n
-    ON n.oid = c.relnamespace
-WHERE indisprimary AND nspname NOT LIKE 'pg_%' AND nspname NOT LIKE 'lizmap_%'
-AND format_type(a.atttypid, a.atttypmod) != 'integer';
-```
-
-## Trouver les tables spatiales avec une géométrie non typée
-
-Il est important lorsqu'on crée des champs de type géométrie `geometry` de préciser le type des objets (point, ligne, polygone, etc.) et la projection.
-
-On doit donc créer les champs comme ceci :
-
-```sql
-CREATE TABLE test (
-    id serial primary key,
-    geom geometry(Point, 2154)
-);
-```
-
-et non comme ceci :
-
-```sql
-CREATE TABLE test (
-    id serial primary key,
-    geom geometry
-);
-```
-
-C'est donc important lorsqu'on crée des tables à partir de requêtes SQL de toujours bien typer les géométries. Par exemple :
-
-```sql
-CREATE TABLE test AS
-SELECT id,
-ST_Centroid(geom)::geometry(Point, 2154) AS geom
--- ne pas faire :
--- ST_Centroid(geom) AS geom
-FROM autre_table
-```
-
-On peut trouver toutes les tables qui auraient été créée avec des champ de géométrie non typés via la requête suivante :
-
-```sql
-SELECT *
-FROM geometry_columns
-WHERE srid = 0 OR lower(type) = 'geometry'
-;
-```
-
-Il faut corriger ces vues ou tables.
-
-## Trouver les objets avec des géométries trop complexes
-
-```sql
-SELECT count(*)
-FROM ma_table
-WHERE ST_NPoints(geom) > 10000
-;
-```
-
-Les trop gros polygones (zones inondables, zonages issus de regroupement de nombreux objets, etc.) peuvent poser de réels soucis de performance, notamment sur les opération d'intersection avec les objets d'autres couches via `ST_Intersects`.
-
-On peut corriger cela via la fonction `ST_Subdivide`. Voir [Documentation de ST_Subdivide](https://postgis.net/docs/ST_Subdivide.html)
 
 Continuer vers [Gestion des droits](./grant.md)
