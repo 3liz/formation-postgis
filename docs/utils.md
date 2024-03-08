@@ -360,16 +360,16 @@ SELECT
     concat('"', schemaname, '"."', viewname, '"') AS row_number_view
 FROM pg_views
 WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
-;
 ORDER BY schemaname, viewname
+;
 
 -- vues matérialisées
 SELECT
     concat('"', schemaname, '"."', matviewname, '"') AS row_number_view
 FROM pg_views
 WHERE "definition" ~* '(.)+row_number\(\s*\)\s*over\s*\(\s*\) (.)+'
-;
 ORDER BY schemaname, matviewname
+;
 ```
 
 ## Lister les tables qui ont une clé primaire non entière
