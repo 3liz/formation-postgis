@@ -74,7 +74,7 @@ ORDER BY table_schema, table_name
 ;
 ```
 
-* Pour lister les tables sans géométries, vous pouvez ensuite lancer la requête suivante:
+* Pour lister les tables sans clé primaire, vous pouvez ensuite lancer la requête suivante:
 
 ```sql
 SELECT *
@@ -92,7 +92,7 @@ Ce qui peut donner par exemple:
 | environnement | parcs_naturels |
 
 
-* Pour lister les tables sans géométries d'un seul schéma, par exemple `cadastre`, vous pouvez ensuite lancer la requête:
+* Pour lister les tables sans clé primaire dans un schéma particulier, par exemple `cadastre`, vous pouvez ensuite lancer la requête :
 
 ```sql
 SELECT *
