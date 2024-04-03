@@ -171,10 +171,11 @@ FOREIGN DATA WRAPPER postgres_fdw
 OPTIONS (host 'mon_serveur_postgresql_externe.com', port '5432', dbname 'external_database')
 ;
 
--- on déclare se connecter en tant qu'utilisateur mon_utilisateur externe lorsqu'on récupère des données
-CREATE USER MAPPING FOR ""
+-- on déclare se connecter en tant qu'utilisateur `mon_utilisateur_externe` lorsqu'on récupère des données
+-- depuis une connexion avec l'utilisateur interne `mon_utilisateur`
+CREATE USER MAPPING FOR "mon_utilisateur"
 SERVER foreign_server_test
-OPTIONS (user 'mon_utilisateur', password '***********');
+OPTIONS (user 'mon_utilisateur_externe', password '***********');
 
 -- on stocke les tables étrangères dans un schéma spécifique pour isoler des autres schémas en dur
 DROP SCHEMA IF EXISTS fdw_test_schema CASCADE;
