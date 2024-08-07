@@ -282,21 +282,26 @@ SELECT
     trigger_name,
     string_agg(event_manipulation, ',') AS event,
     action_timing AS activation,
-    action_condition AS condition,
+    action_condition AS condition, 
+    CASE WHEN tgenabled = 'O' THEN True ELSE False END AS trigger_active,
     action_statement AS definition
-FROM information_schema.triggers
-GROUP BY 1,2,3,4,6,7,8
+FROM information_schema.triggers AS t
+INNER JOIN pg_trigger AS p
+    ON p.tgrelid = concat('"', event_object_schema, '"."', event_object_table, '"')::regclass 
+    AND trigger_name = tgname
+WHERE True
+GROUP BY 1,2,3,4,6,7,8,9
 ORDER BY table_schema, table_name
 ;
 ```
 
 Cette requête renvoie un tableau de la forme :
 
-| table_schema |       table_name       | trigger_schema |     trigger_name     | event  | activation | condition |                      definition                      |
-|--------------|------------------------|----------------|----------------------|--------|------------|-----------|------------------------------------------------------|
-| gestion      | acteur                 | gestion        | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
-| occtax       | organisme              | occtax         | tr_date_maj          | UPDATE | BEFORE     |           | EXECUTE FUNCTION occtax.maj_date()                   |
-| taxon        | iso_metadata_reference | taxon          | update_imr_timestamp | UPDATE | BEFORE     |           | EXECUTE FUNCTION taxon.update_imr_timestamp_column() |
+| table_schema |       table_name       | trigger_schema |     trigger_name     | event  | activation | condition | trigger_active |                     definition                       |
+|--------------|------------------------|----------------|----------------------|--------|------------|-----------|--------------- |------------------------------------------------------|
+| gestion      | acteur                 | gestion        | tr_date_maj          | UPDATE | BEFORE     |           | f              | EXECUTE FUNCTION occtax.maj_date()                   |
+| occtax       | organisme              | occtax         | tr_date_maj          | UPDATE | BEFORE     |           | t              | EXECUTE FUNCTION occtax.maj_date()                   |
+| taxon        | iso_metadata_reference | taxon          | update_imr_timestamp | UPDATE | BEFORE     |           | t              | EXECUTE FUNCTION taxon.update_imr_timestamp_column() |
 
 
 ## Lister les fonctions installées par les extensions
