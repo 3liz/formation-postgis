@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.32">
     
     
       
@@ -572,6 +572,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Droits
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -581,6 +592,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#donner-ou-retirer-des-droits-sur-des-objets-existants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Donner ou retirer des droits sur des objets existants
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#droits-par-defaut-sur-les-nouveaux-objets-crees-par-un-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      Droits par défaut sur les nouveaux objets créés par un utilisateur.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-tous-les-droits-donnes-sur-tous-les-objets-de-la-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister tous les droits donnés sur tous les objets de la base
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -646,6 +703,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#donner-ou-retirer-des-droits-sur-des-objets-existants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Donner ou retirer des droits sur des objets existants
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#droits-par-defaut-sur-les-nouveaux-objets-crees-par-un-utilisateur" class="md-nav__link">
+    <span class="md-ellipsis">
+      Droits par défaut sur les nouveaux objets créés par un utilisateur.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lister-tous-les-droits-donnes-sur-tous-les-objets-de-la-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lister tous les droits donnés sur tous les objets de la base
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -663,13 +755,16 @@
 
 
 <h1 id="gestion-des-droits">Gestion des droits<a class="headerlink" href="#gestion-des-droits" title="Permanent link">#</a></h1>
-<p>Dans PostgreSQL, on peut créer des roles (des utilisateurs) et gérer les droits sur les différents objets: base, schémas, tables, fonctions, etc.</p>
+<p>Dans PostgreSQL, on peut créer des rôles (des utilisateurs) et gérer les droits sur les différents objets :
+base, schémas, tables, fonctions, etc.</p>
 <p>La <a href="https://www.postgresql.org/docs/current/sql-grant.html">documentation officielle de PostgreSQL</a> est complète, et propose plusieurs exemples.</p>
-<p>Nous montrons ci-dessous quelques utilisations possibles. Attention, pour pouvoir réaliser certaines opérations, vous devez:</p>
+<p>Nous montrons ci-dessous quelques utilisations possibles.
+Attention, pour pouvoir réaliser certaines opérations, vous devez :</p>
 <ul>
 <li>soit être <strong>super-utilisateur</strong> (créer un rôle de connexion)</li>
-<li>soit être <strong>propriétaire</strong> des objets pour lesquels modifier les droits</li>
+<li>soit être <strong>propriétaire</strong> des objets pour lesquels modifier les droits (schémas, tables)</li>
 </ul>
+<h2 id="donner-ou-retirer-des-droits-sur-des-objets-existants">Donner ou retirer des droits sur des objets existants<a class="headerlink" href="#donner-ou-retirer-des-droits-sur-des-objets-existants" title="Permanent link">#</a></h2>
 <p>Création d'un schéma de test et d'un rôle de connexion, en tant qu'utilisateur avec des droits forts sur la base de données (création de schémas, de tables, etc.).</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
@@ -713,30 +808,604 @@
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- on donne le droit à invite d&#39;utiliser les schéma public et nouveau_schema</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- on donne le droit à invite d&#39;utiliser les schéma public et nouveau_schema</span>
 <span class="c1">-- Utile pour pouvoir lister les tables</span>
-<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="c1">-- Si un rôle n&#39;a pas le droit USAGE sur un schéma,</span>
+<span class="c1">-- il ne peut pas lire les données des tables</span>
+<span class="c1">-- même si des droits SELECT on été données sur ces tables</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="p">,</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;autre_role&quot;</span><span class="p">;</span>
 
 <span class="c1">-- on permet à invite de lire les données (SELECT)</span>
 <span class="c1">-- de toutes les tables du schéma nouveau_schema</span>
-<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;autre_role&quot;</span><span class="p">;</span>
 
 <span class="c1">-- On permet l&#39;ajout et la modification de données sur la table observation seulement</span>
 <span class="k">GRANT</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
 
 <span class="c1">-- On peut aussi enlever des droits avec REVOKE.</span>
-<span class="c1">-- Ex: on enlève la possibilité de faire des suppressions</span>
-<span class="k">REVOKE</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+<span class="c1">-- Cela enlève seulement les droits donnés précédemment avec GRANT</span>
+<span class="c1">-- Ex: On pourrait donner tous les droits sur une table</span>
+<span class="c1">-- puis retirer la possibilité de faire des suppressions</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;autre_role&quot;</span><span class="p">;</span>
+<span class="c1">-- on retire les droits DELETE et TRUNCATE</span>
+<span class="k">REVOKE</span><span class="w"> </span><span class="k">DELETE</span><span class="p">,</span><span class="w"> </span><span class="k">TRUNCATE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">nouveau_schema</span><span class="p">.</span><span class="n">observation</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;autre_role&quot;</span><span class="p">;</span>
 
-<span class="c1">-- On enlève tous les privilèges sur les tables du schéma public</span>
+<span class="c1">-- On peut aussi par exemple retirer tous les privilèges sur les tables du schéma public</span>
 <span class="k">REVOKE</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="droits-par-defaut-sur-les-nouveaux-objets-crees-par-un-utilisateur">Droits par défaut sur les nouveaux objets créés par un utilisateur.<a class="headerlink" href="#droits-par-defaut-sur-les-nouveaux-objets-crees-par-un-utilisateur" title="Permanent link">#</a></h2>
+<p>Lorsqu'un utilisateur crée un schéma, une table ou une vue, aucun droit n'est donné
+sur cet objet aux autres utilisateurs. Par défaut les autres utilisateurs ne peuvent
+donc pas par exemple lire les données de ce nouvel objet.</p>
+<p>PostgreSQL fournit un moyen de définir en quelque sorte:
+<em>Donner ce(s) droit(s) sur tous ces objets créés par cet utilisateur à ces autres utilisateurs</em></p>
+<p>Documentation officielle : <a href="https://docs.postgresql.fr/current/sql-alterdefaultprivileges.html">https://docs.postgresql.fr/current/sql-alterdefaultprivileges.html</a></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Donner le droit SELECT pour toutes les nouvelles tables créées à l&#39;avenir</span>
+<span class="c1">-- dans le schéma nouveau_schema</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="ss">&quot;nouveau_schema&quot;</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;autre_role&quot;</span><span class="p">;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="lister-tous-les-droits-donnes-sur-tous-les-objets-de-la-base">Lister tous les droits donnés sur tous les objets de la base<a class="headerlink" href="#lister-tous-les-droits-donnes-sur-tous-les-objets-de-la-base" title="Permanent link">#</a></h2>
+<p>Une requête SQL peut être utilisée pour lister tous les droits accordés
+sur plusieurs types d'objets : schéma, tables, fonctions, types, aggrégats, etc.</p>
+<p>Un exemple de <strong>résultat</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>object_schema</th>
+<th>object_type</th>
+<th>object_name</th>
+<th>object_owner</th>
+<th>grantor</th>
+<th>grantee</th>
+<th>privileges</th>
+<th>is_grantable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>urbanisme</td>
+<td>schema</td>
+<td>urbanisme</td>
+<td>role_sig</td>
+<td>role_sig</td>
+<td>role_urba</td>
+<td>CREATE, USAGE</td>
+<td>f</td>
+</tr>
+<tr>
+<td>urbanisme</td>
+<td>table</td>
+<td>zone_urba</td>
+<td>role_sig</td>
+<td>role_sig</td>
+<td>role_urba</td>
+<td>INSERT, SELECT, UPDATE</td>
+<td>f</td>
+</tr>
+<tr>
+<td>cadastre</td>
+<td>schema</td>
+<td>cadastre</td>
+<td>role_sig</td>
+<td>role_sig</td>
+<td>role_lecteur</td>
+<td>USAGE</td>
+<td>f</td>
+</tr>
+<tr>
+<td>cadastre</td>
+<td>table</td>
+<td>commune</td>
+<td>role_sig</td>
+<td>role_sig</td>
+<td>role_lecteur</td>
+<td>SELECT</td>
+<td>f</td>
+</tr>
+<tr>
+<td>cadastre</td>
+<td>table</td>
+<td>parcelle</td>
+<td>role_sig</td>
+<td>role_sig</td>
+<td>role_lecteur</td>
+<td>SELECT</td>
+<td>f</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Si un objet n'est pas retourné par cette requête,
+c'est qu'aucun droit spécifique ne lui a été accordé.</p>
+</blockquote>
+<details>
+  <summary>
+  Requête SQL permettant de récupérer les droits accordés
+  sur tous les objets de la base, ainsi que les propriétaires
+  et les rôles qui ont accordé ces privilèges
+  </summary>
 
-<span class="c1">-- On donne les droits de sélection sur les tables du schéma public</span>
-<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;invite&quot;</span><span class="p">;</span>
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  1</span>
+<span class="normal">  2</span>
+<span class="normal">  3</span>
+<span class="normal">  4</span>
+<span class="normal">  5</span>
+<span class="normal">  6</span>
+<span class="normal">  7</span>
+<span class="normal">  8</span>
+<span class="normal">  9</span>
+<span class="normal"> 10</span>
+<span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Adapted from https://dba.stackexchange.com/a/285632</span>
+<span class="k">WITH</span><span class="w"> </span><span class="n">rol</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">rolname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">role_name</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_roles</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">0</span><span class="p">::</span><span class="n">oid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="s1">&#39;public&#39;</span><span class="p">::</span><span class="nb">text</span>
+<span class="p">),</span>
+<span class="n">schemas</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Schemas</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">oid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">n</span><span class="p">.</span><span class="n">nspname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">schema_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">n</span><span class="p">.</span><span class="n">nspowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="s1">&#39;schema&#39;</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nspacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;n&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nspowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_namespace</span><span class="w"> </span><span class="n">n</span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nspname</span><span class="w"> </span><span class="o">!~</span><span class="w"> </span><span class="s1">&#39;^pg_&#39;</span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">nspname</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="s1">&#39;information_schema&#39;</span>
+<span class="p">),</span>
+<span class="n">classes</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Tables, views, etc.</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">schemas</span><span class="p">.</span><span class="k">schema_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">relname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">relowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">CASE</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;table&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;view&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;m&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;materialized view&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;i&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;index&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;S&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;sequence&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;s&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;special&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;TOAST table&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;f&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;foreign table&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;p&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;partitioned table&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;partitioned index&#39;</span>
+<span class="w">                </span><span class="k">ELSE</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="p">::</span><span class="nb">text</span>
+<span class="w">                </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">CASE</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;S&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;s&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span>
+<span class="w">                </span><span class="k">ELSE</span><span class="w"> </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span>
+<span class="w">                </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span>
+<span class="w">        </span><span class="k">JOIN</span><span class="w"> </span><span class="n">schemas</span>
+<span class="w">            </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relnamespace</span><span class="w"> </span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;S&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;p&#39;</span><span class="w"> </span><span class="p">)</span>
+<span class="p">),</span>
+<span class="n">cols</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Columns</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">integer</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">object_name</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;.&#39;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="s1">&#39;column&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">c</span><span class="p">.</span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">owner_oid</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_attribute</span><span class="w"> </span><span class="n">a</span>
+<span class="w">        </span><span class="k">JOIN</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="k">c</span>
+<span class="w">            </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attrelid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attnum</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">attisdropped</span>
+<span class="p">),</span>
+<span class="n">procs</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Procedures and functions</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">schemas</span><span class="p">.</span><span class="k">schema_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">proname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">proowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">CASE</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">prokind</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;aggregate&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;w&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;window&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;p&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;procedure&#39;</span>
+<span class="w">                </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">&#39;function&#39;</span>
+<span class="w">                </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_get_function_arguments</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">proacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;f&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">proowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_proc</span><span class="w"> </span><span class="n">p</span>
+<span class="w">        </span><span class="k">JOIN</span><span class="w"> </span><span class="n">schemas</span>
+<span class="w">            </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">pronamespace</span><span class="w"> </span><span class="p">)</span>
+<span class="p">),</span>
+<span class="n">udts</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- User defined types</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">schemas</span><span class="p">.</span><span class="k">schema_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">t</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">t</span><span class="p">.</span><span class="n">typname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">t</span><span class="p">.</span><span class="n">typowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">CASE</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typtype</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;base type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;c&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;composite type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;d&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;domain&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;e&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;enum type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;t&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;pseudo-type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;range type&#39;</span>
+<span class="w">                </span><span class="k">WHEN</span><span class="w"> </span><span class="s1">&#39;m&#39;</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;multirange&#39;</span>
+<span class="w">                </span><span class="k">ELSE</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typtype</span><span class="p">::</span><span class="nb">text</span>
+<span class="w">                </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;T&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_type</span><span class="w"> </span><span class="n">t</span>
+<span class="w">        </span><span class="k">JOIN</span><span class="w"> </span><span class="n">schemas</span>
+<span class="w">            </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">schemas</span><span class="p">.</span><span class="n">schema_oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typnamespace</span><span class="w"> </span><span class="p">)</span>
+<span class="w">        </span><span class="k">WHERE</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typrelid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">                </span><span class="k">OR</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">relkind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;c&#39;</span>
+<span class="w">                        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_class</span><span class="w"> </span><span class="k">c</span>
+<span class="w">                        </span><span class="k">WHERE</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typrelid</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span>
+<span class="w">            </span><span class="k">AND</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">                </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                    </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_type</span><span class="w"> </span><span class="n">el</span>
+<span class="w">                    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">el</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">typelem</span>
+<span class="w">                        </span><span class="k">AND</span><span class="w"> </span><span class="n">el</span><span class="p">.</span><span class="n">typarray</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="p">)</span>
+<span class="p">),</span>
+<span class="n">fdws</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Foreign data wrappers</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">null</span><span class="p">::</span><span class="n">oid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">fdwname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">fdwowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="s1">&#39;foreign data wrapper&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">fdwacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;F&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">fdwowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_foreign_data_wrapper</span><span class="w"> </span><span class="n">p</span>
+<span class="p">),</span>
+<span class="n">fsrvs</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="c1">-- Foreign servers</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">null</span><span class="p">::</span><span class="n">oid</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">schema_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">srvname</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">p</span><span class="p">.</span><span class="n">srvowner</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="s1">&#39;foreign server&#39;</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">coalesce</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">srvacl</span><span class="p">,</span><span class="w"> </span><span class="n">acldefault</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;S&#39;</span><span class="p">::</span><span class="ss">&quot;char&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">srvowner</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_foreign_server</span><span class="w"> </span><span class="n">p</span>
+<span class="p">),</span>
+<span class="n">all_objects</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="k">schema_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="k">schema_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">schemas</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">classes</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">cols</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">procs</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">udts</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">fdws</span>
+<span class="w">    </span><span class="k">UNION</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="k">null</span><span class="p">::</span><span class="nb">text</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="n">acl</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">fsrvs</span>
+<span class="p">),</span>
+<span class="n">acl_base</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">            </span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">            </span><span class="n">calling_arguments</span><span class="p">,</span>
+<span class="w">            </span><span class="n">owner_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="p">(</span><span class="w"> </span><span class="n">aclexplode</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">acl</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">).</span><span class="n">grantor</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grantor_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="p">(</span><span class="w"> </span><span class="n">aclexplode</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">acl</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">).</span><span class="n">grantee</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grantee_oid</span><span class="p">,</span>
+<span class="w">            </span><span class="p">(</span><span class="w"> </span><span class="n">aclexplode</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">acl</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">).</span><span class="n">privilege_type</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">privilege_type</span><span class="p">,</span>
+<span class="w">            </span><span class="p">(</span><span class="w"> </span><span class="n">aclexplode</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">acl</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">).</span><span class="n">is_grantable</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">is_grantable</span>
+<span class="w">        </span><span class="k">FROM</span><span class="w"> </span><span class="n">all_objects</span>
+<span class="p">),</span>
+<span class="n">ungrouped</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">object_schema</span><span class="p">,</span>
+<span class="w">        </span><span class="n">acl_base</span><span class="p">.</span><span class="n">object_type</span><span class="p">,</span>
+<span class="w">        </span><span class="n">acl_base</span><span class="p">.</span><span class="n">object_name</span><span class="p">,</span>
+<span class="w">        </span><span class="c1">--acl_base.calling_arguments,</span>
+<span class="w">        </span><span class="k">owner</span><span class="p">.</span><span class="n">role_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">object_owner</span><span class="p">,</span>
+<span class="w">        </span><span class="n">grantor</span><span class="p">.</span><span class="n">role_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grantor</span><span class="p">,</span>
+<span class="w">        </span><span class="n">grantee</span><span class="p">.</span><span class="n">role_name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">grantee</span><span class="p">,</span>
+<span class="w">        </span><span class="n">acl_base</span><span class="p">.</span><span class="n">privilege_type</span><span class="p">,</span>
+<span class="w">        </span><span class="n">acl_base</span><span class="p">.</span><span class="n">is_grantable</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">acl_base</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">rol</span><span class="w"> </span><span class="k">owner</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="k">owner</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">owner_oid</span><span class="w"> </span><span class="p">)</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">rol</span><span class="w"> </span><span class="n">grantor</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">grantor</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">grantor_oid</span><span class="w"> </span><span class="p">)</span>
+<span class="w">    </span><span class="k">JOIN</span><span class="w"> </span><span class="n">rol</span><span class="w"> </span><span class="n">grantee</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">grantee</span><span class="p">.</span><span class="n">oid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">grantee_oid</span><span class="w"> </span><span class="p">)</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">grantor_oid</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">acl_base</span><span class="p">.</span><span class="n">grantee_oid</span>
+<span class="p">)</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">object_schema</span><span class="p">,</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span><span class="w"> </span><span class="n">object_owner</span><span class="p">,</span>
+<span class="w">    </span><span class="n">grantor</span><span class="p">,</span><span class="w"> </span><span class="n">grantee</span><span class="p">,</span>
+<span class="w">    </span><span class="c1">-- The same function name can be used many times</span>
+<span class="w">    </span><span class="c1">-- Since we do not include the calling_arguments field, we should add a DISTINCT below</span>
+<span class="w">    </span><span class="n">string_agg</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">privilege_type</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39; - &#39;</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">privilege_type</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">privileges</span><span class="p">,</span>
+<span class="w">    </span><span class="n">is_grantable</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">ungrouped</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">True</span>
+<span class="c1">-- Simplify objects returned</span>
+<span class="c1">-- You can comment the following line to get these types too</span>
+<span class="k">AND</span><span class="w"> </span><span class="n">object_type</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;function&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;window&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;aggregate&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;base type&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;composite type&#39;</span><span class="p">)</span>
+<span class="c1">-- You can also filter for specific schemas or object names by uncommenting and adapting the following lines</span>
+<span class="c1">-- AND object_schema IN (&#39;cadastre&#39;, &#39;environment&#39;)</span>
+<span class="c1">-- AND object_type = &#39;table&#39;</span>
+<span class="c1">-- AND object_name ILIKE &#39;%parcelle%&#39;</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span><span class="w"> </span><span class="n">object_owner</span><span class="p">,</span><span class="w"> </span><span class="n">grantor</span><span class="p">,</span><span class="w"> </span><span class="n">grantee</span><span class="p">,</span><span class="w"> </span><span class="n">is_grantable</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">object_schema</span><span class="p">,</span><span class="w"> </span><span class="n">object_type</span><span class="p">,</span><span class="w"> </span><span class="n">grantor</span><span class="p">,</span><span class="w"> </span><span class="n">grantee</span><span class="p">,</span><span class="w"> </span><span class="n">object_name</span>
+<span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<p>Droits par défaut sur les nouveaux objets créés</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- TODO</span>
-</code></pre></div></td></tr></table></div>
+
+</details>
+
 <p>Continuer vers <a href="../fdw/">Accéder à des données externes: Foreign Data Wrapper</a></p>
 
 
@@ -758,7 +1427,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1-2.1-2M12.5 7v5.2l4 2.4-1 1L11 13V7h1.5M11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2v1.8Z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 18, 2023</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 21, 2024</span>
   </span>
 
     
@@ -866,7 +1535,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs.sticky", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      <script src="../assets/javascripts/bundle.471ce7a9.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
       
