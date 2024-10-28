@@ -592,5 +592,62 @@ Dans l'affichage ci-dessus, je n'ai pas affiché le champ de géométrie, mais l
 *Attention, les performances de ce type de requête ne sont pas forcément assurées pour des volumes de données importants.*
 
 
+## Trouver les valeurs distinctes des champs d'une table
+
+Pour comprendre quelles données sont présentes dans une table PostgreSQL,
+vous pouvez exploiter la puissance des fonctions de manipulation du `JSON`
+et récupérer automatiquement toutes les **valeurs distinctes** d'une table.
+
+Cela permet de lister les **champs** de cette table et de bien se représenter
+ce qu'ils contiennent.
+
+```sql
+SELECT
+    -- nom du champ de la table
+    key AS champ,
+
+    -- On regroupe les valeurs distinctes du champ
+    -- depuis le JSON calculé plus bas via to_jsonb
+    -- On compte les valeurs distinctes
+    count(DISTINCT value) AS nombre,
+
+    -- On récupère les valeurs uniques pour ce champ
+    json_agg(DISTINCT value) AS valeurs
+FROM
+    -- Table dans laquelle chercher les valeurs uniques
+    velo.amenagement AS i,
+    -- Transformation de chaque ligne de la table en JSON (paires clé/valeurs)
+    jsonb_each(
+        -- on utilise le - 'id' - 'geom' pour ne pas récupérer les valeurs de ces champs
+        to_jsonb(i) - 'id' - 'geom'
+    )
+-- On regroupe par clé, c'est-à-dire par champ
+GROUP BY key;
+```
+
+ce qui donnera comme résultat
+
+```sql
+   champ    | nombre |                                                         valeurs
+------------+--------+--------------------------------------------------------------------------------------------------------
+ commune    |      8 | ["AMBON", "ARZAL", "BILLIERS", "LA ROCHE-BERNARD", "LE GUERNO", "MUZILLAC", "NIVILLAC", "SAINT-DOLAY"]
+ gestionnai |      3 | ["Commune", "Département", "EPCI"]
+ id_iti     |      9 | ["iti_02", "iti_03", "iti_06", "iti_07", "iti_08", "iti_09", "iti_13", "iti_15", "iti_18"]
+ insee      |      9 | ["56002", "56004", "56018", "56077", "56143", "56147", "56149", "56195", "56212"]
+ maitre_ouv |      3 | ["Commune", "Département", "EPCI"]
+ rlv_chauss |      5 | ["Double sens", "Interdit à la circ.", "NC", "Rond-point", "Sens unique"]
+ rlv_md_dx_ |      5 | ["Aucun aménagement", "Bande", "Contresens cyclable", "Voie uniquement piétonne", "Voie verte"]
+ rlv_pente  |      5 | ["Forte (ponctuelle)", "Forte (tronçon)", "Moyenne", "NC", "Nulle ou faible"]
+ rlv_vitess |      7 | ["< 20", "20", "30", "50", "70", "80 et plus", "NC"]
+ type_surfa |      3 | ["Lisse", "Meuble", "Rugueux"]
+ vvv        |      3 | ["V3", "V42", "V45"]
+```
+
+Points d'attention:
+
+* Attention aux performances sur un très gros volume de données.
+* Bien penser à ne pas prendre en compte les champs qui contiennent
+  des données différentes pour tous les objets (identifiants, longueur, etc.)
+  au risque d'avoir une très longue liste de valeurs uniques.
 
 Continuer vers [Gestion des droits](./grant.md)
