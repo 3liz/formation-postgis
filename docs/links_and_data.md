@@ -11,31 +11,31 @@ Documentation des fonctions PostGIS:
 
 ## Base de données
 
-Nous présupposons qu'une **base de données** est accessible pour la formation, via un utilisateur PostgreSQL avec des droits élevés (notamment pour créer des schémas et des tables). L'extension **PostGIS** doit aussi être activée sur cette base de données.
+Nous présupposons qu'une **base de données** est accessible pour la formation, via un **rôle PostgreSQL** avec des droits élevés (notamment pour créer des schémas et des tables). L'extension **PostGIS** doit aussi être activée sur cette base de données.
 
 ## Jeux de données
 
 Pour cette formation, nous utilisons des données libres de droit :
 
-* Un dump est téléchargable en cliquant sur ce [lien](https://github.com/3liz/formation-postgis/releases/download/1.0/data_formation.dump).
+* Un dump est téléchargeable en cliquant sur ce [lien](https://github.com/3liz/formation-postgis/releases/download/1.0/data_formation.dump).
 
-Il peut est chargé en base avec cette commande : `pg_restore -d "NOM_BASE" data_formation.dump`
+Il peut est chargé en base avec cette commande :
+```bash
+pg_restore -h URL_SERVEUR -p 5432 -U NOM_UTILISATEUR -d NOM_BASE --no-owner --no-acl data_formation.dump
+```
 
 Ce jeu de données a pour sources :
 
-* Extraction de données d'**OpenStreetMap** dans un format SIG, sous licence ODBL ( site https://github.com/igeofr/osm2igeo ). On utilisera par exemple les données de l'ancienne région Haute-Normandie:
-https://www.data.data-wax.com/OSM2IGEO/FRANCE/202103_OSM2IGEO_23_HAUTE_NORMANDIE_SHP_L93_2154.zip
+* Extraction de données d'**OpenStreetMap** dans un format SIG, sous licence "ODBL" (site https://github.com/igeofr/osm2igeo ). On utilisera par exemple les données de l'ancienne région Haute-Normandie.
 
-* Données cadastrales (site https://cadastre.data.gouv.fr ), sous licence  Par exemple pour la Seine-Maritime:
-https://cadastre.data.gouv.fr/data/etalab-cadastre/2019-01-01/shp/departements/76/
+* Données cadastrales (site https://cadastre.data.gouv.fr ), sous licence "Licence Ouverte 2.0" Par exemple pour la Seine-Maritime :
+https://cadastre.data.gouv.fr/data/etalab-cadastre/2024-10-01/shp/departements/76/
 
-* PLU (site https://www.geoportail-z_formation.gouv.fr/map/ ). Par exemple les données de la ville du Havre:
-https://www.geoportail-z_formation.gouv.fr/map/#tile=1&lon=0.13496041707835396&lat=49.49246433172931&zoom=12&mlon=0.117760&mlat=49.502918
-Cliquer sur la commune, et utiliser le lien de téléchargement, actuellement:
+* PLU (site https://www.geoportail-urbanisme.gouv.fr/map/ ). Par exemple les données de la ville du Havre. Cliquer sur la commune, et utiliser le lien de téléchargement.
 
 Ces données peuvent aussi être importées dans la base de formation via les outils de QGIS.
 
-## Concepts de base de données:
+## Concepts de base de données
 
 Un rappel sur les concepts de table, champs, relations.
 
