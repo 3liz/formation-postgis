@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.45">
     
     
       
@@ -356,19 +356,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#le-gestionnaire-de-base-de-donnees" class="md-nav__link">
+  <a href="#creation-de-schemas-et-de-tables" class="md-nav__link">
     <span class="md-ellipsis">
-      Le Gestionnaire de base de données
+      Création de schémas et de tables
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Le Gestionnaire de base de données">
+    <nav class="md-nav" aria-label="Création de schémas et de tables">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#creation-de-tables" class="md-nav__link">
+  <a href="#creation-du-schema" class="md-nav__link">
     <span class="md-ellipsis">
-      Création de tables
+      Création du schéma
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creation-dune-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Création d'une table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utiliser-du-sql-au-lieu-des-menus-de-qgis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utiliser du SQL au lieu des menus de QGIS
     </span>
   </a>
   
@@ -385,15 +403,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creation-dun-schema-z_formation-dans-la-base" class="md-nav__link">
-    <span class="md-ellipsis">
-      Création d’un schéma z_formation dans la base
-    </span>
-  </a>
   
 </li>
       
@@ -788,19 +797,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#le-gestionnaire-de-base-de-donnees" class="md-nav__link">
+  <a href="#creation-de-schemas-et-de-tables" class="md-nav__link">
     <span class="md-ellipsis">
-      Le Gestionnaire de base de données
+      Création de schémas et de tables
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Le Gestionnaire de base de données">
+    <nav class="md-nav" aria-label="Création de schémas et de tables">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#creation-de-tables" class="md-nav__link">
+  <a href="#creation-du-schema" class="md-nav__link">
     <span class="md-ellipsis">
-      Création de tables
+      Création du schéma
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creation-dune-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      Création d'une table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utiliser-du-sql-au-lieu-des-menus-de-qgis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utiliser du SQL au lieu des menus de QGIS
     </span>
   </a>
   
@@ -817,15 +844,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#creation-dun-schema-z_formation-dans-la-base" class="md-nav__link">
-    <span class="md-ellipsis">
-      Création d’un schéma z_formation dans la base
-    </span>
-  </a>
   
 </li>
       
@@ -860,46 +878,63 @@
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
 <p>Lorsqu'on travaille avec des données <strong>PostgreSQL</strong>, QGIS n'accède pas à la donnée en lisant un ou plusieurs fichiers, mais fait des <strong>requêtes</strong> à la base, à chaque fois qu'il en a besoin: déplacement de carte, zoom, ouverture de la table attributaire, sélection par expression, etc.</p>
 <ul>
-<li>QGIS se connecte à la base de données, et récupère des données qui sont stockées dans des tables. Il doit donc <strong>télécharger la donnée</strong> à chaque action (pas de cache car la donnée peut changer entre temps).</li>
-<li>une table équivaut à une couche SIG, définie par un nom, une liste de champs typés, et un ou plusieurs champs de géométrie.</li>
-<li>une géométrie est caractérisée par un type (polygone, point, ligne, etc.), une dimension (2D ou 3D) et une projection (Ex: EPSG:2154) codifiée via un SRID ( Ex: 2154)</li>
-<li>certaines tables n'ont pas de géométrie: on les appelle alors non spatiales. QGIS sait les exploiter, ce qui permet de stocker des informations de contexte (nomenclature, événements).</li>
+<li>QGIS <strong>se connecte</strong> à la base de données, et récupère des données qui sont stockées dans des tables. Il doit donc <strong>télécharger la donnée</strong> à chaque action (pas de cache car la donnée peut changer entre temps).</li>
+<li>une <strong>table</strong> équivaut à une <strong>couche SIG</strong>, définie par un nom, une <strong>liste de champs typés</strong>, et un ou plusieurs champs de <strong>géométrie</strong>.</li>
+<li>une <strong>géométrie</strong> est caractérisée par un <strong>type</strong> (polygone, point, ligne, etc.), une <strong>dimension</strong> (2D ou 3D) et une <strong>projection</strong> (Ex: EPSG:2154) codifiée via un SRID (Ex: 2154)</li>
+<li>certaines tables n'ont pas de géométrie: on les appelle alors <strong>non spatiales</strong>. QGIS sait les exploiter, ce qui permet de stocker des informations de contexte (nomenclature, événements).</li>
 </ul>
 <p>La base de données fournit donc un lieu de stockage des données centralisé. On peut gérer les droits d'accès ou d'écriture sur les schémas et les tables.</p>
 <h2 id="creer-une-connexion-qgis-a-la-base-de-donnees">Créer une connexion QGIS à la base de données<a class="headerlink" href="#creer-une-connexion-qgis-a-la-base-de-donnees" title="Permanent link">#</a></h2>
-<p>Dans QGIS, il faut <strong>créer une nouvelle connexion</strong> à PostgreSQL, via l'outil "Éléphant" : menu <strong>Couches / Ajouter une couche / Ajouter une couche PostgreSQL</strong> . Configurer les options suivantes:</p>
+<p>Dans QGIS, il faut <strong>créer une nouvelle connexion</strong> à PostgreSQL, via l'outil "Éléphant" : menu <strong>Couches / Ajouter une couche / Ajouter une couche PostgreSQL</strong>. Configurer les options suivantes :</p>
 <ul>
-<li>laisser le champ <strong>Service</strong> vide</li>
+<li>laisser le champ <strong>Service</strong> vide (sauf si vous savez utiliser les fichiers de service PostgreSQL, ce qui est recommandé)</li>
 <li>cocher les cases <strong>Enregistrer</strong> à côté de l'utilisateur et du mot de passe, après avoir <strong>Tester la connexion</strong> (via le bouton dédié)</li>
-<li>cocher la case en bas <strong>Utiliser la table de métadonnées estimées</strong></li>
+<li>cocher les cases en bas <strong>Lister les tables sans géométries</strong> et <strong>Utiliser la table de métadonnées estimées</strong></li>
 <li>Valider</li>
 </ul>
+<p><img alt="Nouvelle connexion PostGIS dans QGIS" src="../media/qgis_connexion_PostgreSQL.png" /></p>
 <p><strong>Attention</strong> Pour plus de sécurité, privilégier l'usage d'un service PostgreSQL:
-<a href="https://docs.qgis.org/latest/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file">https://docs.qgis.org/latest/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file</a></p>
-<p>Il est aussi intéressant pour les <strong>performances</strong> d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet <strong>Rendu</strong>: il faut cocher la case <strong>Réaliser la simplification par le fournisseur de données lorsque c'est possible</strong>. Cela permet de télécharger des versions allégées des données aux petites échelles. <a href="https://docs.qgis.org/latest/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings">Documentation</a></p>
-<p><strong>NB</strong> Pour les couches PostGIS qui auraient déjà été ajoutées avant d'avoir activé cette option, vous pouvez manuellement changer dans vos projets via l'onglet <strong>Rendu</strong> de la boîte de dialogue des propriétés de chaque couche PostGIS.</p>
+<a href="https://docs.qgis.org/latest/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file">https://docs.qgis.org/latest/fr/docs/user_manual/managing_data_source/opening_data.html#pg-service-file</a> (plugin QGIS intéressant : PG Service Parser)</p>
+<p>Il est aussi intéressant pour les <strong>performances</strong> d'accès aux données PostgreSQL de modifier une option dans les options de QGIS, onglet <strong>Rendu</strong> : il faut cocher la case <strong>Réaliser la simplification par le fournisseur de données lorsque c'est possible</strong>. Cela permet de télécharger des versions allégées des données aux petites échelles. <a href="https://docs.qgis.org/latest/fr/docs/user_manual/introduction/qgis_configuration.html#rendering-settings">Documentation QGIS</a></p>
+<p><img alt="Simplification rendu vecteur" src="../media/qgis_rendu_simplification_fournisseur.png" /></p>
+<p><strong>NB</strong> Pour les couches PostGIS qui auraient déjà été ajoutées <strong>avant d'avoir activé cette option</strong>, vous pouvez manuellement changer dans vos projets via l'onglet <strong>Rendu</strong> de la boîte de dialogue des propriétés de chaque couche PostGIS.</p>
 <h2 id="ouvrir-une-couche-postgresql-dans-qgis">Ouvrir une couche PostgreSQL dans QGIS<a class="headerlink" href="#ouvrir-une-couche-postgresql-dans-qgis" title="Permanent link">#</a></h2>
-<p>Trois solutions sont possibles:</p>
+<p>Trois solutions sont possibles :</p>
 <ul>
-<li><strong>utiliser l'explorateur</strong> : seulement pour les tables spatiales, sauf si on a coché <strong>Lister les tables sans géométries</strong> dans les propriétés de la connexion. Le panneau présente un arbre qui liste les schémas, puis les tables ou vues exploitables. Une icône devant chaque table/vue indique si une table est géométrique ou non ainsi que le type de géométrie, point, ligne ou polygône.</li>
-<li>utiliser le menu <strong>Couche / Ajouter une couche</strong>. La boite de dialogue propose de se connecter, puis liste les schémas et les tables</li>
+<li><strong>utiliser l'explorateur</strong> : Le panneau présente un arbre qui liste les <code>schémas</code>, puis les <code>tables</code> ou <code>vues</code> exploitables. Une icône devant chaque table/vue indique si une table est géométrique ou non ainsi que le type de géométrie, point, ligne ou polygone. On peut utiliser le menu <code>Clic-Droit</code> sur les objets de l'arbre.</li>
+<li>utiliser le menu <strong>Couche / Ajouter une couche</strong>. La boite de dialogue propose de se connecter, puis liste les schémas et les tables (ancienne méthode pas recommandée)</li>
 <li>utiliser le <strong>Gestionnaire de base de données</strong>, qui présente une fenêtre QGIS séparée dédiée aux manipulations sur les données.</li>
 </ul>
-<h2 id="le-gestionnaire-de-base-de-donnees">Le Gestionnaire de base de données<a class="headerlink" href="#le-gestionnaire-de-base-de-donnees" title="Permanent link">#</a></h2>
-<p>On travaille via QGIS, avec le gestionnaire de bases de données : menu <strong>Base de données &gt; Gestionnaire BD</strong> (sinon via l'icône de la barre d’outil base de données).</p>
-<p>Dans l'arbre qui se présente à gauche du gestionnaire de bdd, on peut <strong>choisir sa connexion</strong>, puis double-cliquer, ce qui montre l'ensemble des <strong>schémas</strong>, et l'ouverture d'un schéma montre la liste des tables et vues. Les menus du gestionnaire permettent de créer ou d'éditer des objets (schémas, tables).</p>
-<p>Une <strong>fenêtre SQL</strong> permet de lancer manuellement des requêtes SQL. Nous allons principalement utiliser cet outil : menu <strong>Base de données / Fenêtre SQL</strong> (on peut aussi le lancer via F2). :</p>
-<h3 id="creation-de-tables">Création de tables<a class="headerlink" href="#creation-de-tables" title="Permanent link">#</a></h3>
-<p>Depuis <strong>QGIS</strong>: dans le gestionnaire de base de données, menu ** Table / Créer une table**:</p>
+<h2 id="creation-de-schemas-et-de-tables">Création de schémas et de tables<a class="headerlink" href="#creation-de-schemas-et-de-tables" title="Permanent link">#</a></h2>
+<p>On peut travailler avec le gestionnaire de bases de données de QGIS : menu <strong>Base de données &gt; Gestionnaire BD</strong> (sinon via l'icône de la barre d’outil base de données) ou avec l'<strong>explorateur</strong> (recommandé).</p>
+<p>Dans l'arbre qui se présente, on peut <strong>choisir sa connexion</strong>, puis double-cliquer, ce qui montre l'ensemble des <strong>schémas</strong>, et l'ouverture d'un schéma montre la liste des tables et vues. Les menus permettent de créer ou d'éditer des objets (schémas, tables).</p>
+<p>Une <strong>fenêtre SQL</strong> permet de lancer manuellement des requêtes SQL. Nous allons principalement utiliser cet outil : menu <strong>Base de données / Fenêtre SQL</strong> (on peut aussi le lancer via F2).</p>
+<p>NB: C'est possible aussi d'utiliser le <strong>fenêtre SQL de l'explorateur</strong> via clic-droit <code>Exécuter le SQL ...</code>, mais elle ne permet pas encore de ne lancer que le <strong>texte surligné</strong>, ce qui est pourtant très pratique pendant une formation.</p>
+<h3 id="creation-du-schema">Création du schéma<a class="headerlink" href="#creation-du-schema" title="Permanent link">#</a></h3>
+<p>Les <strong>schémas</strong> dans une base PostgreSQL sont utiles pour regrouper les tables.</p>
+<p>On recommande de ne pas créer de tables dans le schéma <code>public</code>, mais d'utiliser des schémas (par thématique, pour la gestion des droits, etc.).</p>
+<p>Pour la formation, nous allons créer un schéma <code>z_formation</code> :</p>
+<ul>
+<li>Dans l'explorateur, faire un clic-droit sur le nom de la connexion et <code>Créer un schéma</code>.</li>
+</ul>
+<p><img alt="Créer un schéma" src="../media/qgis_creer_schema_explorateur.png" /></p>
+<h3 id="creation-dune-table">Création d'une table<a class="headerlink" href="#creation-dune-table" title="Permanent link">#</a></h3>
+<p>Ensuite, on peut créer une <strong>table</strong> dans ce schéma : dans l'explorateur, faire un clic-droit sur le schéma <code>z_formation</code>, puis <code>Nouvelle table...</code> :</p>
 <ul>
 <li>choisir le <strong>schéma</strong> et le <strong>nom</strong> de la table, en minuscule, sans accents ni caractères complexes</li>
-<li>Via le bouton <strong>Ajouter un champ</strong>, on commence par ajouter un champ <strong>id</strong> de type <strong>serial</strong> (entier auto-incrémenté), puis d'autres champs en choisissant le nom et le type. Choisir des noms de champ simples !</li>
+<li>Via le bouton <strong>Ajouter un champ</strong>, on crée autant de champs que nécessaire en choisissant le nom et le type. <strong>Choisir des noms de champ simples sans majuscule, espace ni accents !</strong>.</li>
 <li>Choisir dans la liste déroulante le <strong>champ de clé primaire</strong> (ici id)</li>
 <li>Cocher <strong>Créer une colonne géométrique</strong> et choisir le type et le SRID (par exemple 2154 pour le Lambert 93)</li>
 <li>Cocher <strong>Créer un index spatial</strong></li>
 </ul>
-<p><strong>NB</strong>: on a créé une table dans cet exemple <code>z_formation.borne_incendie</code> avec les champs <strong>id_borne</strong> (text), <strong>code</strong> (text), <strong>debit</strong> (real) et <strong>geom</strong> (géométrie de type Point, code SRID 2154)</p>
-<p><strong>Créer une table en SQL</strong></p>
+<p><img alt="Créer une table" src="../media/qgis_creer_table_explorateur.png" /></p>
+<p><strong>NB</strong>: on a créé une table dans cet exemple <code>z_formation.borne_incendie</code> avec les champs <strong>code</strong> (text), <strong>debit</strong> (real) et <strong>geom</strong> (géométrie de type Point, code SRID 2154)</p>
+<ul>
+<li>Un champ <code>id</code> de type <strong>entier auto-incrémenté</strong> a été créé automatiquement par QGIS en tant que <strong>clé primaire</strong> de la table.</li>
+<li>Un <strong>index spatial</strong> a aussi été créé par QGIS sur le champ de géométrie.</li>
+</ul>
+<h3 id="utiliser-du-sql-au-lieu-des-menus-de-qgis">Utiliser du SQL au lieu des menus de QGIS<a class="headerlink" href="#utiliser-du-sql-au-lieu-des-menus-de-qgis" title="Permanent link">#</a></h3>
+<p>On peut aussi utiliser du <strong>SQL</strong> pour créer des objets dans la base :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -917,7 +952,7 @@
 <span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">;</span>
 
 <span class="c1">-- création de la table</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="p">(</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="c1">-- un serial est un entier auto-incrémenté</span>
 <span class="w">    </span><span class="n">id_borne</span><span class="w"> </span><span class="nb">serial</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
 <span class="w">    </span><span class="n">code</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
@@ -929,8 +964,8 @@
 <span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">z_formation</span><span class="p">.</span><span class="n">borne_incendie</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <h3 id="ajouter-des-donnees-dans-une-table">Ajouter des données dans une table<a class="headerlink" href="#ajouter-des-donnees-dans-une-table" title="Permanent link">#</a></h3>
-<p>On peut bien sûr charger la table dans QGIS, puis utiliser les outils d'édition classique pour créer des nouveaux objets.</p>
-<p>En SQL, il est aussi possible d'insérer des données ( <a href="https://sql.sh/cours/insert-into">https://sql.sh/cours/insert-into</a> ). Par exemple pour les bornes à incendie:</p>
+<p>On peut bien sûr charger la table dans QGIS, puis utiliser les <strong>outils d'édition</strong> classique pour créer des nouveaux objets ou les modifier.</p>
+<p>En SQL, il est aussi possible d'insérer des données ( <a href="https://sql.sh/cours/insert-into">https://sql.sh/cours/insert-into</a> ). Par exemple pour les bornes à incendie :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
 <span class="normal">2</span>
 <span class="normal">3</span>
@@ -945,41 +980,10 @@
 <span class="w"> </span><span class="p">(</span><span class="s1">&#39;IOP&#39;</span><span class="p">,</span><span class="w">  </span><span class="mi">3</span><span class="p">.</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">ST_SetSRID</span><span class="p">(</span><span class="n">ST_MakePoint</span><span class="p">(</span><span class="mi">491203</span><span class="p">.</span><span class="mi">3</span><span class="p">,</span><span class="mi">6937488</span><span class="p">.</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">2154</span><span class="p">))</span>
 <span class="p">;</span>
 </code></pre></div></td></tr></table></div>
-<p><strong>NB</strong>: Nous verrons plus loin l'utlisation de fonctions de création de géométrie, comme <strong>ST_MakePoint</strong></p>
-<h2 id="creation-dun-schema-z_formation-dans-la-base">Création d’un schéma z_formation dans la base<a class="headerlink" href="#creation-dun-schema-z_formation-dans-la-base" title="Permanent link">#</a></h2>
-<ul>
-<li>ajout du schéma via le gestionnaire de bdd, ou via une requête:</li>
-</ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">z_formation</span><span class="p">;</span>
-</code></pre></div></td></tr></table></div>
-<ul>
-<li>modification des droits d’accès à ce schéma, si besoin:</li>
-</ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- On donne ici tous les droits à &quot;utilisateur&quot;</span>
-<span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">z_formation</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;utilisateur&quot;</span><span class="p">;</span>
-</code></pre></div></td></tr></table></div>
-<ul>
-<li>suppression d'un schéma</li>
-</ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
-<span class="normal">2</span>
-<span class="normal">3</span>
-<span class="normal">4</span>
-<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- Suppression du schéma si il est vide</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="p">;</span>
-
-<span class="c1">-- suppression du schéma et de toutes les tables de ce schéma (via CASCADE) !!! ATTENTION !!!</span>
-<span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
-</code></pre></div></td></tr></table></div>
-<ul>
-<li>renommer un schéma</li>
-</ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="n">monschema</span><span class="w"> </span><span class="k">RENAME</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">unschema</span><span class="p">;</span>
-</code></pre></div></td></tr></table></div>
+<p><strong>NB</strong>: Nous verrons plus loin l'utilisation de fonctions de création de géométrie, comme <strong>ST_MakePoint</strong></p>
 <h2 id="verifier-et-creer-les-indexes-spatiaux">Vérifier et créer les indexes spatiaux<a class="headerlink" href="#verifier-et-creer-les-indexes-spatiaux" title="Permanent link">#</a></h2>
 <p>On peut vérifier si chaque table contient un <strong>index spatial</strong> via le gestionnaire de base de données de QGIS, en cliquant sur la table dans l'arbre, puis en regardant les informations de l'onglet <strong>Info</strong>. On peut alors créer l'index spatial via le lien bleu <strong>Aucun index spatial défini (en créer un)</strong>.</p>
-<p>Sinon, il est possible de le faire en SQL via la requête suivante:</p>
+<p>Sinon, il est possible de le faire en SQL via la requête suivante :</p>
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">nom_du_schema</span><span class="p">.</span><span class="n">nom_de_la_table</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">GIST</span><span class="w"> </span><span class="p">(</span><span class="n">geom</span><span class="p">);</span>
 </code></pre></div></td></tr></table></div>
 <p>Si on souhaite automatiser la création des indexes pour toutes les tables qui n'en ont pas, on peut utiliser une fonction, décrite dans la partie <a href="../utils/">Fonctions utiles</a></p>
@@ -1004,7 +1008,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 18, 2023</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 21, 2024</span>
   </span>
 
     

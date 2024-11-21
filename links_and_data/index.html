@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../logo.svg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.45">
     
     
       
@@ -338,7 +338,7 @@
         <li class="md-nav__item">
   <a href="#concepts-de-base-de-donnees" class="md-nav__link">
     <span class="md-ellipsis">
-      Concepts de base de données:
+      Concepts de base de données
     </span>
   </a>
   
@@ -757,7 +757,7 @@
         <li class="md-nav__item">
   <a href="#concepts-de-base-de-donnees" class="md-nav__link">
     <span class="md-ellipsis">
-      Concepts de base de données:
+      Concepts de base de données
     </span>
   </a>
   
@@ -799,31 +799,30 @@
 <li>en français <a href="https://postgis.net/docs/postgis-fr.html">https://postgis.net/docs/postgis-fr.html</a> notamment la référence des fonctions spatiales : <a href="https://postgis.net/docs/postgis-fr.html#reference">https://postgis.net/docs/postgis-fr.html#reference</a></li>
 </ul>
 <h2 id="base-de-donnees">Base de données<a class="headerlink" href="#base-de-donnees" title="Permanent link">#</a></h2>
-<p>Nous présupposons qu'une <strong>base de données</strong> est accessible pour la formation, via un utilisateur PostgreSQL avec des droits élevés (notamment pour créer des schémas et des tables). L'extension <strong>PostGIS</strong> doit aussi être activée sur cette base de données.</p>
+<p>Nous présupposons qu'une <strong>base de données</strong> est accessible pour la formation, via un <strong>rôle PostgreSQL</strong> avec des droits élevés (notamment pour créer des schémas et des tables). L'extension <strong>PostGIS</strong> doit aussi être activée sur cette base de données.</p>
 <h2 id="jeux-de-donnees">Jeux de données<a class="headerlink" href="#jeux-de-donnees" title="Permanent link">#</a></h2>
 <p>Pour cette formation, nous utilisons des données libres de droit :</p>
 <ul>
-<li>Un dump est téléchargable en cliquant sur ce <a href="https://github.com/3liz/formation-postgis/releases/download/1.0/data_formation.dump">lien</a>.</li>
+<li>Un dump est téléchargeable en cliquant sur ce <a href="https://github.com/3liz/formation-postgis/releases/download/1.0/data_formation.dump">lien</a>.</li>
 </ul>
-<p>Il peut est chargé en base avec cette commande : <code>pg_restore -d "NOM_BASE" data_formation.dump</code></p>
+<p>Il peut est chargé en base avec cette commande :
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>pg_restore<span class="w"> </span>-h<span class="w"> </span>URL_SERVEUR<span class="w"> </span>-p<span class="w"> </span><span class="m">5432</span><span class="w"> </span>-U<span class="w"> </span>NOM_UTILISATEUR<span class="w"> </span>-d<span class="w"> </span>NOM_BASE<span class="w"> </span>--no-owner<span class="w"> </span>--no-acl<span class="w"> </span>data_formation.dump
+</code></pre></div></td></tr></table></div></p>
 <p>Ce jeu de données a pour sources :</p>
 <ul>
 <li>
-<p>Extraction de données d'<strong>OpenStreetMap</strong> dans un format SIG, sous licence ODBL ( site <a href="https://github.com/igeofr/osm2igeo">https://github.com/igeofr/osm2igeo</a> ). On utilisera par exemple les données de l'ancienne région Haute-Normandie:
-<a href="https://www.data.data-wax.com/OSM2IGEO/FRANCE/202103_OSM2IGEO_23_HAUTE_NORMANDIE_SHP_L93_2154.zip">https://www.data.data-wax.com/OSM2IGEO/FRANCE/202103_OSM2IGEO_23_HAUTE_NORMANDIE_SHP_L93_2154.zip</a></p>
+<p>Extraction de données d'<strong>OpenStreetMap</strong> dans un format SIG, sous licence "ODBL" (site <a href="https://github.com/igeofr/osm2igeo">https://github.com/igeofr/osm2igeo</a> ). On utilisera par exemple les données de l'ancienne région Haute-Normandie.</p>
 </li>
 <li>
-<p>Données cadastrales (site <a href="https://cadastre.data.gouv.fr">https://cadastre.data.gouv.fr</a> ), sous licence  Par exemple pour la Seine-Maritime:
-<a href="https://cadastre.data.gouv.fr/data/etalab-cadastre/2019-01-01/shp/departements/76/">https://cadastre.data.gouv.fr/data/etalab-cadastre/2019-01-01/shp/departements/76/</a></p>
+<p>Données cadastrales (site <a href="https://cadastre.data.gouv.fr">https://cadastre.data.gouv.fr</a> ), sous licence "Licence Ouverte 2.0" Par exemple pour la Seine-Maritime :
+<a href="https://cadastre.data.gouv.fr/data/etalab-cadastre/2024-10-01/shp/departements/76/">https://cadastre.data.gouv.fr/data/etalab-cadastre/2024-10-01/shp/departements/76/</a></p>
 </li>
 <li>
-<p>PLU (site <a href="https://www.geoportail-z_formation.gouv.fr/map/">https://www.geoportail-z_formation.gouv.fr/map/</a> ). Par exemple les données de la ville du Havre:
-<a href="https://www.geoportail-z_formation.gouv.fr/map/#tile=1&amp;lon=0.13496041707835396&amp;lat=49.49246433172931&amp;zoom=12&amp;mlon=0.117760&amp;mlat=49.502918">https://www.geoportail-z_formation.gouv.fr/map/#tile=1&amp;lon=0.13496041707835396&amp;lat=49.49246433172931&amp;zoom=12&amp;mlon=0.117760&amp;mlat=49.502918</a>
-Cliquer sur la commune, et utiliser le lien de téléchargement, actuellement:</p>
+<p>PLU (site <a href="https://www.geoportail-urbanisme.gouv.fr/map/">https://www.geoportail-urbanisme.gouv.fr/map/</a> ). Par exemple les données de la ville du Havre. Cliquer sur la commune, et utiliser le lien de téléchargement.</p>
 </li>
 </ul>
 <p>Ces données peuvent aussi être importées dans la base de formation via les outils de QGIS.</p>
-<h2 id="concepts-de-base-de-donnees">Concepts de base de données:<a class="headerlink" href="#concepts-de-base-de-donnees" title="Permanent link">#</a></h2>
+<h2 id="concepts-de-base-de-donnees">Concepts de base de données<a class="headerlink" href="#concepts-de-base-de-donnees" title="Permanent link">#</a></h2>
 <p>Un rappel sur les concepts de table, champs, relations.</p>
 <ul>
 <li>Documentation de QGIS : <a href="https://docs.qgis.org/latest/fr/docs/training_manual/database_concepts/index.html">https://docs.qgis.org/latest/fr/docs/training_manual/database_concepts/index.html</a></li>
@@ -856,7 +855,7 @@ Cliquer sur la commune, et utiliser le lien de téléchargement, actuellement:</
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 19, 2022</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 21, 2024</span>
   </span>
 
     
