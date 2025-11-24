@@ -70,7 +70,7 @@ Continuer vers [Regrouper des données: GROUP BY](./group_data.md)
   FROM z_formation.commune
   WHERE True
   AND depart = 'SEINE-MARITIME'
-  AND nom ILIKE '%saint%';
+  AND nom ILIKE '%saint%'
   ```
 </details>
 
